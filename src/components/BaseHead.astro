@@ -1,0 +1,72 @@
+---
+import { EVENT_CONFIG } from '../data/event';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string | URL;
+  type?: string;
+}
+
+const {
+  title = EVENT_CONFIG.metadata.siteTitle,
+  description = EVENT_CONFIG.metadata.siteDescription,
+  image = EVENT_CONFIG.metadata.ogImage,
+  canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : new URL(Astro.url.pathname, EVENT_CONFIG.metadata.siteUrl),
+  type = 'website'
+} = Astro.props;
+
+// Ensure absolute URL for social crawlers (Discord, Twitter/X, LinkedIn, Slack)
+const ogImageUrl = new URL(image, Astro.site || EVENT_CONFIG.metadata.siteUrl).href;
+const canonicalHref = canonicalURL.toString();
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Favicons & Touch Icons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalHref} />
+
+<!-- Sitemap Discovery -->
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="theme-color" content={EVENT_CONFIG.metadata.themeColor} />
+<meta name="color-scheme" content="dark" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`} />
+<meta property="og:url" content={canonicalHref} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="675" />
+<meta property="og:image:alt" content={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} Editorial Cover`} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter / X Cards -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalHref} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageUrl} />
+<meta property="twitter:image:alt" content={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} Editorial Cover`} />
+
+<!-- Google Fonts Preconnect & Optimized Font Loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+  rel="stylesheet"
+/>

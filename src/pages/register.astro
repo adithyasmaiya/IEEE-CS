@@ -1,0 +1,173 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { EVENT_CONFIG } from '../data/event';
+
+const hasOfficialForm = Boolean(
+  EVENT_CONFIG.registration.googleFormsUrl &&
+    EVENT_CONFIG.registration.googleFormsUrl.startsWith('http')
+);
+
+const pageTitle = `Registration Portal · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
+const pageDescription = `Register for CONFLUENCE 2026, the flagship hackathon of IEEE Computer Society at PES University. Access official entry forms, requirements, and team guidelines.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Page Header -->
+  <section class="section grid-lines" style="padding-top:8.5rem;padding-bottom:clamp(3rem,6vw,5rem)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="idx">05 — Access Control</span>
+        <span class="label">Participant Admission · Registration Gateway</span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap">
+        <div>
+          <span class="label label-ink" style="display:block;margin-bottom:1rem">
+            {EVENT_CONFIG.organizer} · {EVENT_CONFIG.university}
+          </span>
+          <h1 class="h2 reveal" style="margin:0;line-height:.86">
+            Registration<br />
+            <span class="outline-text">Portal</span>
+          </h1>
+        </div>
+        <div style="max-width:44ch">
+          <p class="lede reveal" style="--d:.1s;margin:0 0 1rem">
+            Official application hub for competing teams, individual participants, and research builders.
+          </p>
+          <div style="border-left:2px solid var(--acid);padding-left:1rem">
+            <span class="label" style="display:block;color:var(--acid);margin-bottom:.2rem">Current Status</span>
+            <span class="ph" style="font-size:.85rem">
+              {hasOfficialForm ? 'REGISTRATION WINDOW OPEN' : `REGISTRATIONS OPENING ${EVENT_CONFIG.registration.openDateText}`}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portal Content: Active Form vs Staged Unavailable State -->
+  <section class="section grid-lines-x">
+    <div class="wrap">
+      {hasOfficialForm ? (
+        <div style="border:1px solid var(--acid);background:var(--bg-2);padding:clamp(2.5rem,5vw,4.5rem)" class="reveal">
+          <span class="label" style="color:var(--acid);display:block;margin-bottom:1rem">
+            Official Application Window Active
+          </span>
+          <h2 style="font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:800;margin:0 0 1.2rem;text-transform:uppercase">
+            Apply for Confluence 2026
+          </h2>
+          <p class="body" style="font-size:1.1rem;margin:0 0 2rem;max-width:60ch">
+            The official registration form is active. Please have your team leader submit your collective credentials, track selections, and developer handles.
+          </p>
+          
+          <div style="display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center">
+            <a
+              href={EVENT_CONFIG.registration.googleFormsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary"
+              style="padding:1.1rem 2.2rem;font-size:1rem"
+            >
+              Open Official Google Form <span class="arrow" aria-hidden="true">&nearr;</span>
+            </a>
+            <span class="label" style="color:var(--muted)">
+              Hosted externally via verified IEEE CS PESU form
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div style="border:1px solid var(--line-strong);background:var(--bg-2);padding:clamp(2.5rem,5vw,4.5rem)" class="reveal">
+          <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--acid);display:inline-block;animation:pulse 2s infinite" />
+            <span class="label" style="color:var(--acid);margin:0">
+              Registration Window Pending Announcement
+            </span>
+          </div>
+
+          <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:0 0 1.2rem;text-transform:uppercase">
+            Registrations Open <span class="ph">{EVENT_CONFIG.registration.openDateText}</span>
+          </h2>
+
+          <p class="lede" style="margin:0 0 2rem;max-width:62ch;color:var(--ink)">
+            The official Google Form link has not yet been unlocked by the organising board. We do not collect preliminary data through unratified third-party forms.
+          </p>
+
+          <div style="background:var(--bg);border:1px dashed var(--line-strong);padding:1.5rem;margin-bottom:2.5rem;max-width:70ch">
+            <span class="label" style="display:block;margin-bottom:.4rem;color:var(--muted)">
+              System Notice · Centralized Config
+            </span>
+            <p style="margin:0;font-family:var(--mono);font-size:.85rem;color:var(--ink-secondary)">
+              When the official Google Form is made public by IEEE CS PESU, updating <code>googleFormsUrl</code> in <code>src/data/event.ts</code> will automatically activate the registration action across all pages.
+            </p>
+          </div>
+
+          <div style="margin-bottom:2.5rem">
+            <span class="label" style="display:block;margin-bottom:1rem">
+              Prepare in Advance for Application
+            </span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem">
+              {EVENT_CONFIG.registration.instructions.map((inst, i) => (
+                <div style="border:1px solid var(--line);padding:1.2rem;background:var(--bg)">
+                  <span class="idx" style="display:block;margin-bottom:.4rem">0{i + 1}</span>
+                  <p style="margin:0;font-size:.92rem;color:var(--muted)">{inst}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:2rem">
+            <a href={`mailto:${EVENT_CONFIG.contact.email}`} class="btn btn-ghost">
+              Contact Organizers &nearr;
+            </a>
+            <a href="/themes/" class="btn btn-ghost">
+              Explore Problem Spaces &rarr;
+            </a>
+            <a href="/" class="btn btn-primary">
+              &larr; Return to Homepage
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Section: Event Facts & Rules Grid -->
+  <section class="section" aria-labelledby="reg-parameters-heading">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="idx">06 — Parameters</span>
+        <span class="label">Admission Criteria &amp; Rules</span>
+      </div>
+
+      <h2 class="h2 reveal" id="reg-parameters-heading" style="font-size:clamp(1.8rem,3.2vw,2.5rem);margin-bottom:2rem">
+        Admission Parameters
+      </h2>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem">
+        <div class="fact" style="border:1px solid var(--line)">
+          <span class="label">Eligibility</span>
+          <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.eligibilityText}</span></span>
+        </div>
+        <div class="fact" style="border:1px solid var(--line)">
+          <span class="label">Team Size Limit</span>
+          <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.teamSizeText}</span></span>
+        </div>
+        <div class="fact" style="border:1px solid var(--line)">
+          <span class="label">Registration Fee</span>
+          <span class="value"><span class="ph">{EVENT_CONFIG.registration.feeText}</span></span>
+        </div>
+        <div class="fact" style="border:1px solid var(--line)">
+          <span class="label">Event Venue</span>
+          <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.venueText}</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.85); }
+  }
+</style>

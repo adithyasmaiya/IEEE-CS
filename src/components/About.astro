@@ -1,0 +1,80 @@
+---
+import { EVENT_CONFIG } from '../data/event';
+const { manifesto } = EVENT_CONFIG;
+---
+
+<section class="section grid-lines-x" id="about" aria-labelledby="about-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="idx">01 — About</span>
+      <span class="label">Manifesto / Purpose</span>
+    </div>
+
+    <div class="manifesto-grid">
+      <h2 class="manifesto-statement" id="about-title">
+        <span class="reveal" style="display:block">Ideas are</span>
+        <span class="reveal" style="--d:.1s;display:block"><span class="dim">cheap.</span> Engineering</span>
+        <span class="reveal" style="--d:.2s;display:block">is <span class="acid">where</span> they</span>
+        <span class="reveal" style="--d:.3s;display:block">meet <span class="dim">the</span> world.</span>
+      </h2>
+
+      <div class="manifesto-cols reveal" style="--d:.1s">
+        <p class="lede">{manifesto.subheadline}</p>
+        {manifesto.paragraphs.map((p) => (
+          <p class="body">{p}</p>
+        ))}
+      </div>
+
+      <div class="manifesto-side">
+        <div class="manifesto-art reveal" style="--d:.2s" aria-hidden="true">
+          <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <defs>
+              <pattern id="mg" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M20 0H0V20" fill="none" stroke="rgba(242,238,230,.06)" stroke-width="1" />
+              </pattern>
+            </defs>
+            <rect width="400" height="500" fill="url(#mg)" />
+            <g fill="none" stroke="rgba(242,238,230,.35)" stroke-width="1">
+              <path d="M0 80 C 140 80, 200 250, 400 260" />
+              <path d="M0 160 C 120 160, 220 260, 400 270" />
+              <path d="M0 240 C 140 240, 230 270, 400 280" />
+              <path d="M0 420 C 140 420, 240 300, 400 290" />
+              <path d="M0 340 C 120 340, 230 290, 400 300" />
+            </g>
+            <g fill="none" stroke="#C8FF2E" stroke-width="1.2">
+              <path d="M0 500 Q 200 260 400 0" opacity=".9" />
+              <circle cx="200" cy="268" r="40" />
+              <circle cx="200" cy="268" r="80" opacity=".4" />
+              <circle cx="200" cy="268" r="130" opacity=".2" stroke-dasharray="3 5" />
+            </g>
+            <circle cx="200" cy="268" r="4" fill="#C8FF2E" />
+            <text x="16" y="480" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">
+              FIG. 01 — CONVERGENCE POINT
+            </text>
+            <text x="384" y="24" text-anchor="end" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">
+              X 200 · Y 268
+            </text>
+          </svg>
+        </div>
+
+        <ol class="manifesto-list reveal" style="--d:.25s;list-style:none">
+          {manifesto.pillars.map((pillar) => (
+            <li>
+              <span class="idx">{pillar.index}</span>
+              <div>
+                <strong>{pillar.title}</strong>
+                <span>{pillar.description}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="reveal" style="--d:.3s;margin-top:1rem">
+          <a href="/about/" class="btn btn-ghost" style="font-size:.75rem">
+            Read Full Manifesto &amp; Guidelines <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

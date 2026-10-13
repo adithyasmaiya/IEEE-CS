@@ -1,0 +1,46 @@
+---
+import { FAQ_LIST } from '../data/faq';
+---
+
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="idx">04 — FAQs</span>
+      <span class="label">Questions · Answers</span>
+    </div>
+
+    <div class="faq-grid">
+      <aside class="faq-aside reveal">
+        <h2 class="h2" id="faq-title">
+          Good<br />questions.
+        </h2>
+        <p class="body" style="margin:1.5rem 0 0">
+          Can't find what you need? Reach out through the contact channels in the footer. Answers marked as placeholders will be confirmed by the organising committee.
+        </p>
+        <div style="margin-top:1.5rem">
+          <a href="/faqs/" class="btn btn-ghost" style="font-size:.75rem">
+            View All FAQs &amp; Rules <span class="arrow">→</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="faq-list">
+        {FAQ_LIST.map((item) => (
+          <details class="faq reveal" open={item.defaultOpen}>
+            <summary>
+              <span class="q-idx">{item.index}</span>
+              <span>{item.question}</span>
+              <span class="toggle" aria-hidden="true" />
+            </summary>
+            <div class="answer">
+              <p>{item.answerText}</p>
+              {item.placeholderDetail && (
+                <span class="ph">{item.placeholderDetail}</span>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import { ROADMAP_MILESTONES, ROADMAP_STATUS } from '../data/roadmap';
+---
+
+<section class="section grid-lines-x" id="roadmap" aria-labelledby="roadmap-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="idx">03 — Roadmap</span>
+      <span class="label">Event Flow · Milestones</span>
+    </div>
+
+    <h2 class="h2 reveal" id="roadmap-title" style="margin-bottom:clamp(3rem,7vw,6rem)">
+      The <span class="outline-text">path</span><br />from spark to ship.
+    </h2>
+
+    <div class="roadmap" id="roadmapBlock">
+      <ol class="timeline">
+        <span class="timeline-progress" aria-hidden="true"></span>
+
+        {ROADMAP_MILESTONES.map((m, idx) => (
+          <li class={`milestone ${m.isActive ? 'active' : ''} reveal`} style={`--d:${idx * 0.1}s`}>
+            <div class="node">{m.number}</div>
+            <span class="phase">{m.phase}</span>
+            <h3>{m.title}</h3>
+            <p>{m.description}</p>
+            <span class="date">{m.isPlaceholderDate ? <span class="ph">{m.date}</span> : m.date}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="roadmap-note">
+      <p class="body reveal" style="margin:0">
+        {ROADMAP_STATUS.note}
+      </p>
+      <p class="label reveal" style="margin:0;justify-self:end;text-align:right">
+        Timeline Status · <span class="ph">{ROADMAP_STATUS.statusText}</span>
+      </p>
+    </div>
+
+    <div class="reveal" style="margin-top:2.5rem;display:flex;justify-content:flex-end">
+      <a href="/roadmap/" class="btn btn-ghost">
+        View Complete Event Timeline &amp; Checkpoints <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>

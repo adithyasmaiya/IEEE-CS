@@ -1,0 +1,166 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROADMAP_MILESTONES, ROADMAP_STATUS } from '../data/roadmap';
+import { EVENT_CONFIG } from '../data/event';
+
+const pageTitle = `Event Roadmap & Timeline · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
+const pageDescription = `The complete milestone roadmap for CONFLUENCE 2026. Track registration opening, problem statement briefing, hacking window checkpoints, submission deadline, and demos.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Page Header -->
+  <section class="section grid-lines" style="padding-top:8.5rem;padding-bottom:clamp(3rem,6vw,5rem)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="idx">03 — Schedule</span>
+        <span class="label">Event Timeline · Operational Flow</span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap">
+        <div>
+          <span class="label label-ink" style="display:block;margin-bottom:1rem">
+            Flagship Hackathon Edition {EVENT_CONFIG.edition}
+          </span>
+          <h1 class="h2 reveal" style="margin:0;line-height:.86">
+            Event<br />
+            <span class="outline-text">Roadmap</span>
+          </h1>
+        </div>
+        <div style="max-width:44ch">
+          <p class="lede reveal" style="--d:.1s;margin:0 0 1rem">
+            Five sequential phases from registration through technical evaluation and final awards ceremony.
+          </p>
+          <div style="border-left:2px solid var(--acid);padding-left:1rem">
+            <span class="label" style="display:block;color:var(--acid);margin-bottom:.2rem">Status</span>
+            <span class="ph" style="font-size:.85rem">
+              {ROADMAP_STATUS.statusText}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal / Responsive Timeline Grid -->
+  <section class="section grid-lines-x" aria-labelledby="timeline-overview">
+    <div class="wrap">
+      <h2 class="h2 reveal" id="timeline-overview" style="font-size:clamp(2rem,4vw,3.2rem);margin-bottom:clamp(2rem,5vw,4rem)">
+        Event Flow &amp; Milestones
+      </h2>
+
+      <div class="roadmap in" id="roadmapBlock">
+        <ol class="timeline">
+          <span class="timeline-progress" style="width:100%" aria-hidden="true"></span>
+
+          {ROADMAP_MILESTONES.map((m, idx) => (
+            <li class="milestone reveal" style={`--d:${idx * 0.1}s`}>
+              <div class="node">{m.number}</div>
+              <span class="phase">{m.phase}</span>
+              <h3>{m.title}</h3>
+              <p>{m.description}</p>
+              <span class="date">
+                {m.isPlaceholderDate ? <span class="ph">{m.date}</span> : m.date}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="roadmap-note" style="margin-top:4rem">
+        <p class="body reveal" style="margin:0">
+          {ROADMAP_STATUS.note}
+        </p>
+        <p class="label reveal" style="margin:0;justify-self:end;text-align:right">
+          Schedule Authority · {EVENT_CONFIG.organizer} PESU
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Phase Cards -->
+  <section class="section" aria-labelledby="phase-details-heading">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="idx">04 — Phase Details</span>
+        <span class="label">Deliverables &amp; Checkpoints</span>
+      </div>
+
+      <h2 class="h2 reveal" id="phase-details-heading" style="font-size:clamp(1.8rem,3.2vw,2.5rem);margin-bottom:2.5rem">
+        Milestone Breakdown &amp; Checkpoints
+      </h2>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:2rem">
+        {ROADMAP_MILESTONES.map((m) => (
+          <div
+            style="border:1px solid var(--line);background:var(--bg-2);padding:2rem;display:flex;flex-direction:column;justify-content:space-between"
+            class="reveal"
+          >
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:1px solid var(--line);padding-bottom:.8rem">
+                <span class="idx">{m.number}</span>
+                <span class="label">{m.phase}</span>
+              </div>
+              <h3 style="font-size:1.4rem;font-weight:700;margin:0 0 .6rem">
+                {m.title}
+              </h3>
+              <p class="body" style="font-size:.92rem;margin:0 0 1.2rem">
+                {m.description}
+              </p>
+
+              {m.deliverables && (
+                <div style="margin-bottom:1.5rem">
+                  <span class="label" style="display:block;margin-bottom:.5rem;color:var(--ink)">
+                    Key Milestones &amp; Deliverables
+                  </span>
+                  <ul style="margin:0;padding-left:1.2rem;display:grid;gap:.4rem;font-size:.88rem;color:var(--muted)">
+                    {m.deliverables.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div style="border-top:1px dashed var(--line-strong);padding-top:1rem;margin-top:1rem;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem">
+              <span class="label">Date</span>
+              <span class="ph" style="font-size:.85rem">{m.date}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Submission Integrity & Guidelines Note -->
+  <section class="section grid-lines-x" aria-labelledby="integrity-heading">
+    <div class="wrap">
+      <div style="border:1px solid var(--line);padding:2.5rem;background:var(--bg);display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:center">
+        <div>
+          <span class="idx" style="display:block;margin-bottom:.5rem">Commit Integrity</span>
+          <h2 id="integrity-heading" style="font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;margin:0 0 .8rem">
+            Rigorous Submission Verification
+          </h2>
+          <p class="body" style="margin:0">
+            All code evaluated at Confluence must be authored during the active hacking window. Repositories are timestamp-audited, and external pre-existing libraries must be publicly cited in project documentation.
+          </p>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:flex-end">
+          <a href="/faqs/" class="btn btn-ghost">
+            Read Rules &amp; FAQs ↗
+          </a>
+          <a href={EVENT_CONFIG.registration.url} class="btn btn-primary">
+            {EVENT_CONFIG.registration.buttonText} <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @media (max-width: 860px) {
+    section > div > div:nth-child(2) {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

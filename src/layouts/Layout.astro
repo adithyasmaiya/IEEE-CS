@@ -1,23 +1,169 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '../styles/global.css';
+import BaseHead from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string | URL;
+}
+
+const { title, description, image, canonicalURL } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      canonicalURL={canonicalURL}
+    />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const fine = window.matchMedia('(pointer: fine)').matches;
+
+        // Current Year
+        const y = document.getElementById('year');
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        // Nav scrolled state
+        const nav = document.querySelector('.nav');
+        if (nav) {
+          const onScroll = () => {
+            nav.classList.toggle('scrolled', window.scrollY > 24);
+          };
+          onScroll();
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+
+        // Accessible Mobile Menu Drawer
+        const menuBtn = document.getElementById('menuBtn');
+        const menu = document.getElementById('mobileMenu');
+        if (menuBtn && menu) {
+          const setMenu = (open: boolean) => {
+            root.classList.toggle('menu-open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+            menuBtn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+            menu.setAttribute('aria-hidden', String(!open));
+            document.body.style.overflow = open ? 'hidden' : '';
+          };
+
+          menuBtn.addEventListener('click', () => {
+            const isOpen = root.classList.contains('menu-open');
+            setMenu(!isOpen);
+          });
+
+          menu.querySelectorAll('[data-close]').forEach((el) => {
+            el.addEventListener('click', () => setMenu(false));
+          });
+
+          window.addEventListener('keydown', (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && root.classList.contains('menu-open')) {
+              setMenu(false);
+              menuBtn.focus();
+            }
+          });
+
+          window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
+            if (e.matches && root.classList.contains('menu-open')) {
+              setMenu(false);
+            }
+          });
+        }
+
+        // Scroll Reveal Animations
+        const revealEls = document.querySelectorAll('.reveal, .reveal-mask');
+        if (reduce || !('IntersectionObserver' in window)) {
+          revealEls.forEach((el) => el.classList.add('in'));
+        } else {
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('in');
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -4% 0px' }
+          );
+          revealEls.forEach((el) => io.observe(el));
+        }
+
+        // Roadmap Progress Animation
+        const roadmap = document.getElementById('roadmapBlock');
+        if (roadmap) {
+          if (reduce || !('IntersectionObserver' in window)) {
+            roadmap.classList.add('in');
+          } else {
+            const rio = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    roadmap.classList.add('in');
+                    rio.disconnect();
+                  }
+                });
+              },
+              { threshold: 0.25 }
+            );
+            rio.observe(roadmap);
+          }
+        }
+
+        // Desktop Pointer Parallax for Hero Vector Art
+        const heroArt = document.getElementById('heroArt');
+        const hero = document.getElementById('hero');
+        if (heroArt && hero && !reduce && fine) {
+          let tx = 0;
+          let ty = 0;
+          let cx = 0;
+          let cy = 0;
+          let rafId: number | null = null;
+
+          const tick = () => {
+            cx += (tx - cx) * 0.06;
+            cy += (ty - cy) * 0.06;
+            heroArt.style.setProperty('--px', cx.toFixed(4));
+            heroArt.style.setProperty('--py', cy.toFixed(4));
+            if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
+              rafId = requestAnimationFrame(tick);
+            } else {
+              rafId = null;
+            }
+          };
+
+          hero.addEventListener('pointermove', (e: PointerEvent) => {
+            const r = hero.getBoundingClientRect();
+            tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+            ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+            if (!rafId) rafId = requestAnimationFrame(tick);
+          });
+
+          hero.addEventListener('pointerleave', () => {
+            tx = 0;
+            ty = 0;
+            if (!rafId) rafId = requestAnimationFrame(tick);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

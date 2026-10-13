@@ -1,0 +1,78 @@
+---
+import { EVENT_CONFIG } from '../data/event';
+import { NAV_ITEMS } from '../data/navigation';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="wordmark">
+        {EVENT_CONFIG.name}<sup>/{EVENT_CONFIG.edition.slice(-2)}</sup>
+      </a>
+      <p>
+        The flagship hackathon of {EVENT_CONFIG.organizer}, {EVENT_CONFIG.university}, {EVENT_CONFIG.city}.
+      </p>
+    </div>
+
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        {NAV_ITEMS.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+        <li>
+          <a href={EVENT_CONFIG.registration.url}>Register</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>
+          <a href={`mailto:${EVENT_CONFIG.contact.email}`}>
+            <span class="ph">{EVENT_CONFIG.contact.email}</span>
+          </a>
+        </li>
+        <li>
+          <span class="ph">{EVENT_CONFIG.contact.phone}</span>
+        </li>
+        <li>
+          <span class="ph">{EVENT_CONFIG.contact.address}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Social</h4>
+      <ul>
+        {EVENT_CONFIG.socialLinks.map((s) => (
+          <li>
+            <a
+              href={s.url}
+              target={s.url.startsWith('http') ? '_blank' : undefined}
+              rel={s.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+            >
+              {s.platform} {s.isPlaceholder && <span class="ph">{s.handleOrText}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <p class="footer-giant" aria-hidden="true">{EVENT_CONFIG.name}</p>
+
+  <div class="footer-bottom">
+    <span class="label">
+      © <span id="year">{currentYear}</span> {EVENT_CONFIG.organizer} · {EVENT_CONFIG.university}. All rights reserved.
+    </span>
+    <span class="label">
+      IEEE CS PESU · {EVENT_CONFIG.city} · <a href="#top" style="color:var(--acid)">Back to top ↑</a>
+    </span>
+  </div>
+</footer>
