@@ -44,10 +44,10 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
   <!-- Visual Feature & Hackathon Atmosphere Showcase -->
   <section class="section" style="padding-top:0;padding-bottom:clamp(3rem, 5vw, 4.5rem)" aria-label="Hackathon Showcase">
     <div class="wrap">
-      <div class="reveal" style="position:relative;border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
-        <!-- Full-Width Cinematic Hackathon Banner with Enlarged Height -->
-        <div class="showcase-cinematic-banner" style="position:relative;width:100%;min-width:100%;height:clamp(560px, 62vw, 780px);overflow:hidden;background:var(--bg);border-bottom:1px solid var(--line);display:block">
-          <picture class="showcase-pic" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <div class="reveal showcase-split-box">
+        <!-- Left Side: Enlarged Visual Photo Banner -->
+        <div class="showcase-visual-side">
+          <picture class="showcase-pic">
             <source srcset="/images/hackathon-collab.webp" type="image/webp" />
             <img
               src="/images/hackathon-collab.jpg"
@@ -55,134 +55,124 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               class="showcase-img"
               loading="eager"
               decoding="async"
-              style="width:100%;min-width:100%;max-width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;filter:contrast(1.05) brightness(0.92)"
               width="1376"
               height="768"
             />
           </picture>
           <div class="showcase-overlay" aria-hidden="true"></div>
           
-          <div class="showcase-top-bar">
-            <div class="top-bar-left">
-              <span class="label glass-badge">
-                {EVENT_CONFIG.university} RR Campus
-              </span>
-              <span class="label glass-badge acid-badge">
-                ● In-Person 36h Prototyping Sprint
-              </span>
-            </div>
-            <div class="top-bar-right">
-              <span class="idx glass-badge edition-badge">
-                COHORT 2026 // ADMISSIONS LIVE
-              </span>
+          <div class="showcase-top-badges">
+            <span class="label label-ink" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);border:1px solid var(--line)">
+              {EVENT_CONFIG.university} RR Campus
+            </span>
+            <span class="label" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);color:var(--acid);border:1px solid var(--acid)">
+              ● In-Person 36h Sprint
+            </span>
+          </div>
+
+          <div class="showcase-bottom-left">
+            <p class="label" style="margin:0 0 .35rem;color:var(--muted)">Hackathon Atmosphere</p>
+            <h3 style="font-family:var(--display);font-size:clamp(1.35rem, 2.2vw, 1.95rem);font-weight:700;margin:0;color:var(--ink);line-height:1.15">
+              Where Code Meets Hardware &amp; Craft
+            </h3>
+          </div>
+        </div>
+
+        <!-- Right Side: The 4 Columns Arranged One by One Below -->
+        <div class="showcase-metrics-side" aria-label="Key Event Metrics">
+          <!-- Item 1: Sprint Duration -->
+          <div class="metric-row">
+            <span class="metric-label">SPRINT DURATION</span>
+            <div class="metric-val">36 Hours</div>
+            <span class="metric-sub">Continuous On-Site</span>
+          </div>
+
+          <!-- Item 2: Prize Pool -->
+          <div class="metric-row">
+            <span class="metric-label">PRIZE POOL</span>
+            <div class="metric-val metric-val-acid">₹1,50,000+</div>
+            <span class="metric-sub">Cash &amp; Incubation</span>
+          </div>
+
+          <!-- Item 3: Team Capacity -->
+          <div class="metric-row">
+            <span class="metric-label">TEAM CAPACITY</span>
+            <div class="metric-val">2–4 Builders</div>
+            <span class="metric-sub">Cross-Disciplinary</span>
+          </div>
+
+          <!-- Item 4: Registration Fee -->
+          <div class="metric-row">
+            <span class="metric-label">REGISTRATION FEE</span>
+            <div class="metric-val">100% Free</div>
+            <span class="metric-sub">Meals &amp; Kits Included</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- On-Site Provisions & Experience Panel Cleanly Below Banner -->
+      <div class="reveal showcase-provisions-panel" aria-label="Hackathon Provisions & Experience" style="margin-top:2.5rem">
+        <div class="provisions-header-row">
+          <div>
+            <span class="idx">02 // ON-SITE PROVISIONS &amp; INFRASTRUCTURE</span>
+            <h4 class="provisions-title">
+              What Happens On-Site
+            </h4>
+          </div>
+          <div class="provisions-lede-wrap">
+            <span class="label" style="display:inline-block;margin-bottom:.4rem;color:var(--acid);font-weight:700">36H CONTINUOUS SPRINT</span>
+            <p class="provisions-lede">
+              Confluence is built for high-velocity hardware and systems engineering. From your first commit to the grand auditorium demo, every participant receives complete infrastructure:
+            </p>
+          </div>
+        </div>
+
+        <div class="showcase-features-grid">
+          <div class="feature-item">
+            <span class="feature-num">[ 01 ]</span>
+            <div class="feature-content">
+              <span class="feature-title">Hardware &amp; IoT Testbenches</span>
+              <p class="feature-desc">Oscilloscopes, STM32 &amp; ESP32-S3 boards, soldering stations, sensors, and dedicated lab power supplies.</p>
             </div>
           </div>
 
-          <div class="showcase-banner-footer">
-            <div class="showcase-banner-title-block">
-              <span class="idx" style="color:var(--acid);margin-bottom:.45rem;display:inline-block">01 // HACKATHON ATMOSPHERE</span>
-              <h3 class="banner-title">
-                Where Code Meets Hardware &amp; Craft
-              </h3>
-              <p class="banner-sub">
-                120+ shortlisted teams converging to prototype autonomous systems, edge AI, and distributed software on-site at PES University.
-              </p>
+          <div class="feature-item">
+            <span class="feature-num">[ 02 ]</span>
+            <div class="feature-content">
+              <span class="feature-title">Round-the-Clock Mentorship</span>
+              <p class="feature-desc">Continuous technical unblocking with domain mentors across AI, distributed systems, and low-level hardware.</p>
             </div>
-            <div class="coords-box">
-              <span class="coords-label">CAMPUS TELEMETRY</span>
-              <span class="coords">{EVENT_CONFIG.coordinates}</span>
+          </div>
+
+          <div class="feature-item">
+            <span class="feature-num">[ 03 ]</span>
+            <div class="feature-content">
+              <span class="feature-title">24/7 Hacker Sustenance</span>
+              <p class="feature-desc">Continuous hot catered meals, midnight caffeine drops, cold brews, snacks, and designated quiet recharge pods.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <span class="feature-num">[ 04 ]</span>
+            <div class="feature-content">
+              <span class="feature-title">Auditorium Stage Showcase</span>
+              <p class="feature-desc">Finalist teams pitch live working prototypes in the main auditorium before venture partners and industry judges.</p>
             </div>
           </div>
         </div>
 
-        <!-- On-Site Provisions & Experience Panel Cleanly Below Banner -->
-        <div class="showcase-provisions-panel" aria-label="Hackathon Provisions & Experience">
-          <div class="provisions-header-row">
-            <div>
-              <span class="idx">02 // ON-SITE PROVISIONS &amp; INFRASTRUCTURE</span>
-              <h4 class="provisions-title">
-                What Happens On-Site
-              </h4>
-            </div>
-            <div class="provisions-lede-wrap">
-              <span class="label" style="display:inline-block;margin-bottom:.4rem;color:var(--acid);font-weight:700">36H CONTINUOUS SPRINT</span>
-              <p class="provisions-lede">
-                Confluence is built for high-velocity hardware and systems engineering. From your first commit to the grand auditorium demo, every participant receives complete infrastructure:
-              </p>
-            </div>
+        <div class="showcase-info-foot">
+          <div class="foot-badge">
+            <span class="dot">●</span> 120+ Teams Shortlisted
           </div>
-
-          <div class="showcase-features-grid">
-            <div class="feature-item">
-              <span class="feature-num">[ 01 ]</span>
-              <div class="feature-content">
-                <span class="feature-title">Hardware &amp; IoT Testbenches</span>
-                <p class="feature-desc">Oscilloscopes, STM32 &amp; ESP32-S3 boards, soldering stations, sensors, and dedicated lab power supplies.</p>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <span class="feature-num">[ 02 ]</span>
-              <div class="feature-content">
-                <span class="feature-title">Round-the-Clock Mentorship</span>
-                <p class="feature-desc">Continuous technical unblocking with domain mentors across AI, distributed systems, and low-level hardware.</p>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <span class="feature-num">[ 03 ]</span>
-              <div class="feature-content">
-                <span class="feature-title">24/7 Hacker Sustenance</span>
-                <p class="feature-desc">Continuous hot catered meals, midnight caffeine drops, cold brews, snacks, and designated quiet recharge pods.</p>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <span class="feature-num">[ 04 ]</span>
-              <div class="feature-content">
-                <span class="feature-title">Auditorium Stage Showcase</span>
-                <p class="feature-desc">Finalist teams pitch live working prototypes in the main auditorium before venture partners and industry judges.</p>
-              </div>
-            </div>
+          <div class="foot-badge">
+            <span class="dot">●</span> ₹1,50,000+ Prize Pool
           </div>
-
-          <div class="showcase-info-foot">
-            <div class="foot-badge">
-              <span class="dot">●</span> 120+ Teams Shortlisted
-            </div>
-            <div class="foot-badge">
-              <span class="dot">●</span> ₹1,50,000+ Prize Pool
-            </div>
-            <div class="foot-badge">
-              <span class="dot">●</span> 100% Free Entry
-            </div>
-            <div class="foot-badge">
-              <span class="dot">●</span> Hardware Kits &amp; Cloud Credits
-            </div>
+          <div class="foot-badge">
+            <span class="dot">●</span> 100% Free Entry
           </div>
-        </div>
-
-        <!-- Key Metrics Strip -->
-        <div class="reg-metrics-grid">
-          <div class="reg-metric-item">
-            <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Sprint Duration</span>
-            <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">36 Hours</span>
-            <span class="coords" style="display:block;margin-top:.2rem">Continuous On-Site</span>
-          </div>
-          <div class="reg-metric-item">
-            <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Prize Pool</span>
-            <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--acid)">₹1,50,000+</span>
-            <span class="coords" style="display:block;margin-top:.2rem">Cash &amp; Incubation</span>
-          </div>
-          <div class="reg-metric-item">
-            <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Team Capacity</span>
-            <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">2–4 Builders</span>
-            <span class="coords" style="display:block;margin-top:.2rem">Cross-Disciplinary</span>
-          </div>
-          <div class="reg-metric-item">
-            <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Registration Fee</span>
-            <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">100% Free</span>
-            <span class="coords" style="display:block;margin-top:.2rem">Meals &amp; Kits Included</span>
+          <div class="foot-badge">
+            <span class="dot">●</span> Hardware Kits &amp; Cloud Credits
           </div>
         </div>
       </div>
@@ -515,146 +505,148 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
     }
   </script>
   <style>
-    /* Full-Width Cinematic Banner - Enlarged Length & Prominent Height */
-    .showcase-cinematic-banner {
-      position: relative;
-      width: 100% !important;
-      min-width: 100% !important;
-      max-width: 100% !important;
-      height: clamp(560px, 62vw, 780px);
+    /* Split Showcase: Picture on Left, 4 Metrics Stacked One by One Below on Right */
+    .showcase-split-box {
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.92fr);
+      min-height: 540px;
+      border: 1px solid var(--line);
+      background: var(--bg-2);
       overflow: hidden;
+    }
+
+    .showcase-visual-side {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border-right: 1px solid var(--line);
       background: var(--bg);
-      border-bottom: 1px solid var(--line);
-      display: block;
     }
 
     .showcase-pic {
       position: absolute;
       inset: 0;
-      width: 100% !important;
-      height: 100% !important;
-      display: block !important;
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .showcase-img {
-      width: 100% !important;
-      min-width: 100% !important;
-      max-width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       object-position: center 38%;
-      display: block !important;
+      display: block;
       filter: contrast(1.05) brightness(0.92);
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .showcase-cinematic-banner:hover .showcase-img {
+    .showcase-visual-side:hover .showcase-img {
       transform: scale(1.02);
     }
 
     .showcase-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(10,10,10,0.65) 0%, rgba(10,10,10,0) 24%),
-                  linear-gradient(0deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.72) 28%, rgba(10,10,10,0.18) 55%, transparent 100%);
+      background: linear-gradient(180deg, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0) 28%),
+                  linear-gradient(0deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.5) 40%, transparent 100%);
       pointer-events: none;
     }
 
-    .showcase-top-bar {
+    .showcase-top-badges {
       position: absolute;
-      top: 1.8rem;
-      left: 1.8rem;
-      right: 1.8rem;
+      top: 1.5rem;
+      left: 1.5rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
       z-index: 2;
     }
 
-    .top-bar-left {
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .glass-badge {
-      background: rgba(10, 10, 10, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--line-strong);
-      padding: 0.4rem 0.85rem;
-      color: var(--ink);
-    }
-
-    .acid-badge {
-      color: var(--acid);
-      border-color: rgba(200, 255, 46, 0.4);
-    }
-
-    .edition-badge {
-      color: var(--ink);
-      font-size: 0.72rem;
-      letter-spacing: 0.05em;
-    }
-
-    .showcase-banner-footer {
+    .showcase-bottom-left {
       position: absolute;
-      bottom: 2rem;
-      left: 2rem;
-      right: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 1.6rem;
+      bottom: clamp(1.4rem, 2.5vw, 2rem);
+      left: clamp(1.4rem, 2.5vw, 2rem);
+      right: clamp(1.4rem, 2.5vw, 2rem);
       z-index: 2;
     }
 
-    .showcase-banner-title-block {
-      max-width: 65ch;
+    /* 4 Metrics Arranged One by One Below on the Right */
+    .showcase-metrics-side {
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      background: var(--bg-2);
     }
 
-    .banner-title {
-      font-family: var(--display);
-      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
-      font-weight: 700;
-      margin: 0 0 0.5rem;
-      color: var(--ink);
-      line-height: 1.08;
-      letter-spacing: -0.025em;
-    }
-
-    .banner-sub {
-      font-size: clamp(0.88rem, 1.2vw, 1rem);
-      color: #DDD9CF;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    .coords-box {
-      background: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--line-strong);
-      padding: 0.65rem 1.1rem;
+    .metric-row {
+      padding: clamp(1.3rem, 1.8vw, 1.75rem) clamp(1.6rem, 2.4vw, 2.4rem);
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
-      align-items: flex-start;
+      justify-content: center;
+      gap: 0.3rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-2);
+      transition: background 0.25s ease, padding-left 0.25s ease;
+      position: relative;
     }
 
-    .coords-label {
+    .metric-row:last-child {
+      border-bottom: 0;
+    }
+
+    .metric-row::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--acid);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .metric-row:hover {
+      background: rgba(200, 255, 46, 0.035);
+      padding-left: clamp(1.9rem, 2.7vw, 2.7rem);
+    }
+
+    .metric-row:hover::before {
+      opacity: 1;
+    }
+
+    .metric-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
       letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
     }
 
-    /* On-Site Provisions & Experience Panel Cleanly Below Banner */
+    .metric-val {
+      font-family: var(--display);
+      font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-val-acid {
+      color: var(--acid);
+    }
+
+    .metric-sub {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* On-Site Provisions & Experience Panel Positioned Cleanly Below */
     .showcase-provisions-panel {
+      border: 1px solid var(--line);
       background: var(--bg-2);
       padding: clamp(2rem, 3.5vw, 3.2rem);
       display: flex;
@@ -764,18 +756,6 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       color: var(--acid);
     }
 
-    .reg-metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
-      background: var(--bg);
-    }
-
-    .reg-metric-item {
-      padding: 1.5rem 2rem;
-      border-right: 1px solid var(--line);
-    }
-
     .reg-form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -788,73 +768,52 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       }
     }
 
-    @media (max-width: 860px) {
-      .showcase-cinematic-banner {
-        height: 440px;
+    @media (max-width: 768px) {
+      .showcase-split-box {
+        grid-template-columns: 1fr;
+        min-height: auto;
       }
-      .showcase-banner-footer {
-        bottom: 1.4rem;
-        left: 1.4rem;
-        right: 1.4rem;
-      }
-      .reg-metrics-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .reg-metric-item:nth-child(2) {
+
+      .showcase-visual-side {
+        min-height: 320px;
         border-right: 0;
-      }
-      .reg-metric-item:nth-child(-n+2) {
         border-bottom: 1px solid var(--line);
       }
+
+      .showcase-metrics-side {
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .metric-row {
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--line) !important;
+        padding: 1.3rem 1.6rem;
+      }
+
+      .metric-row:last-child {
+        border-bottom: 0 !important;
+      }
+
       .reg-form-grid {
         grid-template-columns: 1fr;
         gap: 1.2rem;
       }
-      .reg-metric-item {
-        padding: 1.2rem 1.4rem;
-      }
     }
 
     @media (max-width: 600px) {
+      .showcase-visual-side {
+        min-height: 260px;
+      }
+
       .showcase-features-grid {
         grid-template-columns: 1fr;
       }
-      .showcase-cinematic-banner {
-        height: 360px;
-      }
-      .showcase-top-bar {
-        top: 1.2rem;
-        left: 1.2rem;
-        right: 1.2rem;
-      }
-      .showcase-banner-footer {
-        bottom: 1.2rem;
-        left: 1.2rem;
-        right: 1.2rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-      }
+
       .showcase-info-foot {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.6rem;
-      }
-      .reg-metrics-grid {
-        grid-template-columns: 1fr;
-      }
-      .reg-metric-item {
-        border-right: 0 !important;
-        border-bottom: 1px solid var(--line);
-      }
-      .reg-metric-item:last-child {
-        border-bottom: 0;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .reg-metric-item {
-        padding: 0.85rem 1rem;
       }
     }
   </style>
