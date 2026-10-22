@@ -1,0 +1,174 @@
+---
+// Loader.astro — Initial Preloader & Page Route Transition Loader
+---
+
+<!-- Top Route Progress Bar (triggers on URL navigation) -->
+<div id="routeProgressBar" class="route-loader-bar" aria-hidden="true"></div>
+
+<!-- Route Transition Veil (subtle dark backdrop with indicator when switching pages) -->
+<div id="routeLoaderVeil" class="route-loader-veil" aria-hidden="true">
+  <div class="route-loader-badge">
+    <span class="route-loader-spinner" aria-hidden="true"></span>
+    <span id="routeLoaderLabel">Loading Confluence...</span>
+  </div>
+</div>
+
+<!-- Initial Fullscreen Site Preloader -->
+<aside id="sitePreloader" class="site-preloader" aria-label="Loading Confluence 2026">
+  <div class="preloader-header">
+    <div style="display:flex;align-items:center;gap:.75rem">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 8px var(--acid)"></span>
+      <span style="color:var(--ink);font-weight:600">CONFLUENCE // 2026</span>
+    </div>
+    <span>IEEE CS · PES UNIVERSITY</span>
+  </div>
+
+  <div class="preloader-core">
+    <div class="preloader-percent" id="preloaderNum">00<span>%</span></div>
+    <div class="preloader-bar-wrap" aria-hidden="true">
+      <div class="preloader-bar-fill" id="preloaderBar"></div>
+    </div>
+    <div class="preloader-status" id="preloaderStatus">INITIALIZING CONVERGENCE MESH...</div>
+  </div>
+
+  <div class="preloader-footer">
+    <span>BENGALURU // 12.9716° N, 77.5946° E</span>
+    <span>36H SPRINT · ADMISSIONS OPEN</span>
+  </div>
+</aside>
+
+<script>
+  (() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const preloader = document.getElementById('sitePreloader');
+    const preloaderNum = document.getElementById('preloaderNum');
+    const preloaderBar = document.getElementById('preloaderBar');
+    const preloaderStatus = document.getElementById('preloaderStatus');
+    const progressBar = document.getElementById('routeProgressBar');
+    const routeVeil = document.getElementById('routeLoaderVeil');
+    const routeLabel = document.getElementById('routeLoaderLabel');
+
+    // 1. INITIAL SITE PRELOADER SEQUENCE
+    const dismissPreloader = () => {
+      if (!preloader || preloader.classList.contains('dismissed')) return;
+      preloader.classList.add('dismissed');
+      document.documentElement.classList.add('loaded');
+      
+      // Trigger hero entrance after preloader curtain slides away
+      const hero = document.getElementById('hero');
+      if (hero && !hero.classList.contains('hero-entered')) {
+        setTimeout(() => hero.classList.add('hero-entered'), 200);
+      }
+    };
+
+    if (reduce) {
+      dismissPreloader();
+    } else if (preloader && preloaderNum && preloaderBar && preloaderStatus) {
+      // Check if user has already seen the preloader in this session
+      const hasLoadedBefore = sessionStorage.getItem('confluence_preloader_seen');
+
+      if (hasLoadedBefore) {
+        // Fast instant dismiss on subsequent internal pages in the same session
+        preloader.style.display = 'none';
+        dismissPreloader();
+      } else {
+        sessionStorage.setItem('confluence_preloader_seen', 'true');
+        let current = 0;
+        const target = 100;
+        const statusSteps = [
+          { at: 0, text: 'INITIALIZING CONVERGENCE MESH...' },
+          { at: 28, text: 'LOADING TRACK BRIEFS & LAB TELEMETRY...' },
+          { at: 62, text: 'SYNCING PES UNIVERSITY NODE...' },
+          { at: 92, text: 'CORE SYNCHRONIZED · READY.' }
+        ];
+
+        const timer = setInterval(() => {
+          // Non-linear realistic progress increments
+          const increment = Math.floor(Math.random() * 9) + 4;
+          current = Math.min(target, current + increment);
+
+          preloaderNum.innerHTML = `${current < 10 ? '0' + current : current}<span>%</span>`;
+          preloaderBar.style.width = `${current}%`;
+
+          for (const s of statusSteps) {
+            if (current >= s.at) {
+              preloaderStatus.textContent = s.text;
+            }
+          }
+
+          if (current >= target) {
+            clearInterval(timer);
+            setTimeout(dismissPreloader, 280);
+          }
+        }, 38);
+
+        // Fail-safe dismissal in case of background tab throttling
+        setTimeout(dismissPreloader, 2200);
+      }
+    } else {
+      dismissPreloader();
+    }
+
+    // 2. PAGE ROUTE NAVIGATION LOADING INTERFACE
+    // Intercept internal link clicks to display smooth loading progress
+    const handleRouteTransition = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement)?.closest('a');
+      if (!link) return;
+
+      const href = link.getAttribute('href');
+      const target = link.getAttribute('target');
+
+      // Ignore external links, mailto, tel, downloads, or target="_blank"
+      if (!href || target === '_blank' || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
+        return;
+      }
+
+      // Ignore pure anchor links on the same page (e.g. #apply-form, #top)
+      if (href.startsWith('#')) return;
+
+      // Check if link is to another page on the same origin
+      try {
+        const destUrl = new URL(href, window.location.href);
+        if (destUrl.origin !== window.location.origin) return;
+
+        // If clicking link to the current exact page + hash, don't show full page loader
+        if (destUrl.pathname === window.location.pathname && destUrl.hash) return;
+
+        // Customize label based on destination
+        let label = 'Loading Confluence...';
+        if (destUrl.pathname.includes('about')) label = 'Loading Manifesto & About...';
+        else if (destUrl.pathname.includes('themes')) label = 'Loading Problem Tracks...';
+        else if (destUrl.pathname.includes('roadmap')) label = 'Loading Event Roadmap...';
+        else if (destUrl.pathname.includes('faqs')) label = 'Loading FAQs & Rules...';
+        else if (destUrl.pathname.includes('register')) label = 'Opening Application Portal...';
+        else if (destUrl.pathname === '/' || destUrl.pathname === '') label = 'Returning to Main Stage...';
+
+        if (routeLabel) routeLabel.textContent = label;
+
+        // Activate top loading bar & veil
+        if (progressBar) {
+          progressBar.classList.remove('complete');
+          progressBar.classList.add('loading');
+        }
+        if (routeVeil) {
+          routeVeil.classList.add('active');
+        }
+      } catch (_) {}
+    };
+
+    document.addEventListener('click', handleRouteTransition, { passive: true });
+
+    // Reset loaders when restored from BFCache (Back/Forward) or on page show
+    window.addEventListener('pageshow', (e) => {
+      if (progressBar) {
+        progressBar.classList.add('complete');
+        setTimeout(() => {
+          progressBar.classList.remove('loading', 'complete');
+        }, 200);
+      }
+      if (routeVeil) {
+        routeVeil.classList.remove('active');
+      }
+    });
+  })();
+</script>

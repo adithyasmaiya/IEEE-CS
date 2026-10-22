@@ -3,6 +3,7 @@ import '../styles/global.css';
 import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Loader from '../components/Loader.astro';
 
 export interface Props {
   title?: string;
@@ -25,6 +26,7 @@ const { title, description, image, canonicalURL } = Astro.props;
     />
   </head>
   <body>
+    <Loader />
     <a href="#main-content" class="skip-to-content">Skip to content</a>
     <Nav />
     <main id="main-content" tabindex="-1">
