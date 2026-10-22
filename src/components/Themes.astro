@@ -29,7 +29,7 @@ import { THEMES_LIST, THEMES_NOTE } from '../data/themes';
           <span class="theme-num">{theme.number}</span>
           <div>
             <h3 class="theme-title">
-              {theme.title} <span class="ph" style="font-size:.3em;vertical-align:middle">[TBA]</span>
+              {theme.title} {theme.isPlaceholderTitle && <span class="ph" style="font-size:.3em;vertical-align:middle">[TBA]</span>}
             </h3>
           </div>
           <p class="theme-desc">
@@ -80,8 +80,8 @@ import { THEMES_LIST, THEMES_NOTE } from '../data/themes';
     </div>
 
     <div class="themes-note label">
-      <span>Official themes: <span class="ph">{THEMES_NOTE.officialStatus}</span></span>
-      <span>Each track: <span class="ph">{THEMES_NOTE.prizeStatus}</span></span>
+      <span>Official tracks: <span style="color:var(--acid);font-weight:600">{THEMES_NOTE.officialStatus}</span></span>
+      <span>Prize Pool: <span style="color:var(--ink);font-weight:600">{THEMES_NOTE.prizeStatus}</span></span>
     </div>
   </div>
 </section>

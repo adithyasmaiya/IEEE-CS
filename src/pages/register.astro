@@ -78,23 +78,23 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         </div>
 
         <!-- Key Metrics Strip -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));border-top:1px solid var(--line);background:var(--bg)">
-          <div style="padding:1.4rem 1.8rem;border-right:1px solid var(--line)">
+        <div class="reg-metrics-grid">
+          <div class="reg-metric-item">
             <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Sprint Duration</span>
             <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">36 Hours</span>
             <span class="coords" style="display:block;margin-top:.2rem">Continuous On-Site</span>
           </div>
-          <div style="padding:1.4rem 1.8rem;border-right:1px solid var(--line)">
+          <div class="reg-metric-item">
             <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Prize Pool</span>
             <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--acid)">₹1,50,000+</span>
             <span class="coords" style="display:block;margin-top:.2rem">Cash &amp; Incubation</span>
           </div>
-          <div style="padding:1.4rem 1.8rem;border-right:1px solid var(--line)">
+          <div class="reg-metric-item">
             <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Team Capacity</span>
             <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">2–4 Builders</span>
             <span class="coords" style="display:block;margin-top:.2rem">Cross-Disciplinary</span>
           </div>
-          <div style="padding:1.4rem 1.8rem">
+          <div class="reg-metric-item">
             <span class="label" style="display:block;margin-bottom:.3rem;color:var(--muted)">Registration Fee</span>
             <span style="font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink)">100% Free</span>
             <span class="coords" style="display:block;margin-top:.2rem">Meals &amp; Kits Included</span>
@@ -218,7 +218,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
           </p>
         </div>
 
-        <form id="teamRegForm" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));gap:1.8rem">
+        <form id="teamRegForm" class="reg-form-grid">
           <div>
             <label for="teamName" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
               Team Name *
@@ -428,4 +428,58 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       }
     }
   </script>
+  <style>
+    .reg-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .reg-metric-item {
+      padding: 1.4rem 1.8rem;
+      border-right: 1px solid var(--line);
+    }
+
+    .reg-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .reg-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .reg-metric-item:nth-child(2) {
+        border-right: 0;
+      }
+      .reg-metric-item:nth-child(-n+2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .reg-form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .reg-metric-item {
+        padding: 1rem 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .reg-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .reg-metric-item {
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--line);
+      }
+      .reg-metric-item:last-child {
+        border-bottom: 0;
+      }
+    }
+  </style>
 </Layout>
