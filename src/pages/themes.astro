@@ -33,7 +33,7 @@ const pageDescription = `Explore the problem spaces and tracks for ${EVENT_CONFI
             Four convergent domains designed to challenge builders across infrastructure, intelligence, physical interfaces, and open innovation.
           </p>
           <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--muted)">
-            Official Briefs: <span class="ph">{THEMES_NOTE.officialStatus}</span>
+            Official Briefs: <span style="color:var(--acid);font-weight:600">{THEMES_NOTE.officialStatus}</span>
           </div>
         </div>
       </div>
@@ -48,13 +48,18 @@ const pageDescription = `Explore the problem spaces and tracks for ${EVENT_CONFI
     <div class="wrap">
       <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
         <div style="position:relative;aspect-ratio:16/9;max-height:460px;overflow:hidden">
-          <img
-            src="/images/hardware-prototype.jpg"
-            alt="Custom embedded hardware prototype with microcontrollers, sensors and telemetry built at Confluence Hackathon"
-            style="width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:contrast(1.06) brightness(0.92)"
-            loading="lazy"
-            decoding="async"
-          />
+          <picture>
+            <source srcset="/images/hardware-prototype.webp" type="image/webp" />
+            <img
+              src="/images/hardware-prototype.jpg"
+              alt="Custom embedded hardware prototype with microcontrollers, sensors and telemetry built at Confluence Hackathon"
+              style="width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:contrast(1.06) brightness(0.92)"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="896"
+            />
+          </picture>
           <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.85) 100%)"></div>
           
           <div style="position:absolute;top:1.5rem;left:1.5rem">

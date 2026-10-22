@@ -1,5 +1,6 @@
 ---
 // Loader.astro — Initial Preloader & Page Route Transition Loader
+import { EVENT_CONFIG } from '../data/event';
 ---
 
 <!-- Top Route Progress Bar (triggers on URL navigation) -->
@@ -18,9 +19,9 @@
   <div class="preloader-header">
     <div style="display:flex;align-items:center;gap:.75rem">
       <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 8px var(--acid)"></span>
-      <span style="color:var(--ink);font-weight:600">CONFLUENCE // 2026</span>
+      <span style="color:var(--ink);font-weight:600">{EVENT_CONFIG.name} // {EVENT_CONFIG.edition}</span>
     </div>
-    <span>IEEE CS · PES UNIVERSITY</span>
+    <span>{EVENT_CONFIG.organizer.toUpperCase()} · {EVENT_CONFIG.university.toUpperCase()}</span>
   </div>
 
   <div class="preloader-core">
@@ -32,7 +33,7 @@
   </div>
 
   <div class="preloader-footer">
-    <span>BENGALURU // 12.9716° N, 77.5946° E</span>
+    <span>{EVENT_CONFIG.city.toUpperCase()} // {EVENT_CONFIG.coordinates}</span>
     <span>36H SPRINT · ADMISSIONS OPEN</span>
   </div>
 </aside>
@@ -112,6 +113,11 @@
     // 2. PAGE ROUTE NAVIGATION LOADING INTERFACE
     // Intercept internal link clicks to display smooth loading progress
     const handleRouteTransition = (e: MouseEvent) => {
+      // Ignore clicks with modifiers (Cmd/Ctrl, Shift, Alt) or non-primary mouse buttons
+      if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+        return;
+      }
+
       const link = (e.target as HTMLElement)?.closest('a');
       if (!link) return;
 
@@ -119,7 +125,14 @@
       const target = link.getAttribute('target');
 
       // Ignore external links, mailto, tel, downloads, or target="_blank"
-      if (!href || target === '_blank' || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
+      if (
+        !href ||
+        target === '_blank' ||
+        link.hasAttribute('download') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:') ||
+        href.startsWith('javascript:')
+      ) {
         return;
       }
 
@@ -159,7 +172,7 @@
     document.addEventListener('click', handleRouteTransition, { passive: true });
 
     // Reset loaders when restored from BFCache (Back/Forward) or on page show
-    window.addEventListener('pageshow', (e) => {
+    window.addEventListener('pageshow', () => {
       if (progressBar) {
         progressBar.classList.add('complete');
         setTimeout(() => {

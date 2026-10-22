@@ -1640,13 +1640,43 @@ footer {
   }
 
   .timeline {
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 3rem;
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    padding-left: 0;
   }
 
   .timeline::before,
   .timeline-progress {
     display: none;
+  }
+
+  .timeline li.milestone {
+    display: grid;
+    grid-template-columns: 45px 1fr;
+    column-gap: 1.2rem;
+    padding: 0 0 2.6rem;
+    position: relative;
+  }
+
+  .timeline li.milestone:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 52px;
+    bottom: 0;
+    width: 1px;
+    background: var(--line-strong);
+  }
+
+  .timeline li.milestone.active:not(:last-child)::after {
+    background: var(--acid);
+  }
+
+  .timeline li.milestone .node {
+    margin-bottom: 0;
+    grid-row: span 2;
+    position: relative;
+    z-index: 1;
   }
 
   .footer-grid {

@@ -31,8 +31,8 @@ const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.n
           <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
             Everything you need to know about team eligibility, registration prerequisites, problem track releases, and submission expectations.
           </p>
-          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--muted)">
-            Note: Placeholders marked with <span class="ph">[TBA]</span> will be updated upon official release.
+          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
+            Verified Rules &amp; Hackathon Participant Guidance
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@ const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.n
             Official rules, eligibility tiers, and challenge guidelines are confirmed through the {EVENT_CONFIG.organizer} PESU committee. For institutional inquiries, reach out through our contact desk.
           </p>
           <div class="label" style="color:var(--acid)">
-            Desk Email · <span class="ph">{EVENT_CONFIG.contact.email}</span>
+            Desk Email · <a href={`mailto:${EVENT_CONFIG.contact.email}`} style="color:var(--acid);text-decoration:none">{EVENT_CONFIG.contact.email}</a>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.n
             Confluence 2026 will be hosted in-person at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}. Room assignments, lab coordinates, and badge collection desks will be announced prior to hack day.
           </p>
           <div class="label" style="color:var(--acid)">
-            Campus · <span class="ph">{EVENT_CONFIG.eventDetails.venueText}</span>
+            Campus · <span style="color:var(--ink);font-weight:600">{EVENT_CONFIG.eventDetails.venueText}</span>
           </div>
         </div>
       </div>

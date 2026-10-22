@@ -42,16 +42,26 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </nav>
 
     <div style="display:flex;align-items:center;gap:.75rem">
-      {hasRegistrationUrl ? (
-        <a
-          href={registration.googleFormsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-primary nav-cta"
-          data-hover
-        >
-          {registration.buttonText} <span class="arrow">→</span>
-        </a>
+      {registration.isOpen ? (
+        hasRegistrationUrl ? (
+          <a
+            href={registration.googleFormsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary nav-cta"
+            data-hover
+          >
+            {registration.buttonText} <span class="arrow">→</span>
+          </a>
+        ) : (
+          <a
+            href="/register/"
+            class="btn btn-primary nav-cta"
+            data-hover
+          >
+            {registration.buttonText} <span class="arrow">→</span>
+          </a>
+        )
       ) : (
         <a
           href="/register/"
@@ -99,17 +109,28 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     })}
   </ul>
   <div>
-    {hasRegistrationUrl ? (
-      <a
-        href={registration.googleFormsUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn btn-primary"
-        data-close
-        style="width:100%;justify-content:space-between"
-      >
-        {registration.buttonText} <span class="arrow">→</span>
-      </a>
+    {registration.isOpen ? (
+      hasRegistrationUrl ? (
+        <a
+          href={registration.googleFormsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+          data-close
+          style="width:100%;justify-content:space-between"
+        >
+          {registration.buttonText} <span class="arrow">→</span>
+        </a>
+      ) : (
+        <a
+          href="/register/"
+          class="btn btn-primary"
+          data-close
+          style="width:100%;justify-content:space-between"
+        >
+          {registration.buttonText} <span class="arrow">→</span>
+        </a>
+      )
     ) : (
       <a
         href="/register/"

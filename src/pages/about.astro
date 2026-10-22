@@ -53,7 +53,7 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
         <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem)">
           <span class="label" style="display:block;margin-bottom:1rem">Host Chapter</span>
           <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.8rem);line-height:1;margin:0 0 1.2rem">
-            IEEE Computer Society
+            {EVENT_CONFIG.organizer}
           </h3>
           <p class="body" style="margin:0 0 1.2rem">
             The IEEE Computer Society Student Branch Chapter at PES University stands as a student-led community committed to technical rigour, practical engineering, and collaborative systems innovation.
@@ -80,13 +80,18 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
       <!-- Auditorium & Stage Demos Showcase -->
       <div class="reveal" style="margin-top:clamp(2.5rem, 5vw, 4rem);border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
         <div style="position:relative;aspect-ratio:16/9;max-height:480px;overflow:hidden">
-          <img
-            src="/images/stage-demos.jpg"
-            alt="Confluence Hackathon Grand Finale live prototype demonstrations before jury and audience at PES University auditorium"
-            style="width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:contrast(1.05) brightness(0.94)"
-            loading="lazy"
-            decoding="async"
-          />
+          <picture>
+            <source srcset="/images/stage-demos.webp" type="image/webp" />
+            <img
+              src="/images/stage-demos.jpg"
+              alt="Confluence Hackathon Grand Finale live prototype demonstrations before jury and audience at PES University auditorium"
+              style="width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:contrast(1.05) brightness(0.94)"
+              loading="lazy"
+              decoding="async"
+              width="1376"
+              height="768"
+            />
+          </picture>
           <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.85) 100%)"></div>
           
           <div style="position:absolute;top:1.5rem;left:1.5rem">

@@ -3,6 +3,10 @@ import { EVENT_CONFIG } from '../data/event';
 import { NAV_ITEMS } from '../data/navigation';
 
 const currentYear = new Date().getFullYear();
+// Normalize phone number for RFC 3966 mobile click-to-call compatibility
+const normalizedPhoneHref = EVENT_CONFIG.contact.phone
+  ? `tel:${EVENT_CONFIG.contact.phone.replace(/[\s\(\)-]/g, '').replace('+910', '+91')}`
+  : 'tel:+918026721983';
 ---
 
 <footer>
@@ -42,7 +46,7 @@ const currentYear = new Date().getFullYear();
         </li>
         <li>
           {EVENT_CONFIG.contact.phone && !EVENT_CONFIG.contact.phone.includes('[') ? (
-            <a href={`tel:${EVENT_CONFIG.contact.phone}`}>{EVENT_CONFIG.contact.phone}</a>
+            <a href={normalizedPhoneHref}>{EVENT_CONFIG.contact.phone}</a>
           ) : (
             <span class="ph">{EVENT_CONFIG.contact.phone}</span>
           )}

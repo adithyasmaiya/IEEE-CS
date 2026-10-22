@@ -2,9 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Cta from '../components/Cta.astro';
 import { EVENT_CONFIG } from '../data/event';
+import { THEMES_LIST } from '../data/themes';
 
 const { registration, eventDetails } = EVENT_CONFIG;
-const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
 
 const pageTitle = `Register · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} · ${EVENT_CONFIG.organizer}`;
 const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} — the flagship hackathon of ${EVENT_CONFIG.organizer} at ${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}. Apply with your team, explore tracks, and secure your hacker spot.`;
@@ -34,7 +34,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
             Join 120+ shortlisted teams of builders, systems researchers, and engineers converging at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}.
           </p>
           <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
-            Status: <span style="color:var(--acid);font-weight:600">APPLICATIONS ACTIVE</span> · November 14–15, 2026
+            Status: <span style="color:var(--acid);font-weight:600">APPLICATIONS ACTIVE</span> · {eventDetails.dateText}
           </div>
         </div>
       </div>
@@ -45,36 +45,87 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
   <section class="section" style="padding-top:0;padding-bottom:clamp(3rem, 5vw, 4.5rem)" aria-label="Hackathon Showcase">
     <div class="wrap">
       <div class="reveal" style="position:relative;border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
-        <div style="position:relative;aspect-ratio:16/9;max-height:520px;overflow:hidden">
-          <img
-            src="/images/hackathon-collab.jpg"
-            alt="Confluence Hackathon participants actively building and coding prototypes at PES University"
-            style="width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:contrast(1.05) brightness(0.92)"
-            loading="eager"
-            decoding="async"
-          />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.85) 100%)"></div>
+        <div class="showcase-banner">
+          <picture class="showcase-pic">
+            <source srcset="/images/hackathon-collab.webp" type="image/webp" />
+            <img
+              src="/images/hackathon-collab.jpg"
+              alt="Confluence Hackathon participants actively building and coding prototypes at PES University"
+              class="showcase-img"
+              loading="eager"
+              decoding="async"
+              width="1376"
+              height="768"
+            />
+          </picture>
+          <div class="showcase-overlay" aria-hidden="true"></div>
           
-          <div style="position:absolute;top:1.5rem;left:1.5rem;display:flex;gap:.6rem;flex-wrap:wrap">
+          <div class="showcase-top-badges">
             <span class="label label-ink" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);border:1px solid var(--line)">
-              PES University RR Campus
+              {EVENT_CONFIG.university} RR Campus
             </span>
             <span class="label" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);color:var(--acid);border:1px solid var(--acid)">
               ● In-Person 36h Sprint
             </span>
           </div>
 
-          <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem">
-            <div>
-              <p class="label" style="margin:0 0 .3rem;color:var(--muted)">Hackathon Atmosphere</p>
-              <h3 style="font-family:var(--display);font-size:clamp(1.3rem, 2.5vw, 1.9rem);font-weight:600;margin:0;color:var(--ink)">
-                Where Code Meets Hardware &amp; Craft
-              </h3>
-            </div>
-            <span class="coords" style="color:#BDB9AF;background:rgba(10,10,10,0.7);padding:.3rem .6rem">
-              12.9716° N / 77.5946° E
+          <div class="showcase-bottom-left">
+            <p class="label" style="margin:0 0 .3rem;color:var(--muted)">Hackathon Atmosphere</p>
+            <h3 style="font-family:var(--display);font-size:clamp(1.3rem, 2.5vw, 1.9rem);font-weight:600;margin:0;color:var(--ink)">
+              Where Code Meets Hardware &amp; Craft
+            </h3>
+            <span class="coords" style="display:inline-block;margin-top:.4rem;color:#BDB9AF;background:rgba(10,10,10,0.7);padding:.25rem .6rem">
+              {EVENT_CONFIG.coordinates}
             </span>
           </div>
+
+          <!-- Right Side Hackathon Highlights & Provisions Card -->
+          <aside class="showcase-right-card" aria-label="Hackathon Provisions & Experience">
+            <div class="showcase-card-head">
+              <span class="idx">ON-SITE LAB PROVISIONS</span>
+              <span class="label" style="color:var(--acid);font-weight:700">36H LIVE</span>
+            </div>
+            
+            <h4 class="showcase-card-title">
+              What Happens On-Site
+            </h4>
+
+            <ul class="showcase-perks-list">
+              <li>
+                <span class="perk-bullet">01</span>
+                <div>
+                  <strong>Hardware &amp; IoT Testbenches</strong>
+                  <span>ESP32, STM32, soldering stations, oscilloscopes &amp; dedicated lab power drops.</span>
+                </div>
+              </li>
+              <li>
+                <span class="perk-bullet">02</span>
+                <div>
+                  <strong>Continuous Mentor Cadence</strong>
+                  <span>Direct architectural unblocking with domain mentors across AI, systems &amp; hardware.</span>
+                </div>
+              </li>
+              <li>
+                <span class="perk-bullet">03</span>
+                <div>
+                  <strong>24/7 Hacker Fuel &amp; Meals</strong>
+                  <span>Full hot meals, midnight energy drinks, coffee &amp; quiet resting zones included.</span>
+                </div>
+              </li>
+              <li>
+                <span class="perk-bullet">04</span>
+                <div>
+                  <strong>Grand Auditorium Stage Finale</strong>
+                  <span>Finalist teams present working prototypes before industry judges &amp; peers.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div class="showcase-card-foot">
+              <span style="color:var(--acid);font-weight:600">● ₹1,50,000+ Prize Pool</span>
+              <span style="color:var(--ink)">100% Free · Kits Included</span>
+            </div>
+          </aside>
         </div>
 
         <!-- Key Metrics Strip -->
@@ -147,7 +198,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               </div>
               <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--line)">
                 <span class="label">Venue</span>
-                <span style="font-weight:600;color:var(--ink);text-align:right">PES University, Bengaluru</span>
+                <span style="font-weight:600;color:var(--ink);text-align:right">{eventDetails.venueText}</span>
               </div>
               <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--line)">
                 <span class="label">Registration Fee</span>
@@ -301,10 +352,11 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               required
               style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
             >
-              <option value="Track 01 · Autonomous Intelligence & Edge Systems">Track 01 · Autonomous Intelligence &amp; Edge Systems</option>
-              <option value="Track 02 · Distributed Systems & Resilient Infra">Track 02 · Distributed Systems &amp; Resilient Infra</option>
-              <option value="Track 03 · Human-Machine Convergence & Spatial Tech">Track 03 · Human-Machine Convergence &amp; Spatial Tech</option>
-              <option value="Track 04 · Radical Software Craft & Open Civic Tech">Track 04 · Radical Software Craft &amp; Open Civic Tech</option>
+              {THEMES_LIST.map((theme) => (
+                <option value={`${theme.trackTag.split(' · ')[0]} · ${theme.title}`}>
+                  {theme.trackTag.split(' · ')[0]} · {theme.title}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -429,6 +481,149 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
     }
   </script>
   <style>
+    /* Hackathon Showcase Banner & Right-Side Experience Panel */
+    .showcase-banner {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .showcase-pic {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .showcase-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 25% 38%;
+      display: block;
+      filter: contrast(1.05) brightness(0.88);
+    }
+
+    .showcase-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, 
+        rgba(10, 10, 10, 0.25) 0%, 
+        rgba(10, 10, 10, 0.45) 45%, 
+        rgba(10, 10, 10, 0.88) 72%, 
+        rgba(10, 10, 10, 0.98) 100%),
+        linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.85) 100%);
+      pointer-events: none;
+    }
+
+    .showcase-top-badges {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      z-index: 2;
+    }
+
+    .showcase-bottom-left {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      max-width: min(100% - 3rem, 520px);
+      z-index: 2;
+    }
+
+    .showcase-right-card {
+      position: absolute;
+      top: 1.5rem;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: clamp(340px, 34vw, 480px);
+      background: rgba(12, 12, 12, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--line-strong);
+      border-left: 2px solid var(--acid);
+      padding: 1.6rem 1.8rem;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.1rem;
+    }
+
+    .showcase-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .showcase-card-title {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .showcase-perks-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .showcase-perks-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      column-gap: 0.75rem;
+      align-items: start;
+    }
+
+    .perk-bullet {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--acid);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .showcase-perks-list li strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 0.15rem;
+      font-weight: 600;
+    }
+
+    .showcase-perks-list li span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .showcase-card-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
+
     .reg-metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -447,7 +642,46 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       gap: 1.8rem;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
+      .showcase-banner {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .showcase-pic {
+        position: relative;
+        height: 320px;
+        inset: auto;
+      }
+
+      .showcase-img {
+        position: static;
+        height: 100%;
+        object-position: center 38%;
+      }
+
+      .showcase-overlay {
+        height: 320px;
+        bottom: auto;
+      }
+
+      .showcase-bottom-left {
+        top: 170px;
+        bottom: auto;
+      }
+
+      .showcase-right-card {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        border-left: 0;
+        border-top: 2px solid var(--acid);
+        padding: 1.5rem 1.4rem;
+      }
+    }
+
+    @media (max-width: 860px) {
       .reg-metrics-grid {
         grid-template-columns: 1fr 1fr;
       }
@@ -457,9 +691,6 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       .reg-metric-item:nth-child(-n+2) {
         border-bottom: 1px solid var(--line);
       }
-    }
-
-    @media (max-width: 640px) {
       .reg-form-grid {
         grid-template-columns: 1fr;
         gap: 1.2rem;
@@ -469,7 +700,19 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 560px) {
+      .showcase-pic {
+        height: 240px;
+      }
+
+      .showcase-overlay {
+        height: 240px;
+      }
+
+      .showcase-bottom-left {
+        top: 110px;
+      }
+
       .reg-metrics-grid {
         grid-template-columns: 1fr;
       }
@@ -479,6 +722,12 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       }
       .reg-metric-item:last-child {
         border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .reg-metric-item {
+        padding: 0.85rem 1rem;
       }
     }
   </style>
