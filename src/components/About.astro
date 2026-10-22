@@ -28,31 +28,29 @@ const { manifesto } = EVENT_CONFIG;
       </div>
 
       <div class="manifesto-side">
-        <div class="manifesto-art reveal" style="--d:.2s" aria-hidden="true">
-          <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <pattern id="mg" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M20 0H0V20" fill="none" stroke="rgba(242,238,230,.06)" stroke-width="1"/>
-              </pattern>
-            </defs>
-            <rect width="400" height="500" fill="url(#mg)"/>
-            <g fill="none" stroke="rgba(242,238,230,.35)" stroke-width="1">
-              <path d="M0 80 C 140 80, 200 250, 400 260" />
-              <path d="M0 160 C 120 160, 220 260, 400 270" />
-              <path d="M0 240 C 140 240, 230 270, 400 280" />
-              <path d="M0 420 C 140 420, 240 300, 400 290" />
-              <path d="M0 340 C 120 340, 230 290, 400 300" />
-            </g>
-            <g fill="none" stroke="#C8FF2E" stroke-width="1.2">
-              <path d="M0 500 Q 200 260 400 0" opacity=".9"/>
-              <circle cx="200" cy="268" r="40" />
-              <circle cx="200" cy="268" r="80" opacity=".4" />
-              <circle cx="200" cy="268" r="130" opacity=".2" stroke-dasharray="3 5"/>
-            </g>
-            <circle cx="200" cy="268" r="4" fill="#C8FF2E"/>
-            <text x="16" y="480" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">FIG. 01 — CONVERGENCE POINT</text>
-            <text x="384" y="24" text-anchor="end" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">X 200 · Y 268</text>
-          </svg>
+        <div class="manifesto-art reveal" style="--d:.2s" aria-label="Engineers prototyping circuits and edge AI at Confluence">
+          <picture class="manifesto-pic">
+            <source srcset="/images/convergence-lab.webp" type="image/webp" />
+            <img
+              src="/images/convergence-lab.jpg"
+              alt="Engineering students prototyping embedded edge AI systems, microcontroller circuits, and oscilloscopes at Confluence Hackathon"
+              class="manifesto-img"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
+          </picture>
+          <div class="manifesto-art-overlay" aria-hidden="true"></div>
+          
+          <div class="manifesto-art-top">
+            <span class="label" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);border:1px solid var(--line);color:var(--ink);font-size:0.7rem;padding:.3rem .6rem">
+              PESU Engineering Labs
+            </span>
+            <span class="coords" style="color:var(--acid);background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);padding:.3rem .6rem;border:1px solid rgba(200,255,46,0.3);font-size:0.7rem">
+              HW × ML Pod
+            </span>
+          </div>
         </div>
 
         <ol class="manifesto-list reveal" style="--d:.25s;list-style:none">
@@ -70,3 +68,54 @@ const { manifesto } = EVENT_CONFIG;
     </div>
   </div>
 </section>
+
+<style>
+  .manifesto-art {
+    position: relative;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    overflow: hidden;
+  }
+
+  .manifesto-pic {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .manifesto-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+    filter: contrast(1.06) brightness(0.92);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .manifesto-art:hover .manifesto-img {
+    transform: scale(1.03);
+  }
+
+  .manifesto-art-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0) 25%),
+                linear-gradient(0deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.3) 35%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .manifesto-art-top {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 2;
+  }
+</style>
