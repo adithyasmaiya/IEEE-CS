@@ -1699,12 +1699,14 @@ footer {
     padding-top: 6.5rem;
   }
 
-  .hero-character-wrap {
-    opacity: 0.7;
+  .hero-character-wrap,
+  .js .hero.hero-entered .hero-character-wrap {
+    opacity: 0.96;
   }
 
   .hero-character-canvas {
-    object-position: 85% 50%;
+    object-position: 90% 50%;
+    filter: contrast(1.12) brightness(1.16);
   }
 
   .hero-foot {
@@ -1898,19 +1900,23 @@ footer {
     margin-left: 0.1em;
   }
 
-  .hero-character-wrap {
-    opacity: 0.75;
+  .hero-character-wrap,
+  .js .hero.hero-entered .hero-character-wrap {
+    opacity: 0.98;
   }
 
   .hero-character-wrap::after {
-    background: linear-gradient(180deg,
-        rgba(10, 10, 10, 0.82) 0%,
-        rgba(10, 10, 10, 0.35) 45%,
-        rgba(10, 10, 10, 0.9) 88%);
+    background: radial-gradient(circle at 50% 52%, transparent 30%, rgba(10, 10, 10, 0.25) 60%, rgba(10, 10, 10, 0.82) 100%),
+        linear-gradient(180deg,
+            rgba(10, 10, 10, 0.42) 0%,
+            transparent 22%,
+            transparent 74%,
+            rgba(10, 10, 10, 0.8) 100%);
   }
 
   .hero-character-canvas {
-    object-position: 70% 32%;
+    object-position: 92% 50%;
+    filter: contrast(1.18) brightness(1.22);
   }
 
   .hero-foot {
@@ -2145,6 +2151,11 @@ footer {
 
   .h2 {
     font-size: 1.75rem;
+  }
+
+  .hero-character-canvas {
+    object-position: 91% 50%;
+    filter: contrast(1.2) brightness(1.25);
   }
 }
 
