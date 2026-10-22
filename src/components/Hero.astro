@@ -1,37 +1,16 @@
 ---
-import { EVENT_CONFIG, HERO_FACTS } from '../data/event';
+import { EVENT_CONFIG } from '../data/event';
+import HeroAnimation from './HeroAnimation.astro';
+
+const { registration } = EVENT_CONFIG;
+const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
 ---
 
-<section class="hero grid-lines" aria-labelledby="hero-title" id="hero">
-  <!-- Interactive & subtle animated vector atmosphere -->
-  <div class="hero-art" aria-hidden="true">
-    <div class="hero-art-inner" id="heroArt">
-      <svg viewBox="0 0 800 800" width="100%" height="100%" fill="none" stroke="#C8FF2E" stroke-width="1">
-        <circle cx="400" cy="400" r="390" stroke="rgba(242,238,230,.10)" />
-        <circle cx="400" cy="400" r="300" stroke="rgba(242,238,230,.07)" stroke-dasharray="2 6" />
-        <circle cx="400" cy="400" r="210" stroke="rgba(242,238,230,.10)" />
-        <g class="orbit-ring" opacity=".55">
-          <ellipse cx="400" cy="400" rx="380" ry="130" />
-          <ellipse cx="400" cy="400" rx="380" ry="130" transform="rotate(60 400 400)" />
-          <ellipse cx="400" cy="400" rx="380" ry="130" transform="rotate(120 400 400)" />
-        </g>
-        <g class="orbit-ring rev" opacity=".35" stroke="#F2EEE6">
-          <polygon points="400,60 700,600 100,600" />
-          <polygon points="400,740 100,200 700,200" />
-        </g>
-        <g class="orbit-ring slow" opacity=".7">
-          <rect x="250" y="250" width="300" height="300" transform="rotate(45 400 400)" />
-          <rect x="290" y="290" width="220" height="220" transform="rotate(20 400 400)" stroke="rgba(242,238,230,.5)" />
-        </g>
-        <line x1="0" y1="400" x2="800" y2="400" stroke="rgba(242,238,230,.12)" />
-        <line x1="400" y1="0" x2="400" y2="800" stroke="rgba(242,238,230,.12)" />
-        <circle cx="400" cy="400" r="5" fill="#C8FF2E" stroke="none" />
-        <circle cx="400" cy="400" r="18" stroke="#C8FF2E" opacity=".6" />
-      </svg>
-    </div>
-  </div>
+<section class="hero" aria-labelledby="hero-title" id="hero">
+  <!-- Fullscreen Hero Character Animation (Coding -> Eureka moment) -->
+  <HeroAnimation />
 
-  <div class="hero-meta-top reveal" style="--d:.1s">
+  <div class="hero-meta-top reveal" style="--d:.08s">
     <span class="label label-ink">{EVENT_CONFIG.organizer} PESU · {EVENT_CONFIG.city.toUpperCase()}</span>
     <span class="label">Flagship Hackathon · Edition {EVENT_CONFIG.edition}</span>
     <span class="coords">{EVENT_CONFIG.coordinates}</span>
@@ -39,39 +18,37 @@ import { EVENT_CONFIG, HERO_FACTS } from '../data/event';
 
   <div class="hero-title">
     <h1 class="wordmark-xl" id="hero-title" aria-label={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`}>
-      <span class="row reveal-mask"><span>CON</span></span>
-      <span class="row row-2 reveal-mask" style="--d:.12s">
-        <span>FLU<span class="outline-text">ENCE</span></span>
-        <span class="year">/{EVENT_CONFIG.edition.slice(-2)}</span>
-      </span>
+      <span class="row hero-row"><span class="char-mask"><span class="char" style="--cd:.14s">C</span></span><span class="char-mask"><span class="char" style="--cd:.18s">O</span></span><span class="char-mask"><span class="char" style="--cd:.22s">N</span></span></span>
+      <span class="row row-2 hero-row"><span class="char-mask"><span class="char" style="--cd:.26s">F</span></span><span class="char-mask"><span class="char" style="--cd:.30s">L</span></span><span class="char-mask"><span class="char" style="--cd:.34s">U</span></span><span class="char-mask"><span class="char outline-text" style="--cd:.38s">E</span></span><span class="char-mask"><span class="char outline-text" style="--cd:.42s">N</span></span><span class="char-mask"><span class="char outline-text" style="--cd:.46s">C</span></span><span class="char-mask"><span class="char outline-text" style="--cd:.50s">E</span></span><span class="year hero-year">/{EVENT_CONFIG.edition.slice(-2)}</span></span>
     </h1>
   </div>
 
   <div class="hero-foot">
-    <div class="reveal" style="--d:.3s">
-      <p class="hero-headline">{EVENT_CONFIG.tagline}</p>
-      <p class="body" style="margin:0">
+    <div class="hero-foot-copy">
+      <p class="hero-headline reveal" style="--d:.65s">{EVENT_CONFIG.tagline}</p>
+      <p class="body reveal" style="--d:.75s;margin:0">
         Confluence is the flagship hackathon of IEEE Computer Society at PES University. Teams of builders, designers and researchers gather to solve real problems across a shared set of themes, ship working prototypes, and be judged on craft as much as ambition.
       </p>
-      <div class="hero-cta">
-        <a href={EVENT_CONFIG.registration.url} class="btn btn-primary">
-          {EVENT_CONFIG.registration.buttonText} <span class="arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="#about" class="btn btn-ghost">
-          Explore the Experience <span class="arrow" aria-hidden="true">↘</span>
+      <div class="hero-cta reveal" style="--d:.85s">
+        {hasRegistrationUrl ? (
+          <a
+            href={registration.googleFormsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            data-hover
+          >
+            {registration.buttonText} <span class="arrow">→</span>
+          </a>
+        ) : (
+          <a href="/register/" class="btn btn-primary" data-hover>
+            {registration.unavailableText} <span class="arrow">→</span>
+          </a>
+        )}
+        <a href="/about/" class="btn btn-ghost" data-hover>
+          Explore the Experience <span class="arrow">↘</span>
         </a>
       </div>
-    </div>
-
-    <div class="hero-facts reveal" style="--d:.45s">
-      {HERO_FACTS.map((fact) => (
-        <div class="fact">
-          <span class="label">{fact.label}</span>
-          <span class="value">
-            {fact.isPlaceholder ? <span class="ph">{fact.value}</span> : fact.value}
-          </span>
-        </div>
-      ))}
     </div>
   </div>
 </section>

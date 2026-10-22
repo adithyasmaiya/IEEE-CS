@@ -1,165 +1,92 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { FAQ_LIST, FAQ_CATEGORIES } from '../data/faq';
+import Faq from '../components/Faq.astro';
+import Cta from '../components/Cta.astro';
 import { EVENT_CONFIG } from '../data/event';
 
 const pageTitle = `Frequently Asked Questions · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
-const pageDescription = `Frequently asked questions for CONFLUENCE 2026. Rules, eligibility, team sizes, registration process, submission criteria, hardware, and intellectual property ownership.`;
-
-// Group questions by category
-const groupedFaqs = FAQ_CATEGORIES.filter((c) => c !== 'All').map((category) => ({
-  category,
-  items: FAQ_LIST.filter((item) => item.category === category)
-}));
+const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}. Eligibility, team sizes, registration process, theme announcements, and format details for the flagship hackathon in ${EVENT_CONFIG.city}.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:8.5rem;padding-bottom:clamp(3rem,6vw,5rem)">
+  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="faqs-page-title">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="idx">04 — Information Desk</span>
-        <span class="label">Knowledge Base · Rules &amp; Operations</span>
+        <span class="idx">04 — FAQs</span>
+        <span class="label">Questions · Answers · Policies</span>
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
         <div>
-          <span class="label label-ink" style="display:block;margin-bottom:1rem">
-            Guidance for Participants &amp; Mentors
+          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
+            Edition {EVENT_CONFIG.edition} · Participant Guidance
           </span>
-          <h1 class="h2 reveal" style="margin:0;line-height:.86">
+          <h1 class="h2 reveal" id="faqs-page-title" style="margin:0;line-height:.88">
             Frequently<br />
             <span class="outline-text">Answered</span>
           </h1>
         </div>
         <div style="max-width:44ch">
-          <p class="lede reveal" style="--d:.1s;margin:0 0 1rem">
-            Detailed information regarding team formation, screening, evaluation, logistics, and code of conduct.
+          <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
+            Everything you need to know about team eligibility, registration prerequisites, problem track releases, and submission expectations.
           </p>
-          <div style="border-left:2px solid var(--acid);padding-left:1rem">
-            <span class="label" style="display:block;color:var(--acid);margin-bottom:.2rem">Policy Notice</span>
-            <span class="body" style="font-size:.85rem;margin:0;display:block">
-              Answers marked with placeholders will be ratified in the official rulebook prior to portal opening.
-            </span>
+          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--muted)">
+            Note: Placeholders marked with <span class="ph">[TBA]</span> will be updated upon official release.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Categorized FAQ Section -->
-  <section class="section grid-lines-x">
+  <!-- Core FAQs Accordion (Shared Reusable Component) -->
+  <Faq />
+
+  <!-- Organizer Contact & Inquiries Card -->
+  <section class="section grid-lines-x" aria-labelledby="inquiry-title">
     <div class="wrap">
-      <div style="display:grid;grid-template-columns:260px 1fr;gap:clamp(2rem,5vw,5rem);align-items:start">
-        <!-- Sticky Navigation of Categories -->
-        <aside style="position:sticky;top:110px;align-self:start" class="reveal">
-          <span class="label" style="display:block;margin-bottom:1rem">Jump to Topic</span>
-          <nav aria-label="FAQ Topics">
-            <ul style="list-style:none;padding:0;margin:0;display:grid;gap:.5rem">
-              {groupedFaqs.map((group) => (
-                <li>
-                  <a
-                    href={`#cat-${group.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                    class="label"
-                    style="display:block;padding:.4rem 0;color:var(--muted);transition:color .3s"
-                    onmouseover="this.style.color='var(--ink)'"
-                    onmouseout="this.style.color='var(--muted)'"
-                  >
-                    → {group.category} ({group.items.length})
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div style="border-top:1px solid var(--line);padding-top:1.5rem;margin-top:2rem">
-            <span class="label" style="display:block;margin-bottom:.5rem">Direct Inquiries</span>
-            <p style="font-size:.88rem;color:var(--muted);margin:0 0 1rem">
-              Need clarification on custom requirements or sponsorships?
-            </p>
-            <a href={`mailto:${EVENT_CONFIG.contact.email}`} class="label" style="color:var(--acid)">
-              {EVENT_CONFIG.contact.email} ↗
-            </a>
-          </div>
-        </aside>
-
-        <!-- FAQ Accordion List by Categories -->
-        <div style="display:flex;flex-direction:column;gap:3.5rem">
-          {groupedFaqs.map((group) => {
-            const catId = `cat-${group.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-            return (
-              <section id={catId} style="scroll-margin-top:6rem" class="reveal">
-                <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:.8rem;margin-bottom:1.5rem">
-                  <h2 style="font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin:0;text-transform:uppercase">
-                    {group.category}
-                  </h2>
-                  <span class="label">{group.items.length} Questions</span>
-                </div>
-
-                <div class="faq-list">
-                  {group.items.map((item) => (
-                    <details class="faq" open={item.defaultOpen}>
-                      <summary>
-                        <span class="q-idx">{item.index}</span>
-                        <span>{item.question}</span>
-                        <span class="toggle" aria-hidden="true" />
-                      </summary>
-                      <div class="answer">
-                        <p>{item.answerText}</p>
-                        {item.placeholderDetail && (
-                          <div style="margin-top:.8rem">
-                            <span class="label" style="display:block;margin-bottom:.2rem">Policy Status</span>
-                            <span class="ph">{item.placeholderDetail}</span>
-                          </div>
-                        )}
-                      </div>
-                    </details>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
+      <div class="section-head reveal">
+        <span class="idx">Support</span>
+        <span class="label">Further Inquiries</span>
       </div>
-    </div>
-  </section>
 
-  <!-- Help & Contact CTA -->
-  <section class="section" aria-labelledby="faq-contact-heading">
-    <div class="wrap">
-      <div style="border:1px solid var(--line);padding:2.5rem;background:var(--bg-2);display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1.5rem">
         <div>
-          <span class="idx" style="display:block;margin-bottom:.4rem">Unanswered Questions?</span>
-          <h2 id="faq-contact-heading" style="font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:700;margin:0 0 .5rem">
-            Reach out directly to the IEEE CS PESU committee.
+          <h2 class="h2 reveal" id="inquiry-title" style="margin:0;font-size:clamp(2rem, 4vw, 3rem)">
+            Direct <span class="outline-text">Assistance</span>
           </h2>
-          <p class="body" style="margin:0">
-            Our organizers and track coordinators will respond to inquiries and update the knowledge base.
-          </p>
         </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <a href={`mailto:${EVENT_CONFIG.contact.email}`} class="btn btn-ghost">
-            Contact Support ↗
-          </a>
-          <a href={EVENT_CONFIG.registration.url} class="btn btn-primary">
-            {EVENT_CONFIG.registration.buttonText} <span class="arrow">→</span>
-          </a>
+        <p class="body reveal" style="max-width:44ch;margin:0">
+          Official support desks, institutional inquiries, and venue liaison details.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 360px), 1fr));gap:2.5rem">
+        <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem)">
+          <span class="label" style="display:block;margin-bottom:.8rem">Direct Assistance</span>
+          <h3 class="display" style="font-size:1.6rem;margin:0 0 1rem">Have an Unanswered Question?</h3>
+          <p class="body" style="margin:0 0 1.5rem">
+            Official rules, eligibility tiers, and challenge guidelines are confirmed through the {EVENT_CONFIG.organizer} PESU committee. For institutional inquiries, reach out through our contact desk.
+          </p>
+          <div class="label" style="color:var(--acid)">
+            Desk Email · <span class="ph">{EVENT_CONFIG.contact.email}</span>
+          </div>
+        </div>
+
+        <div class="reveal" style="--d:.1s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem)">
+          <span class="label" style="display:block;margin-bottom:.8rem">Location & Campus</span>
+          <h3 class="display" style="font-size:1.6rem;margin:0 0 1rem">Venue Information</h3>
+          <p class="body" style="margin:0 0 1.5rem">
+            Confluence 2026 will be hosted in-person at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}. Room assignments, lab coordinates, and badge collection desks will be announced prior to hack day.
+          </p>
+          <div class="label" style="color:var(--acid)">
+            Campus · <span class="ph">{EVENT_CONFIG.eventDetails.venueText}</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
-</Layout>
 
-<style>
-  @media (max-width: 860px) {
-    section > div > div:first-child {
-      grid-template-columns: 1fr !important;
-    }
-    aside {
-      position: static !important;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 2rem;
-      margin-bottom: 2rem;
-    }
-  }
-</style>
+  <!-- Final CTA -->
+  <Cta />
+</Layout>

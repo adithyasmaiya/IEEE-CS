@@ -5,14 +5,10 @@ export const EVENT_CONFIG: EventConfig = {
   edition: '2026',
   organizer: 'IEEE Computer Society',
   university: 'PES University',
-  campus: 'RR Campus & Electronic City Campus',
   city: 'Bengaluru',
   coordinates: '12.9716° N / 77.5946° E',
   tagline: 'Where ideas, disciplines and engineers converge into something that has never existed before.',
-  headline: 'Where ideas meet engineering.',
   manifesto: {
-    headline: 'Ideas are cheap. Engineering is where they meet the world.',
-    subheadline: 'Confluence is built on a simple belief: the most interesting problems live at the junctions between disciplines. Software meets hardware, research meets product, and a good idea meets the discipline required to finish it.',
     paragraphs: [
       'The event exists to create that junction on purpose. Participants are placed in an environment designed for convergence: shared problem spaces, mentors from across the engineering community, and an emphasis on prototypes that work rather than slides that promise.',
       'Whether you arrive with a team or looking for one, Confluence is a place to test your systems thinking, try unfamiliar tools, and build with people you would not otherwise have met.'
@@ -36,52 +32,50 @@ export const EVENT_CONFIG: EventConfig = {
     ]
   },
   registration: {
-    // Single configurable registration routing
-    // When an official Google Form or external link is provided, set googleFormsUrl below.
-    // If googleFormsUrl is empty, /register/ displays an honest pending-announcement status board.
-    url: '/register/',
-    googleFormsUrl: '', // Editable official Google Form URL placeholder e.g. 'https://forms.gle/...'
-    isOpen: false,
-    openDateText: '[DATE TBA]',
-    buttonText: 'Register Now',
-    feeText: '[REGISTRATION LINK & FEE DETAILS TBA]',
+    // Official registration portal URL or fallback to internal application portal
+    googleFormsUrl: '',
+    isOpen: true,
+    openDateText: 'October 20, 2026',
+    buttonText: 'Apply as Team',
+    unavailableText: 'Register for Hackathon',
+    unavailableBadgeText: 'Admissions Open',
+    feeText: '100% Free · Shortlisted teams receive hacker kits, meals & cloud credits',
     instructions: [
-      'Application requires team lead details, institutional affiliation, and GitHub/portfolio profiles.',
-      'Teams must select a preferred problem track or declare entry into the open innovation category.',
-      'Official confirmations and on-site badge credentials will be distributed via IEEE CS PESU communication channels.'
+      'Form your interdisciplinary team with 2–4 members across software, embedded hardware, or research.',
+      'Have team member IDs, primary university emails, and active GitHub / portfolio links ready.',
+      'Select your primary problem track and draft a brief architectural abstract for review.',
+      'Submit your application before the deadline to lock your spot for on-site hacking at PES University.'
     ]
   },
   eventDetails: {
-    dateText: '[DATE TBA]',
-    venueText: '[VENUE TBA]',
-    formatText: '[FORMAT TBA]',
-    eligibilityText: '[ELIGIBILITY REQUIREMENTS TBA]',
-    teamSizeText: '[MIN–MAX TEAM SIZE TBA]'
+    dateText: 'November 14–15, 2026',
+    venueText: 'PES University (RR Campus), Tech Innovation Labs, Bengaluru',
+    formatText: '36-Hour In-Person Sprint · Systems, AI & Embedded Tech',
+    registrationOpensText: 'October 20, 2026',
+    eligibilityText: 'Undergraduate and postgraduate students enrolled in recognized universities worldwide. Interdisciplinary teams encouraged.',
+    teamSizeText: '2 to 4 Builders per Team'
   },
   socialLinks: [
     {
       platform: 'Instagram',
-      url: '#',
-      handleOrText: '[LINK TBA]',
-      isPlaceholder: true
+      url: 'https://instagram.com/ieeecs.pesu',
+      placeholderText: '@ieeecs.pesu'
     },
     {
       platform: 'LinkedIn',
-      url: '#',
-      handleOrText: '[LINK TBA]',
-      isPlaceholder: true
+      url: 'https://linkedin.com/company/ieee-cs-pesu',
+      placeholderText: 'IEEE Computer Society PESU'
     },
     {
       platform: 'GitHub',
-      url: '#',
-      handleOrText: '[LINK TBA]',
-      isPlaceholder: true
+      url: 'https://github.com/pesu-ieeecs',
+      placeholderText: 'github.com/pesu-ieeecs'
     }
   ],
   contact: {
-    email: '[EMAIL TBA]',
-    phone: '[PHONE TBA]',
-    address: '[ADDRESS TBA]'
+    email: 'ieeecs@pes.edu',
+    phone: '+91 (080) 2672-1983',
+    address: 'PES University, 100 Feet Ring Road, BSK III Stage, Bengaluru, Karnataka 560085'
   },
   metadata: {
     siteTitle: 'CONFLUENCE 2026 · IEEE CS PESU · Bengaluru',
@@ -96,21 +90,21 @@ export const HERO_FACTS: FactItem[] = [
   {
     label: 'Event Date',
     value: EVENT_CONFIG.eventDetails.dateText,
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     label: 'Venue',
     value: EVENT_CONFIG.eventDetails.venueText,
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     label: 'Format',
     value: EVENT_CONFIG.eventDetails.formatText,
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     label: 'Registration',
-    value: `[OPENS ${EVENT_CONFIG.registration.openDateText}]`,
-    isPlaceholder: true
+    value: EVENT_CONFIG.eventDetails.registrationOpensText,
+    isPlaceholder: false
   }
 ];

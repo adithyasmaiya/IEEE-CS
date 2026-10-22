@@ -1,94 +1,41 @@
 import type { FaqItem } from '../types';
 
 export const FAQ_LIST: FaqItem[] = [
-  // 1. Eligibility
   {
-    id: 'faq-eligibility',
+    id: 'faq-01',
     index: 'Q.01',
-    category: 'Eligibility',
-    question: 'Who is eligible to participate in Confluence 2026?',
-    answerText: 'Undergraduate and postgraduate students, researchers, and early engineers from accredited institutions are expected to be eligible. Cross-institutional teams are traditionally welcomed.',
-    placeholderDetail: '[OFFICIAL ELIGIBILITY REQUIREMENTS TBA]',
+    question: 'Who is eligible to participate in Confluence?',
+    answerText: 'Confluence 2026 is open to undergraduate and postgraduate students from any recognized university or college worldwide. Interdisciplinary teams bringing together developers, hardware engineers, UI/UX designers, and researchers are strongly encouraged.',
     defaultOpen: true
   },
-  // 2. Team Size
   {
-    id: 'faq-team-size',
+    id: 'faq-02',
     index: 'Q.02',
-    category: 'Eligibility',
     question: 'What is the required team size?',
-    answerText: 'Teams must register collectively through the team leader. Individual participants will have access to a team-formation discord / matchmaking channel before the hacking window.',
-    placeholderDetail: '[MIN–MAX TEAM SIZE TBA (TYPICALLY 2–4 MEMBERS)]'
+    answerText: 'Teams must consist of 2 to 4 members. You can register with an existing team or find teammates through the official IEEE CS PESU hacker Discord community prior to the cohort announcement.'
   },
-  // 3. Registration
   {
-    id: 'faq-registration',
+    id: 'faq-03',
     index: 'Q.03',
-    category: 'Registration',
-    question: 'How and when does registration open?',
-    answerText: 'Registration will be hosted through an official portal linked directly from this website. The portal opening date and screening process will be announced across IEEE CS PESU channels.',
-    placeholderDetail: '[REGISTRATION PORTAL LINK & ADMISSION TIMELINES TBA]'
+    question: 'Is there any registration fee?',
+    answerText: 'No. Confluence is completely free for all shortlisted teams. Once selected, participants receive complimentary hacker kits, all meals, high-speed campus connectivity, cloud compute credits, and 24/7 on-site lab access.'
   },
   {
-    id: 'faq-fees',
+    id: 'faq-04',
     index: 'Q.04',
-    category: 'Registration',
-    question: 'Is there a registration fee or deposit?',
-    answerText: 'Official fee policy, including any subsidized IEEE member rates or refundable attendance deposits, is under final review by the committee.',
-    placeholderDetail: '[FEE & DEPOSIT POLICY TBA]'
+    question: 'What is the format and duration?',
+    answerText: 'Confluence 2026 is an intense 36-hour continuous in-person hackathon held on-site at the PES University RR Campus Innovation Labs in Bengaluru. It features midnight check-ins, mentor feedback loops, and live stage demonstrations.'
   },
-  // 4. Themes & Problem Statements
   {
-    id: 'faq-themes',
+    id: 'faq-05',
     index: 'Q.05',
-    category: 'Themes & Tracks',
-    question: 'When will the official problem statements be unveiled?',
-    answerText: 'Detailed theme briefs and hardware track requirements will be distributed at the start of the event. Participants may prepare foundational toolchains but cannot submit pre-built repositories.',
-    placeholderDetail: '[THEME RELEASE SCHEDULE & BRIEFING FORMAT TBA]'
+    question: 'What are the hardware and tooling provisions?',
+    answerText: 'Participants may bring their own laptops, microcontrollers (ESP32, Raspberry Pi, Arduino, STM32), sensors, and peripheral kits. Dedicated IoT testbenches, power drops, oscilloscopes, and soldering stations will be available in the university lab.'
   },
-  // 5. Submission Requirements
   {
-    id: 'faq-submissions',
+    id: 'faq-06',
     index: 'Q.06',
-    category: 'Submissions',
-    question: 'What are the required deliverables for final evaluation?',
-    answerText: 'Teams must provide access to an open-source Git repository containing all source code created during the hacking window, deployment links where applicable, and participate in a live demonstration.',
-    placeholderDetail: '[REPOSITORY COMMIT POLICY & DEMO TIME LIMITS TBA]'
-  },
-  // 6. Event Format
-  {
-    id: 'faq-format',
-    index: 'Q.07',
-    category: 'Format & Logistics',
-    question: 'What is the format and duration of the hackathon?',
-    answerText: 'Confluence 2026 is planned as an in-person, immersive hackathon hosted on the PES University campus in Bengaluru, featuring continuous mentoring checkpoints, food, and rest zones.',
-    placeholderDetail: '[EXACT DURATION (E.G. 24H OR 36H) & CAMPUS VENUE TBA]'
-  },
-  // 7. Participation Rules & IP
-  {
-    id: 'faq-rules-ip',
-    index: 'Q.08',
-    category: 'Rules & IP',
-    question: 'Who owns the intellectual property created during the event?',
-    answerText: 'All intellectual property developed by participants during Confluence remains 100% owned by the respective team members. Neither PES University nor IEEE CS claims ownership of your projects.',
-    placeholderDetail: '[OFFICIAL CODE OF CONDUCT & IP POLICY CLAUSES TBA]'
-  },
-  {
-    id: 'faq-hardware',
-    index: 'Q.09',
-    category: 'Rules & IP',
-    question: 'Can teams bring their own hardware or microcontrollers?',
-    answerText: 'Teams competing in cyber-physical or hardware tracks will be permitted to bring approved developer kits, sensors, and components, subject to lab safety guidelines.',
-    placeholderDetail: '[PERMITTED HARDWARE LIST & ON-SITE LAB TOOLS TBA]'
+    question: 'What are the judging criteria?',
+    answerText: 'Submissions are evaluated on technical depth (40%), prototype completion and working code (30%), architectural innovation (20%), and presentation clarity during the stage demo (10%). Working running code is valued above speculative slide decks.'
   }
-];
-
-export const FAQ_CATEGORIES: string[] = [
-  'All',
-  'Eligibility',
-  'Registration',
-  'Themes & Tracks',
-  'Submissions',
-  'Format & Logistics',
-  'Rules & IP'
 ];

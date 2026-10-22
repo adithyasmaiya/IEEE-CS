@@ -1,254 +1,116 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import About from '../components/About.astro';
+import Cta from '../components/Cta.astro';
 import { EVENT_CONFIG } from '../data/event';
 
-const pageTitle = `About ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} · Ethos & Engineering Philosophy`;
-const pageDescription = `Learn about CONFLUENCE 2026 — the flagship hackathon of IEEE Computer Society at PES University, Bengaluru. Discover our engineering-first philosophy, convergence principles, and participant expectations.`;
+const pageTitle = `About · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} · ${EVENT_CONFIG.organizer} PESU`;
+const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} — the flagship hackathon of ${EVENT_CONFIG.organizer} at ${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}. Explore our engineering-first manifesto, interdisciplinary ethos, and convergence philosophy.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:8.5rem;padding-bottom:clamp(3rem,6vw,5rem)" aria-labelledby="about-hero-title">
+  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="about-page-title">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="idx">01 — Manifesto</span>
-        <span class="label">Philosophy · Purpose · Guidelines</span>
+        <span class="idx">01 — About</span>
+        <span class="label">Manifesto · Purpose · Convergence</span>
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
         <div>
-          <span class="label label-ink" style="display:block;margin-bottom:1rem">
+          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
             {EVENT_CONFIG.organizer} · {EVENT_CONFIG.university}
           </span>
-          <h1 class="h2 reveal" id="about-hero-title" style="margin:0;line-height:.86">
+          <h1 class="h2 reveal" id="about-page-title" style="margin:0;line-height:.88">
             Engineering<br />
             <span class="outline-text">Convergence</span>
           </h1>
         </div>
         <p class="lede reveal" style="--d:.1s;margin:0">
-          A hackathon engineered around systems that compile, hardware that actuates, and solutions that solve tangible problems.
+          A flagship gathering engineered for builders, systems thinkers, and researchers who believe the most compelling ideas happen where disciplines intersect.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Section: What is Confluence -->
-  <section class="section grid-lines-x" aria-labelledby="manifesto-heading">
-    <div class="wrap">
-      <div class="manifesto-grid">
-        <h2 class="manifesto-statement" id="manifesto-heading" style="font-size:clamp(2.2rem,5.2vw,5rem)">
-          <span class="reveal" style="display:block">Not a pitch competition.</span>
-          <span class="reveal" style="--d:.1s;display:block">A proving ground <span class="dim">for</span></span>
-          <span class="reveal" style="--d:.2s;display:block"><span class="acid">rigorous</span> builders.</span>
-        </h2>
+  <!-- Core Manifesto Section (Shared Reusable Component) -->
+  <About />
 
-        <div class="manifesto-cols reveal" style="--d:.1s">
-          <p class="lede">
-            CONFLUENCE is the annual flagship hackathon organized by the IEEE Computer Society Student Branch Chapter at PES University, Bengaluru.
-          </p>
-          <p class="body">
-            Too many hackathons have devolved into slide-crafting contests where complex systems are promised but never executed. Confluence exists to restore engineering discipline to the hackathon format: teams are judged on working execution, system architecture, constraint handling, and the depth of their technical prototypes.
-          </p>
-          <p class="body">
-            We bring together software engineers, hardware hackers, algorithm designers, and systems architects to collide across interdisciplinary problem spaces. Whether optimizing low-level memory allocation, synthesizing sensor streams, or orchestrating autonomous agent loops, Confluence values the craft of execution over superficial polish.
-          </p>
-        </div>
-
-        <div class="manifesto-side">
-          <div class="manifesto-art reveal" style="--d:.2s" aria-hidden="true">
-            <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-              <defs>
-                <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M20 0H0V20" fill="none" stroke="rgba(242,238,230,.06)" stroke-width="1" />
-                </pattern>
-              </defs>
-              <rect width="400" height="500" fill="url(#grid-pattern)" />
-              <g fill="none" stroke="rgba(242,238,230,.25)" stroke-width="1">
-                <circle cx="200" cy="250" r="180" />
-                <circle cx="200" cy="250" r="120" stroke-dasharray="4 4" />
-                <circle cx="200" cy="250" r="60" />
-              </g>
-              <g fill="none" stroke="#C8FF2E" stroke-width="1.2">
-                <line x1="20" y1="250" x2="380" y2="250" />
-                <line x1="200" y1="20" x2="200" y2="480" />
-                <polygon points="200,130 310,310 90,310" />
-              </g>
-              <circle cx="200" cy="250" r="5" fill="#C8FF2E" />
-              <text x="24" y="470" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">
-                SPEC 01 — ARCHITECTURAL NEXUS
-              </text>
-              <text x="376" y="32" text-anchor="end" fill="#8E8B84" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">
-                12.9716° N / 77.5946° E
-              </text>
-            </svg>
-          </div>
-
-          <div style="border:1px solid var(--line);padding:1.5rem;background:var(--bg-2)">
-            <span class="label" style="display:block;margin-bottom:.5rem">Guiding Ethos</span>
-            <p style="margin:0;font-size:.95rem;color:var(--ink-secondary)">
-              "Working code outranks hypothetical slides. A running command outranks an unverified promise."
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section: The Three Pillars -->
-  <section class="section" aria-labelledby="pillars-heading">
+  <!-- Detailed Chapter & Environment Section -->
+  <section class="section" aria-labelledby="ethos-title">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="idx">02 — Pillars</span>
-        <span class="label">Core Criteria</span>
+        <span class="idx">Context</span>
+        <span class="label">Host Institution · Organizing Committee</span>
       </div>
 
-      <h2 class="h2 reveal" id="pillars-heading" style="font-size:clamp(2rem,4vw,3.2rem);margin:0 0 2.5rem">
-        Foundational Principles
+      <h2 class="h2 reveal" id="ethos-title" style="margin:0 0 clamp(2rem, 4vw, 3rem);font-size:clamp(2rem, 4.5vw, 3.8rem);line-height:1">
+        Host &amp; <span class="outline-text">Community</span>
       </h2>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:2rem">
-        {EVENT_CONFIG.manifesto.pillars.map((pillar) => (
-          <div style="border:1px solid var(--line);padding:2.5rem 2rem;position:relative" class="reveal">
-            <span class="idx" style="font-size:1.1rem;display:block;margin-bottom:1.2rem">{pillar.index}</span>
-            <h3 style="font-size:clamp(1.3rem,2vw,1.75rem);font-weight:700;margin:0 0 .8rem;line-height:1.15">
-              {pillar.title}
-            </h3>
-            <p class="body" style="margin:0;font-size:1rem">
-              {pillar.description}
-            </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 360px), 1fr));gap:clamp(2rem, 5vw, 4rem)">
+        <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem)">
+          <span class="label" style="display:block;margin-bottom:1rem">Host Chapter</span>
+          <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.8rem);line-height:1;margin:0 0 1.2rem">
+            IEEE Computer Society
+          </h3>
+          <p class="body" style="margin:0 0 1.2rem">
+            The IEEE Computer Society Student Branch Chapter at PES University stands as a student-led community committed to technical rigour, practical engineering, and collaborative systems innovation.
+          </p>
+          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--dim)">
+            PES University · {EVENT_CONFIG.city} · {EVENT_CONFIG.coordinates}
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Section: How Participants Build -->
-  <section class="section grid-lines-x" aria-labelledby="process-heading">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">03 — Process</span>
-        <span class="label">How Teams Build</span>
-      </div>
-
-      <h2 class="h2 reveal" id="process-heading" style="font-size:clamp(2rem,4vw,3.2rem);margin:0 0 2.5rem">
-        Development Workflow
-      </h2>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem">
-        <div style="padding:1.5rem 0;border-top:1px solid var(--line)" class="reveal">
-          <span class="label" style="display:block;margin-bottom:.5rem">Stage 01</span>
-          <h3 style="font-size:1.2rem;font-weight:600;margin:0 0 .5rem">Problem Framing</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Teams interrogate problem spaces and draft systems diagrams before touching code. Identifying realistic constraints early prevents scope collapse.
-          </p>
         </div>
 
-        <div style="padding:1.5rem 0;border-top:1px solid var(--line)" class="reveal" style="--d:.1s">
-          <span class="label" style="display:block;margin-bottom:.5rem">Stage 02</span>
-          <h3 style="font-size:1.2rem;font-weight:600;margin:0 0 .5rem">Cross-Discipline Pairing</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Engineers pair across boundaries: embedded developers connect sensors to backend pipelines while designers shape technical telemetry interfaces.
+        <div class="reveal" style="--d:.1s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem)">
+          <span class="label" style="display:block;margin-bottom:1rem">Participant Philosophy</span>
+          <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.8rem);line-height:1;margin:0 0 1.2rem">
+            Craft Over <span class="outline-text">Slides</span>
+          </h3>
+          <p class="body" style="margin:0 0 1.2rem">
+            Confluence rewards working prototypes over speculative decks. Whether compiling embedded kernels, coordinating agent pipelines, or verifying distributed states, execution depth remains the primary criterion.
           </p>
-        </div>
-
-        <div style="padding:1.5rem 0;border-top:1px solid var(--line)" class="reveal" style="--d:.2s">
-          <span class="label" style="display:block;margin-bottom:.5rem">Stage 03</span>
-          <h3 style="font-size:1.2rem;font-weight:600;margin:0 0 .5rem">Mentor Checkpoints</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Scheduled sanity checks with industry specialists, researchers, and IEEE fellows stress-test assumptions during development.
-          </p>
-        </div>
-
-        <div style="padding:1.5rem 0;border-top:1px solid var(--line)" class="reveal" style="--d:.3s">
-          <span class="label" style="display:block;margin-bottom:.5rem">Stage 04</span>
-          <h3 style="font-size:1.2rem;font-weight:600;margin:0 0 .5rem">Live Code Execution</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Evaluations occur on real machines and development kits. Teams demonstrate running processes and answer technical questions from the jury.
-          </p>
+          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--dim)">
+            Venue: <span style="color:var(--ink);font-weight:600">{EVENT_CONFIG.eventDetails.venueText}</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Section: Specifications & Placeholders -->
-  <section class="section" aria-labelledby="specs-heading">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">04 — Specifications</span>
-        <span class="label">Event Details & Status</span>
-      </div>
+      <!-- Auditorium & Stage Demos Showcase -->
+      <div class="reveal" style="margin-top:clamp(2.5rem, 5vw, 4rem);border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
+        <div style="position:relative;aspect-ratio:16/9;max-height:480px;overflow:hidden">
+          <img
+            src="/images/stage-demos.jpg"
+            alt="Confluence Hackathon Grand Finale live prototype demonstrations before jury and audience at PES University auditorium"
+            style="width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:contrast(1.05) brightness(0.94)"
+            loading="lazy"
+            decoding="async"
+          />
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.85) 100%)"></div>
+          
+          <div style="position:absolute;top:1.5rem;left:1.5rem">
+            <span class="label" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(8px);border:1px solid var(--acid);color:var(--acid)">
+              ● Grand Finale Stage
+            </span>
+          </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,4rem);align-items:start">
-        <div>
-          <h2 id="specs-heading" style="font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;margin:0 0 1rem;line-height:1.1">
-            Official Participation Parameters
-          </h2>
-          <p class="body" style="margin:0 0 1.5rem">
-            Specific logistical policies are under final review by the IEEE CS PESU executive committee. Unconfirmed areas are explicitly annotated below.
-          </p>
-          <div style="display:flex;gap:1rem;flex-wrap:wrap">
-            <a href="/themes/" class="btn btn-ghost">
-              Explore Themes &nearr;
-            </a>
-            <a href="/faqs/" class="btn btn-ghost">
-              Read FAQs &nearr;
-            </a>
-          </div>
-        </div>
-
-        <div style="border:1px solid var(--line)">
-          <div class="fact">
-            <span class="label">Host University</span>
-            <span class="value">{EVENT_CONFIG.university}</span>
-          </div>
-          <div class="fact">
-            <span class="label">Organizing Body</span>
-            <span class="value">{EVENT_CONFIG.organizer} PESU Chapter</span>
-          </div>
-          <div class="fact">
-            <span class="label">Campus Venue</span>
-            <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.venueText}</span></span>
-          </div>
-          <div class="fact">
-            <span class="label">Event Date</span>
-            <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.dateText}</span></span>
-          </div>
-          <div class="fact">
-            <span class="label">Format &amp; Duration</span>
-            <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.formatText}</span></span>
-          </div>
-          <div class="fact">
-            <span class="label">Eligibility Criteria</span>
-            <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.eligibilityText}</span></span>
-          </div>
-          <div class="fact" style="border-bottom:0">
-            <span class="label">Team Formation</span>
-            <span class="value"><span class="ph">{EVENT_CONFIG.eventDetails.teamSizeText}</span></span>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem">
+            <div>
+              <p class="label" style="margin:0 0 .3rem;color:var(--muted)">Evaluation &amp; Presentation</p>
+              <h3 style="font-family:var(--display);font-size:clamp(1.2rem, 2.2vw, 1.8rem);font-weight:600;margin:0;color:var(--ink)">
+                Live System Demonstrations Before Industry Jury
+              </h3>
+            </div>
+            <span class="coords" style="color:#BDB9AF;background:rgba(10,10,10,0.7);padding:.3rem .6rem">
+              G.J. Auditorium · PESU
+            </span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Bottom CTA -->
-  <section class="section final" style="padding-top:3rem" aria-labelledby="about-cta-heading">
-    <div class="wrap">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:2.5rem">
-        <div>
-          <span class="idx" style="display:block;margin-bottom:.5rem">Ready to construct?</span>
-          <h2 id="about-cta-heading" style="font-size:clamp(1.5rem,2.8vw,2.4rem);font-weight:700;margin:0">
-            Review tracks or check registration availability.
-          </h2>
-        </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <a href="/themes/" class="btn btn-ghost">
-            View Problem Tracks <span class="arrow">&rarr;</span>
-          </a>
-          <a href={EVENT_CONFIG.registration.url} class="btn btn-primary">
-            {EVENT_CONFIG.registration.buttonText} <span class="arrow">&rarr;</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Final CTA -->
+  <Cta />
 </Layout>

@@ -20,15 +20,67 @@ const {
 // Ensure absolute URL for social crawlers (Discord, Twitter/X, LinkedIn, Slack)
 const ogImageUrl = new URL(image, Astro.site || EVENT_CONFIG.metadata.siteUrl).href;
 const canonicalHref = canonicalURL.toString();
+
+// Verified Structured Data (JSON-LD) without unconfirmed dates or fake facts
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${canonicalHref}#website`,
+      'url': Astro.site ? Astro.site.toString() : EVENT_CONFIG.metadata.siteUrl,
+      'name': `${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`,
+      'description': EVENT_CONFIG.metadata.siteDescription,
+      'publisher': {
+        '@id': `${canonicalHref}#organization`
+      }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${canonicalHref}#organization`,
+      'name': `${EVENT_CONFIG.organizer} PES University`,
+      'alternateName': 'IEEE CS PESU',
+      'url': Astro.site ? Astro.site.toString() : EVENT_CONFIG.metadata.siteUrl,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': EVENT_CONFIG.city,
+        'addressCountry': 'IN'
+      }
+    },
+    {
+      '@type': 'Hackathon',
+      '@id': `${canonicalHref}#event`,
+      'name': `${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`,
+      'description': EVENT_CONFIG.tagline,
+      'organizer': {
+        '@id': `${canonicalHref}#organization`
+      },
+      'location': {
+        '@type': 'Place',
+        'name': `${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}`,
+        'geo': {
+          '@type': 'GeoCoordinates',
+          'latitude': 12.9716,
+          'longitude': 77.5946
+        }
+      },
+      'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+      'eventStatus': 'https://schema.org/EventScheduled'
+    }
+  ]
+};
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="generator" content={Astro.generator} />
+<meta name="robots" content="index, follow" />
+<meta name="author" content={`${EVENT_CONFIG.organizer} PES University`} />
 
 <!-- Favicons & Touch Icons -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalHref} />
@@ -70,3 +122,6 @@ const canonicalHref = canonicalURL.toString();
   href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
   rel="stylesheet"
 />
+
+<!-- Structured Data (JSON-LD) with verified details only -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

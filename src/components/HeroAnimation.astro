@@ -1,0 +1,246 @@
+---
+// src/components/HeroAnimation.astro
+// Lightweight, progressive canvas-based frame renderer for Confluence 2026 hero animation
+---
+
+<div class="hero-character-wrap" id="heroCharWrap" aria-hidden="true">
+  <canvas
+    id="heroCanvas"
+    class="hero-character-canvas"
+    width="3836"
+    height="2160"
+  ></canvas>
+</div>
+
+<script>
+  (() => {
+    class HeroAnimationPlayer {
+      private canvas: HTMLCanvasElement | null = null;
+      private ctx: CanvasRenderingContext2D | null = null;
+      private totalFrames = 177;
+      private fps = 24;
+      private frameDuration = 1000 / this.fps; // ~41.67ms
+      private currentFrame = 0;
+      private images: (HTMLImageElement | null)[] = [];
+      private loadedCount = 0;
+      private isPlaying = false;
+      private rafId: number | null = null;
+      private lastFrameTime = 0;
+      private pauseDuration = 1200; // 1.2s celebration hold on Eureka triumph frame
+      private pauseStartTime = 0;
+      private isHoldingEureka = false;
+      private isVisible = true;
+      private reduceMotion = false;
+
+      constructor(canvasId: string) {
+        this.canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        if (!this.ctx) return;
+
+        this.images = new Array(this.totalFrames).fill(null);
+        this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        this.init();
+      }
+
+      private getFrameUrl(index: number): string {
+        const num = String(index + 1).padStart(3, '0');
+        return `/frames/ezgif-frame-${num}.jpg`;
+      }
+
+      private init(): void {
+        if (!this.ctx || !this.canvas) return;
+
+        // If reduced motion is requested, render static celebratory Eureka frame without looping
+        if (this.reduceMotion) {
+          const staticImg = new Image();
+          staticImg.src = this.getFrameUrl(159); // Frame 160
+          staticImg.onload = () => {
+            if (this.ctx && this.canvas) {
+              this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+              this.ctx.drawImage(staticImg, 0, 0, this.canvas.width, this.canvas.height);
+            }
+          };
+          return;
+        }
+
+        // Step 1: Preload Frame 1 immediately for instant paint with zero layout shift
+        const firstImg = new Image();
+        firstImg.src = this.getFrameUrl(0);
+        firstImg.onload = () => {
+          this.images[0] = firstImg;
+          this.loadedCount++;
+          if (this.ctx && this.canvas) {
+            this.ctx.drawImage(firstImg, 0, 0, this.canvas.width, this.canvas.height);
+          }
+
+          // Step 2: Stream remaining frames progressively in background batches
+          this.startProgressivePreload();
+
+          // Step 3: Start playback
+          this.start();
+        };
+
+        firstImg.onerror = () => {
+          // In case of network retry, attempt progressive stream
+          this.startProgressivePreload();
+        };
+
+        this.setupObservers();
+      }
+
+      private startProgressivePreload(): void {
+        let nextToLoad = 1;
+        const maxConcurrency = 4;
+        let activeRequests = 0;
+
+        const loadNextBatch = () => {
+          while (activeRequests < maxConcurrency && nextToLoad < this.totalFrames) {
+            const idx = nextToLoad++;
+            activeRequests++;
+            const img = new Image();
+            img.src = this.getFrameUrl(idx);
+            img.onload = () => {
+              this.images[idx] = img;
+              this.loadedCount++;
+              activeRequests--;
+              loadNextBatch();
+            };
+            img.onerror = () => {
+              // Graceful error fallback: reuse preceding frame
+              this.images[idx] = this.images[idx - 1] || null;
+              activeRequests--;
+              loadNextBatch();
+            };
+          }
+        };
+
+        if ('requestIdleCallback' in window) {
+          (window as any).requestIdleCallback(() => loadNextBatch());
+        } else {
+          setTimeout(loadNextBatch, 50);
+        }
+      }
+
+      private setupObservers(): void {
+        const hero = document.getElementById('hero');
+        if (hero && 'IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                this.isVisible = entry.isIntersecting;
+                if (this.isVisible && !this.isPlaying && !this.reduceMotion) {
+                  this.start();
+                } else if (!this.isVisible && this.isPlaying) {
+                  this.stop();
+                }
+              });
+            },
+            { threshold: 0.05 }
+          );
+          observer.observe(hero);
+        }
+
+        // Tab visibility change handling (save CPU when inactive)
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            this.stop();
+          } else if (this.isVisible && !this.reduceMotion) {
+            this.start();
+          }
+        });
+
+        // Dynamic reduced-motion preference updates
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+          this.reduceMotion = e.matches;
+          if (this.reduceMotion) {
+            this.stop();
+            const fallbackImg = this.images[159] || this.images[0];
+            if (fallbackImg && this.ctx && this.canvas) {
+              this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+              this.ctx.drawImage(fallbackImg, 0, 0, this.canvas.width, this.canvas.height);
+            }
+          } else {
+            this.start();
+          }
+        });
+      }
+
+      private start(): void {
+        if (this.isPlaying || this.reduceMotion) return;
+        this.isPlaying = true;
+        this.lastFrameTime = performance.now();
+        this.tick(this.lastFrameTime);
+      }
+
+      private stop(): void {
+        this.isPlaying = false;
+        if (this.rafId) {
+          cancelAnimationFrame(this.rafId);
+          this.rafId = null;
+        }
+      }
+
+      private tick(now: number): void {
+        if (!this.isPlaying) return;
+
+        this.rafId = requestAnimationFrame((timestamp) => this.tick(timestamp));
+
+        // Eureka victory hold: linger for 1.2s on triumph frame before cycling back to code
+        if (this.isHoldingEureka) {
+          if (now - this.pauseStartTime >= this.pauseDuration) {
+            this.isHoldingEureka = false;
+            this.currentFrame = 0;
+            this.lastFrameTime = now;
+          }
+          return;
+        }
+
+        const elapsed = now - this.lastFrameTime;
+        if (elapsed >= this.frameDuration) {
+          const advance = Math.min(3, Math.floor(elapsed / this.frameDuration));
+          this.lastFrameTime = now - (elapsed % this.frameDuration);
+
+          const nextIndex = this.currentFrame + advance;
+          if (nextIndex >= this.totalFrames) {
+            this.currentFrame = this.totalFrames - 1;
+            this.isHoldingEureka = true;
+            this.pauseStartTime = now;
+          } else {
+            this.currentFrame = nextIndex;
+          }
+
+          this.draw();
+        }
+      }
+
+      private draw(): void {
+        if (!this.ctx || !this.canvas) return;
+
+        // Retrieve current frame or nearest prior cached frame
+        let img = this.images[this.currentFrame];
+        if (!img) {
+          for (let i = this.currentFrame - 1; i >= 0; i--) {
+            if (this.images[i]) {
+              img = this.images[i];
+              break;
+            }
+          }
+        }
+
+        if (img) {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+    }
+
+    // Initialize player when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => new HeroAnimationPlayer('heroCanvas'));
+    } else {
+      new HeroAnimationPlayer('heroCanvas');
+    }
+  })();
+</script>

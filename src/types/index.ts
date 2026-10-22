@@ -26,9 +26,7 @@ export interface ThemeItem {
   description: string;
   trackTag: string;
   svgShape: ThemeSvgShape;
-  details?: string[];
-  systemFocus?: string;
-  criteriaPlaceholder?: string;
+  focusAreas?: string[];
 }
 
 export interface RoadmapMilestone {
@@ -38,36 +36,24 @@ export interface RoadmapMilestone {
   description: string;
   date: string;
   isPlaceholderDate: boolean;
-  status: 'completed' | 'active' | 'upcoming';
   isActive?: boolean;
-  deliverables?: string[];
-  checkpoint?: string;
+  details?: string[];
 }
-
-export type FaqCategory =
-  | 'General'
-  | 'Eligibility'
-  | 'Registration'
-  | 'Themes & Tracks'
-  | 'Submissions'
-  | 'Format & Logistics'
-  | 'Rules & IP';
 
 export interface FaqItem {
   id: string;
   index: string;
-  category: FaqCategory;
   question: string;
   answerText: string;
   placeholderDetail?: string;
   defaultOpen?: boolean;
+  category?: string;
 }
 
 export interface SocialLink {
   platform: string;
   url: string;
-  handleOrText: string;
-  isPlaceholder: boolean;
+  placeholderText?: string;
 }
 
 export interface EventConfig {
@@ -75,32 +61,30 @@ export interface EventConfig {
   edition: string;
   organizer: string;
   university: string;
-  campus: string;
   city: string;
   coordinates: string;
   tagline: string;
-  headline: string;
   manifesto: {
-    headline: string;
-    subheadline: string;
     paragraphs: string[];
     pillars: ManifestoPillar[];
   };
   registration: {
-    url: string; // Internal route or external link
-    googleFormsUrl?: string; // Centralized Google Forms link when announced
+    googleFormsUrl: string;
     isOpen: boolean;
     openDateText: string;
     buttonText: string;
-    feeText: string;
-    instructions: string[];
+    unavailableText: string;
+    unavailableBadgeText: string;
+    feeText?: string;
+    instructions?: string[];
   };
   eventDetails: {
     dateText: string;
     venueText: string;
     formatText: string;
-    eligibilityText: string;
-    teamSizeText: string;
+    registrationOpensText: string;
+    eligibilityText?: string;
+    teamSizeText?: string;
   };
   socialLinks: SocialLink[];
   contact: {

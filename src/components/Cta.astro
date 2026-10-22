@@ -1,5 +1,8 @@
 ---
 import { EVENT_CONFIG } from '../data/event';
+
+const { registration } = EVENT_CONFIG;
+const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
 ---
 
 <section class="section final" id="register" aria-labelledby="final-title">
@@ -31,11 +34,28 @@ import { EVENT_CONFIG } from '../data/event';
         Bring an idea. Bring a discipline. Leave with something that works.
       </h3>
       <div class="final-cta reveal" style="--d:.15s">
-        <a href={EVENT_CONFIG.registration.url} class="btn btn-primary">
-          {EVENT_CONFIG.registration.buttonText} <span class="arrow" aria-hidden="true">→</span>
-        </a>
+        {hasRegistrationUrl ? (
+          <a
+            href={registration.googleFormsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            data-hover
+          >
+            {registration.buttonText} <span class="arrow">→</span>
+          </a>
+        ) : (
+          <a
+            href="/register/"
+            class="btn btn-primary"
+            data-hover
+            style="width:min(100%,360px);justify-content:space-between"
+          >
+            {registration.unavailableText} <span class="arrow">→</span>
+          </a>
+        )}
         <span class="label">
-          Registration opens <span class="ph">{EVENT_CONFIG.registration.openDateText}</span>
+          Admissions live since <span style="color:var(--acid);font-weight:600">{registration.openDateText}</span>
         </span>
       </div>
     </div>

@@ -25,7 +25,7 @@ const currentYear = new Date().getFullYear();
           </li>
         ))}
         <li>
-          <a href={EVENT_CONFIG.registration.url}>Register</a>
+          <a href="/register/">Register</a>
         </li>
       </ul>
     </div>
@@ -34,15 +34,25 @@ const currentYear = new Date().getFullYear();
       <h4>Contact</h4>
       <ul>
         <li>
-          <a href={`mailto:${EVENT_CONFIG.contact.email}`}>
+          {EVENT_CONFIG.contact.email && !EVENT_CONFIG.contact.email.includes('[') ? (
+            <a href={`mailto:${EVENT_CONFIG.contact.email}`}>{EVENT_CONFIG.contact.email}</a>
+          ) : (
             <span class="ph">{EVENT_CONFIG.contact.email}</span>
-          </a>
+          )}
         </li>
         <li>
-          <span class="ph">{EVENT_CONFIG.contact.phone}</span>
+          {EVENT_CONFIG.contact.phone && !EVENT_CONFIG.contact.phone.includes('[') ? (
+            <a href={`tel:${EVENT_CONFIG.contact.phone}`}>{EVENT_CONFIG.contact.phone}</a>
+          ) : (
+            <span class="ph">{EVENT_CONFIG.contact.phone}</span>
+          )}
         </li>
         <li>
-          <span class="ph">{EVENT_CONFIG.contact.address}</span>
+          {EVENT_CONFIG.contact.address && !EVENT_CONFIG.contact.address.includes('[') ? (
+            <span style="color:var(--muted);font-size:.82rem;line-height:1.4;display:block">{EVENT_CONFIG.contact.address}</span>
+          ) : (
+            <span class="ph">{EVENT_CONFIG.contact.address}</span>
+          )}
         </li>
       </ul>
     </div>
@@ -52,13 +62,19 @@ const currentYear = new Date().getFullYear();
       <ul>
         {EVENT_CONFIG.socialLinks.map((s) => (
           <li>
-            <a
-              href={s.url}
-              target={s.url.startsWith('http') ? '_blank' : undefined}
-              rel={s.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-            >
-              {s.platform} {s.isPlaceholder && <span class="ph">{s.handleOrText}</span>}
-            </a>
+            {s.url && s.url.startsWith('http') ? (
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {s.platform}
+              </a>
+            ) : (
+              <span style="color:var(--muted)">
+                {s.platform} <span class="ph">{s.placeholderText || '[LINK TBA]'}</span>
+              </span>
+            )}
           </li>
         ))}
       </ul>

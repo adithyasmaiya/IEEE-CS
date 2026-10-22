@@ -25,8 +25,9 @@ const { title, description, image, canonicalURL } = Astro.props;
     />
   </head>
   <body>
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
     <Nav />
-    <main>
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
     <Footer />
@@ -53,16 +54,25 @@ const { title, description, image, canonicalURL } = Astro.props;
           window.addEventListener('scroll', onScroll, { passive: true });
         }
 
-        // Accessible Mobile Menu Drawer
+        // Accessible Mobile Menu Drawer with Focus Trap
         const menuBtn = document.getElementById('menuBtn');
         const menu = document.getElementById('mobileMenu');
         if (menuBtn && menu) {
+          const focusableEls = () => menu.querySelectorAll<HTMLElement>('a, button, [tabindex="0"]');
+
           const setMenu = (open: boolean) => {
             root.classList.toggle('menu-open', open);
             menuBtn.setAttribute('aria-expanded', String(open));
             menuBtn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
             menu.setAttribute('aria-hidden', String(!open));
             document.body.style.overflow = open ? 'hidden' : '';
+
+            if (open) {
+              const firstFocusable = focusableEls()[0];
+              firstFocusable?.focus();
+            } else {
+              menuBtn.focus();
+            }
           };
 
           menuBtn.addEventListener('click', () => {
@@ -75,9 +85,26 @@ const { title, description, image, canonicalURL } = Astro.props;
           });
 
           window.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && root.classList.contains('menu-open')) {
+            if (!root.classList.contains('menu-open')) return;
+
+            if (e.key === 'Escape') {
               setMenu(false);
-              menuBtn.focus();
+              return;
+            }
+
+            if (e.key === 'Tab') {
+              const focusables = Array.from(focusableEls());
+              if (focusables.length === 0) return;
+              const first = focusables[0];
+              const last = focusables[focusables.length - 1];
+
+              if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+              } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+              }
             }
           });
 
@@ -88,8 +115,23 @@ const { title, description, image, canonicalURL } = Astro.props;
           });
         }
 
-        // Scroll Reveal Animations
-        const revealEls = document.querySelectorAll('.reveal, .reveal-mask');
+        // ANIMATION 1 — Cinematic Hero Text Reveal on Initial Load
+        const hero = document.getElementById('hero');
+        if (hero) {
+          if (reduce) {
+            hero.classList.add('hero-entered');
+          } else {
+            // Two RAF ticks guarantee initial styles are committed before transition begins
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                hero.classList.add('hero-entered');
+              });
+            });
+          }
+        }
+
+        // ANIMATION 2 — Scroll-Triggered Reveals via IntersectionObserver
+        const revealEls = document.querySelectorAll('.reveal, .reveal-mask, .draw-line');
         if (reduce || !('IntersectionObserver' in window)) {
           revealEls.forEach((el) => el.classList.add('in'));
         } else {
@@ -102,67 +144,184 @@ const { title, description, image, canonicalURL } = Astro.props;
                 }
               });
             },
-            { threshold: 0.1, rootMargin: '0px 0px -4% 0px' }
+            { threshold: 0.08, rootMargin: '0px 0px -4% 0px' }
           );
           revealEls.forEach((el) => io.observe(el));
         }
 
-        // Roadmap Progress Animation
-        const roadmap = document.getElementById('roadmapBlock');
-        if (roadmap) {
+        // BFCache / page restoration handling for reveals
+        window.addEventListener('pageshow', (e) => {
+          if (e.persisted) {
+            document.querySelectorAll('.reveal, .reveal-mask, .draw-line').forEach((el) => {
+              const rect = el.getBoundingClientRect();
+              if (rect.top < window.innerHeight) {
+                el.classList.add('in');
+              }
+            });
+          }
+        });
+
+        // ANIMATION 2 — Scroll-Tied Roadmap Progress Indicator
+        const roadmapBlock = document.getElementById('roadmapBlock');
+        if (roadmapBlock) {
+          const progressLine = roadmapBlock.querySelector<HTMLElement>('.timeline-progress');
+          const milestones = roadmapBlock.querySelectorAll<HTMLElement>('.milestone');
+          const roadmapContainer = roadmapBlock.closest('.roadmap');
+
           if (reduce || !('IntersectionObserver' in window)) {
-            roadmap.classList.add('in');
+            roadmapContainer?.classList.add('in');
+            if (progressLine) progressLine.style.setProperty('--timeline-w', '100%');
+            milestones.forEach((m) => m.classList.add('node-lit'));
           } else {
-            const rio = new IntersectionObserver(
+            let roadmapActive = false;
+            let ticking = false;
+
+            const updateProgress = () => {
+              const rect = roadmapBlock.getBoundingClientRect();
+              const vh = window.innerHeight;
+              const start = vh * 0.85;
+              const end = vh * 0.25;
+              const rawProgress = (start - rect.top) / (start - end);
+              const clampedProgress = Math.min(1, Math.max(0, rawProgress));
+
+              if (progressLine) {
+                progressLine.style.setProperty('--timeline-w', `${(clampedProgress * 100).toFixed(1)}%`);
+              }
+
+              milestones.forEach((m, idx) => {
+                const threshold = (idx / (milestones.length - 1)) * 0.88;
+                if (clampedProgress >= threshold) {
+                  m.classList.add('node-lit');
+                } else if (clampedProgress < threshold - 0.08) {
+                  m.classList.remove('node-lit');
+                }
+              });
+
+              ticking = false;
+            };
+
+            const onRoadmapScroll = () => {
+              if (!ticking && roadmapActive) {
+                ticking = true;
+                requestAnimationFrame(updateProgress);
+              }
+            };
+
+            const roadmapObserver = new IntersectionObserver(
               (entries) => {
                 entries.forEach((entry) => {
-                  if (entry.isIntersecting) {
-                    roadmap.classList.add('in');
-                    rio.disconnect();
+                  roadmapActive = entry.isIntersecting;
+                  if (roadmapActive) {
+                    roadmapContainer?.classList.add('in');
+                    window.addEventListener('scroll', onRoadmapScroll, { passive: true });
+                    updateProgress();
+                  } else {
+                    window.removeEventListener('scroll', onRoadmapScroll);
                   }
                 });
               },
-              { threshold: 0.25 }
+              { threshold: 0.05 }
             );
-            rio.observe(roadmap);
+            roadmapObserver.observe(roadmapBlock);
           }
         }
 
-        // Desktop Pointer Parallax for Hero Vector Art
-        const heroArt = document.getElementById('heroArt');
-        const hero = document.getElementById('hero');
-        if (heroArt && hero && !reduce && fine) {
-          let tx = 0;
-          let ty = 0;
-          let cx = 0;
-          let cy = 0;
-          let rafId: number | null = null;
+        // ANIMATION 2 — Viewport-Gated Subtle Parallax on Decorative SVGs Only
+        if (!reduce) {
+          const parallaxConfigs = [
+            { sectionId: 'about', targetSelector: '.manifesto-art svg', factor: 0.06, maxOffset: 36 },
+            { sectionId: 'register', targetSelector: '.final-art svg', factor: 0.10, maxOffset: 50 }
+          ];
 
-          const tick = () => {
-            cx += (tx - cx) * 0.06;
-            cy += (ty - cy) * 0.06;
-            heroArt.style.setProperty('--px', cx.toFixed(4));
-            heroArt.style.setProperty('--py', cy.toFixed(4));
-            if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
-              rafId = requestAnimationFrame(tick);
-            } else {
-              rafId = null;
-            }
-          };
+          parallaxConfigs.forEach(({ sectionId, targetSelector, factor, maxOffset }) => {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            const target = section.querySelector<HTMLElement>(targetSelector);
+            if (!target) return;
 
-          hero.addEventListener('pointermove', (e: PointerEvent) => {
-            const r = hero.getBoundingClientRect();
-            tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-            ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
-            if (!rafId) rafId = requestAnimationFrame(tick);
-          });
+            let sectionActive = false;
+            let sectionTicking = false;
 
-          hero.addEventListener('pointerleave', () => {
-            tx = 0;
-            ty = 0;
-            if (!rafId) rafId = requestAnimationFrame(tick);
+            const updateSectionParallax = () => {
+              const rect = section.getBoundingClientRect();
+              const centerDelta = (window.innerHeight * 0.5) - (rect.top + rect.height * 0.5);
+              const offset = Math.max(-maxOffset, Math.min(maxOffset, centerDelta * factor));
+              target.style.setProperty('--scroll-y', `${offset.toFixed(1)}px`);
+              target.style.setProperty('--art-scroll-y', `${offset.toFixed(1)}px`);
+              sectionTicking = false;
+            };
+
+            const onSectionScroll = () => {
+              if (!sectionTicking && sectionActive) {
+                sectionTicking = true;
+                requestAnimationFrame(updateSectionParallax);
+              }
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                sectionActive = entry.isIntersecting;
+                if (sectionActive) {
+                  window.addEventListener('scroll', onSectionScroll, { passive: true });
+                  updateSectionParallax();
+                } else {
+                  window.removeEventListener('scroll', onSectionScroll);
+                }
+              });
+            }, { threshold: 0.02 });
+
+            sectionObserver.observe(section);
           });
         }
+
+        // Custom Cursor (fine pointers only, decorative, pointer-events: none, never hides native cursor)
+        if (fine && !reduce) {
+          const dot = document.createElement('div');
+          dot.className = 'cursor';
+          dot.setAttribute('aria-hidden', 'true');
+          document.body.appendChild(dot);
+
+          let mx = 0;
+          let my = 0;
+          let dx = 0;
+          let dy = 0;
+
+          window.addEventListener(
+            'pointermove',
+            (e: PointerEvent) => {
+              mx = e.clientX;
+              my = e.clientY;
+              dot.classList.add('on');
+            },
+            { passive: true }
+          );
+
+          document.addEventListener('pointerleave', () => {
+            dot.classList.remove('on');
+          });
+
+          const loop = () => {
+            dx += (mx - dx) * 0.22;
+            dy += (my - dy) * 0.22;
+            dot.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+            requestAnimationFrame(loop);
+          };
+          loop();
+
+          document.querySelectorAll('[data-hover], a, button, summary').forEach((el) => {
+            el.addEventListener('pointerenter', () => dot.classList.add('hover'));
+            el.addEventListener('pointerleave', () => dot.classList.remove('hover'));
+          });
+        }
+
+        // Theme rows: touch-friendly preview toggle
+        document.querySelectorAll('.theme').forEach((t) => {
+          t.addEventListener('click', () => {
+            if (window.matchMedia('(hover: none)').matches) {
+              t.classList.toggle('active');
+            }
+          });
+        });
       })();
     </script>
   </body>
