@@ -18,6 +18,33 @@ const { title, description, image, canonicalURL } = Astro.props;
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
+    <script is:inline>
+      (() => {
+        try {
+          const navEntries = performance.getEntriesByType('navigation');
+          const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+
+          const path = window.location.pathname;
+          const isLanding = path === '/' || path === '' || path === '/index.html';
+
+          if (isReload) {
+            if (!isLanding) {
+              window.location.replace('/');
+            } else {
+              if (window.location.hash) {
+                window.history.replaceState(null, '', '/');
+              }
+              if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+              }
+              window.scrollTo(0, 0);
+              window.addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+              window.addEventListener('load', () => window.scrollTo(0, 0));
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     <BaseHead
       title={title}
       description={description}
