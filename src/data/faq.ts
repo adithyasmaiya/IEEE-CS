@@ -5,8 +5,7 @@ export const FAQ_LIST: FaqItem[] = [
     id: 'faq-01',
     index: 'Q.01',
     question: 'Who is eligible to participate in Confluence?',
-    answerText: 'Confluence 2026 is open to undergraduate and postgraduate students from any recognized university or college worldwide. Interdisciplinary teams bringing together developers, hardware engineers, UI/UX designers, and researchers are strongly encouraged.',
-    defaultOpen: true
+    answerText: 'Confluence 2026 is open to undergraduate and postgraduate students from any recognized university or college worldwide. Interdisciplinary teams bringing together developers, hardware engineers, UI/UX designers, and researchers are strongly encouraged.'
   },
   {
     id: 'faq-02',
