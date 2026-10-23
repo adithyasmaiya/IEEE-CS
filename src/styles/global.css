@@ -1411,19 +1411,25 @@ footer {
 }
 
 .footer-giant {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
   font-family: var(--display);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -.065em;
-  font-size: clamp(2.2rem, 13.4vw, 13.5rem);
-  line-height: .78;
+  font-size: clamp(2.4rem, 14.2vw, 19.5rem);
+  line-height: .75;
   color: transparent;
   -webkit-text-stroke: 1.2px var(--line-strong);
-  margin: 3rem 0 0;
-  white-space: nowrap;
-  overflow: visible;
-  padding-right: 0.08em;
+  margin: 3.5rem 0 0;
   user-select: none;
+  overflow: visible;
+}
+
+.footer-giant span {
+  display: inline-block;
+  line-height: inherit;
 }
 
 /* ---------- Reveal ---------- */
@@ -1884,6 +1890,12 @@ footer {
   .footer-brand {
     grid-column: 1 / -1;
   }
+
+  .footer-giant {
+    font-size: clamp(2rem, 13.5vw, 6.5rem);
+    -webkit-text-stroke-width: 1px;
+    margin-top: 2.5rem;
+  }
 }
 
 @media (max-width: 560px) {
@@ -2141,6 +2153,11 @@ footer {
     flex-direction: column;
     gap: 0.75rem;
     text-align: left;
+  }
+
+  .footer-giant {
+    font-size: clamp(1.6rem, 12.5vw, 3.8rem);
+    margin-top: 2rem;
   }
 
   /* Site Preloader Phone Layout */

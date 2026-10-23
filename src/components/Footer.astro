@@ -83,7 +83,11 @@ const normalizedPhoneHref = 'tel:+918026721983';
     </div>
   </div>
 
-  <p class="footer-giant" aria-hidden="true">{EVENT_CONFIG.name}</p>
+  <div class="footer-giant" aria-label={EVENT_CONFIG.name}>
+    {EVENT_CONFIG.name.split('').map((char) => (
+      <span aria-hidden="true">{char}</span>
+    ))}
+  </div>
 
   <div class="footer-bottom">
     <span class="label">
