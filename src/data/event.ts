@@ -69,8 +69,8 @@ export const EVENT_CONFIG: EventConfig = {
     },
     {
       platform: 'GitHub',
-      url: 'https://github.com/pesu-ieeecs',
-      placeholderText: 'github.com/pesu-ieeecs'
+      url: 'https://github.com/IEEE-CS-PESU',
+      placeholderText: 'github.com/IEEE-CS-PESU'
     }
   ],
   contact: {
