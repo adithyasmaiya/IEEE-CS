@@ -23,7 +23,7 @@ export const FAQ_LIST: FaqItem[] = [
     id: 'faq-04',
     index: 'Q.04',
     question: 'What is the format and duration?',
-    answerText: 'Confluence 2026 is an intense 36-hour continuous in-person hackathon held on-site at the PES University RR Campus Innovation Labs in Bengaluru. It features midnight check-ins, mentor feedback loops, and live stage demonstrations.'
+    answerText: 'Confluence 2026 is an intense 24-hour continuous in-person hackathon held on-site at the PES University RR Campus Innovation Labs in Bengaluru. It features midnight check-ins, mentor feedback loops, and live stage demonstrations.'
   },
   {
     id: 'faq-05',

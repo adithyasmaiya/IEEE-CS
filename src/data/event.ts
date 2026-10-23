@@ -50,7 +50,7 @@ export const EVENT_CONFIG: EventConfig = {
   eventDetails: {
     dateText: 'November 14–15, 2026',
     venueText: 'PES University (RR Campus), Tech Innovation Labs, Bengaluru',
-    formatText: '36-Hour In-Person Sprint · Systems, AI & Embedded Tech',
+    formatText: '24-Hour In-Person Sprint · Systems, AI & Embedded Tech',
     registrationOpensText: 'October 20, 2026',
     eligibilityText: 'Undergraduate and postgraduate students enrolled in recognized universities worldwide. Interdisciplinary teams encouraged.',
     teamSizeText: '2 to 4 Builders per Team'
@@ -122,7 +122,7 @@ export const HERO_FACTS: FactItem[] = [
 export const EVENT_METRICS: EventMetric[] = [
   {
     label: 'SPRINT DURATION',
-    value: '36 Hours',
+    value: '24 Hours',
     sub: 'Continuous On-Site'
   },
   {

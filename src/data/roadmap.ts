@@ -20,9 +20,9 @@ export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
   },
   {
     number: '03',
-    phase: 'Phase · 36h Sprint',
+    phase: 'Phase · 24h Sprint',
     title: 'Hacking Kickoff',
-    description: '36-hour sprint begins on-site at PES University. Hardware labs open & mentor rounds run.',
+    description: '24-hour sprint begins on-site at PES University. Hardware labs open & mentor rounds run.',
     date: 'Nov 14, 2026 · 09:00 AM',
     isPlaceholderDate: false
   },
@@ -31,7 +31,7 @@ export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
     phase: 'Phase · Git Freeze',
     title: 'Code & Prototype Lock',
     description: 'Final commit hashes locked, repositories archived, and live demo sandboxes verified.',
-    date: 'Nov 15, 2026 · 03:00 PM',
+    date: 'Nov 15, 2026 · 09:00 AM',
     isPlaceholderDate: false
   },
   {
@@ -39,13 +39,13 @@ export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
     phase: 'Phase · Stage Demos',
     title: 'Jury Evaluation & Awards',
     description: 'Finalist teams present live prototypes before industry judges, followed by the grand felicitation.',
-    date: 'Nov 15, 2026 · 05:30 PM',
+    date: 'Nov 15, 2026 · 11:30 AM',
     isPlaceholderDate: false
   }
 ];
 
 export const ROADMAP_STATUS = {
-  note: 'Official 36-hour hackathon schedule verified by IEEE Computer Society PES University organizing committee.',
+  note: 'Official 24-hour hackathon schedule verified by IEEE Computer Society PES University organizing committee.',
   statusText: 'SCHEDULE CONFIRMED'
 };
 
