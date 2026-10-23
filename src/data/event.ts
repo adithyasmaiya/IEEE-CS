@@ -64,8 +64,13 @@ export const EVENT_CONFIG: EventConfig = {
     },
     {
       platform: 'LinkedIn',
-      url: 'https://linkedin.com/company/ieee-cs-pesu',
-      placeholderText: 'IEEE Computer Society PESU'
+      url: 'https://www.linkedin.com/company/ieeecspesu/home',
+      placeholderText: 'linkedin.com/company/ieeecspesu'
+    },
+    {
+      platform: 'Discord',
+      url: 'https://discord.com/invite/7kpmFp2uuU',
+      placeholderText: 'discord.com/invite/7kpmFp2uuU'
     },
     {
       platform: 'GitHub',
