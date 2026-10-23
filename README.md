@@ -256,6 +256,5 @@ npx vercel --prod
   *(Use this link to claim the deployment into a personal Vercel team/account and assign the permanent domain `confluence-2026.vercel.app`).*
 - **GitHub Repository**: [`https://github.com/adithyasmaiya/IEEE-CS.git`](https://github.com/adithyasmaiya/IEEE-CS.git) (`main` branch)
 
-### Details Pending Official Organizer Confirmation
-- **Official Google Forms URL**: The registration link (`registration.googleFormsUrl` in `src/data/event.ts`) is currently empty pending announcement by IEEE CS PESU organizers. When announced, supplying the URL or setting `PUBLIC_GOOGLE_FORMS_URL` will immediately activate external redirects across all register CTAs.
+- **Official Google Forms URL**: Configured and live at [`https://forms.gle/L1exnXjZmBbikDEY6`](https://forms.gle/L1exnXjZmBbikDEY6). Wired across navigation, hero, and section CTAs via `registration.googleFormsUrl` in `src/data/event.ts`.
 - **Specific Room & Track Mentors**: Venue is verified as PES University RR Campus Innovation Labs; room assignments and specific mentor schedules will be populated in `src/data/event.ts` and `src/data/roadmap.ts` upon kickoff.

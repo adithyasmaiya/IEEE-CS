@@ -34,8 +34,7 @@ export const EVENT_CONFIG: EventConfig = {
   },
   registration: {
     // Official Google Forms registration URL. Configurable here or via PUBLIC_GOOGLE_FORMS_URL.
-    // When empty (''), the portal clearly identifies that the official Google Forms link is pending release.
-    googleFormsUrl: (import.meta.env.PUBLIC_GOOGLE_FORMS_URL as string | undefined) || '',
+    googleFormsUrl: (import.meta.env.PUBLIC_GOOGLE_FORMS_URL as string | undefined) || 'https://forms.gle/L1exnXjZmBbikDEY6',
     isOpen: true,
     openDateText: 'October 20, 2026',
     buttonText: 'Register Now',
