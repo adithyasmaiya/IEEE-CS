@@ -20,5 +20,10 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'FAQs',
     href: '/faqs/',
     index: '04'
+  },
+  {
+    label: 'Register',
+    href: '/register/',
+    index: '05'
   }
 ];

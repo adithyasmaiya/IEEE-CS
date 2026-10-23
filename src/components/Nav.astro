@@ -3,7 +3,6 @@ import { NAV_ITEMS } from '../data/navigation';
 import { EVENT_CONFIG } from '../data/event';
 
 const { registration } = EVENT_CONFIG;
-const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
@@ -44,9 +43,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     <div style="display:flex;align-items:center;gap:.75rem">
       {registration.isOpen ? (
         <a
-          href={hasRegistrationUrl ? registration.googleFormsUrl : '/register/'}
-          target={hasRegistrationUrl ? '_blank' : undefined}
-          rel={hasRegistrationUrl ? 'noopener noreferrer' : undefined}
+          href="/register/"
           class="btn btn-primary nav-cta"
           data-hover
         >
@@ -101,9 +98,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   <div>
     {registration.isOpen ? (
       <a
-        href={hasRegistrationUrl ? registration.googleFormsUrl : '/register/'}
-        target={hasRegistrationUrl ? '_blank' : undefined}
-        rel={hasRegistrationUrl ? 'noopener noreferrer' : undefined}
+        href="/register/"
         class="btn btn-primary"
         data-close
         style="width:100%;justify-content:space-between"
