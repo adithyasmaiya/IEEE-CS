@@ -1100,6 +1100,13 @@ body::before {
   transform: scale(1.06);
 }
 
+.milestone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
 .milestone .phase {
   font-family: var(--mono);
   font-size: .68rem;
@@ -1830,19 +1837,24 @@ footer {
     display: none;
   }
 
+  .grid-lines-x {
+    background-image: none;
+  }
+
   .timeline li.milestone {
     display: grid;
     grid-template-columns: 45px 1fr;
-    column-gap: 1.2rem;
+    column-gap: 1.25rem;
     padding: 0 0 2.6rem;
     position: relative;
+    align-items: start;
   }
 
   .timeline li.milestone:not(:last-child)::after {
     content: "";
     position: absolute;
     left: 22px;
-    top: 52px;
+    top: 48px;
     bottom: 0;
     width: 1px;
     background: var(--line-strong);
@@ -1857,9 +1869,23 @@ footer {
 
   .timeline li.milestone .node {
     margin-bottom: 0;
-    grid-row: span 2;
+    grid-column: 1;
+    grid-row: 1;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+  }
+
+  .timeline li.milestone .milestone-content {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* Explicit fallback to ensure text never drops into column 1 */
+  .timeline li.milestone .phase,
+  .timeline li.milestone h3,
+  .timeline li.milestone p,
+  .timeline li.milestone .date {
+    grid-column: 2;
   }
 
   .roadmap-note {
@@ -2091,8 +2117,8 @@ footer {
   /* Roadmap Timeline on Phones */
   .timeline li.milestone {
     grid-template-columns: 36px 1fr;
-    column-gap: 0.9rem;
-    padding-bottom: 1.8rem;
+    column-gap: 1rem;
+    padding-bottom: 2rem;
   }
 
   .timeline li.milestone .node {
@@ -2102,8 +2128,19 @@ footer {
   }
 
   .timeline li.milestone:not(:last-child)::after {
-    left: 17px;
-    top: 40px;
+    left: 17.5px;
+    top: 38px;
+  }
+
+  .timeline li.milestone h3 {
+    font-size: 1.15rem;
+    margin: 0.3rem 0 0.45rem;
+  }
+
+  .timeline li.milestone p {
+    font-size: 0.85rem;
+    line-height: 1.48;
+    margin: 0 0 0.75rem;
   }
 
   /* FAQs */
