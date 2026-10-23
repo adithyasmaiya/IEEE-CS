@@ -1294,13 +1294,15 @@ details.faq .answer .ph {
 .final-word {
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -.075em;
+  letter-spacing: -.07em;
   line-height: .8;
-  font-size: clamp(3.2rem, 15.4vw, 15.5rem);
+  font-size: clamp(2.8rem, 13.8vw, 14.2rem);
   margin: 0;
   white-space: nowrap;
   position: relative;
   z-index: 2;
+  padding-right: 0.05em;
+  overflow: visible;
 }
 
 .final-word .outline-text {
@@ -1409,16 +1411,18 @@ footer {
 }
 
 .footer-giant {
+  font-family: var(--display);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -.07em;
-  font-size: clamp(3rem, 16vw, 16rem);
-  line-height: .75;
+  letter-spacing: -.065em;
+  font-size: clamp(2.2rem, 13.4vw, 13.5rem);
+  line-height: .78;
   color: transparent;
-  -webkit-text-stroke: 1px var(--line-strong);
+  -webkit-text-stroke: 1.2px var(--line-strong);
   margin: 3rem 0 0;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
+  padding-right: 0.08em;
   user-select: none;
 }
 
