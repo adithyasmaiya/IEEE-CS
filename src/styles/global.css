@@ -610,29 +610,6 @@ body::before {
   filter: contrast(1.04) brightness(1.02);
 }
 
-/* ---------- Hero Orbital SVG Artwork ---------- */
-.hero-orbital-art {
-  position: absolute;
-  right: -5%;
-  top: 45%;
-  width: min(85vmin, 780px);
-  aspect-ratio: 1;
-  transform: translateY(-45%);
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-  opacity: 0.55;
-  transition: opacity 1s var(--ease);
-}
-
-.hero-orbital-inner {
-  width: 100%;
-  height: 100%;
-  transform: translate3d(calc(var(--px, 0) * 16px), calc(var(--py, 0) * 16px), 0);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
-}
-
 .orbit-ring {
   transform-origin: 50% 50%;
   animation: spin 46s linear infinite;
@@ -1709,12 +1686,6 @@ footer {
     height: 140px;
   }
 
-  .hero-orbital-art {
-    right: -12%;
-    width: min(78vmin, 640px);
-    opacity: 0.45;
-  }
-
   /* 861px–1100px Roadmap: Preserves 5-column cadence and horizontal progress line */
   .timeline {
     grid-template-columns: repeat(5, 1fr);
@@ -1835,13 +1806,6 @@ footer {
   .theme:hover .theme-visual,
   .theme:focus-within .theme-visual {
     transform: none;
-  }
-
-  .hero-orbital-art {
-    right: -25%;
-    top: 40%;
-    width: min(90vmin, 480px);
-    opacity: 0.35;
   }
 
   .timeline {
@@ -2006,13 +1970,6 @@ footer {
 
   .wordmark-xl {
     font-size: clamp(2.3rem, 14.5vw, 4.2rem);
-  }
-
-  .hero-orbital-art {
-    right: -32%;
-    top: 36%;
-    width: min(85vmin, 340px);
-    opacity: 0.25;
   }
 
   .hero-foot {
@@ -2253,13 +2210,6 @@ footer {
     object-position: 91% 50%;
     filter: contrast(1.2) brightness(1.25);
   }
-
-  .hero-orbital-art {
-    right: -38%;
-    top: 34%;
-    width: min(80vmin, 260px);
-    opacity: 0.18;
-  }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -2296,8 +2246,7 @@ footer {
     opacity: 0.85 !important;
   }
 
-  .orbit-ring,
-  .hero-orbital-inner {
+  .orbit-ring {
     animation: none !important;
     transform: none !important;
   }
