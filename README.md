@@ -255,6 +255,8 @@ npx vercel --prod
 - **Vercel Claim Link**: [`https://vercel.com/claim-deployment?code=dcf5fca2-0e3a-4f9c-a2f2-8139431d75bd`](https://vercel.com/claim-deployment?code=dcf5fca2-0e3a-4f9c-a2f2-8139431d75bd)  
   *(Use this link to claim the deployment into a personal Vercel team/account and assign the permanent domain `confluence-2026.vercel.app`).*
 - **GitHub Repository**: [`https://github.com/adithyasmaiya/IEEE-CS.git`](https://github.com/adithyasmaiya/IEEE-CS.git) (`main` branch)
+- **Official Chapter Organization**: [`https://github.com/IEEE-CS-PESU`](https://github.com/IEEE-CS-PESU)
+- **Official Chapter Community**: Discord ([`https://discord.com/invite/7kpmFp2uuU`](https://discord.com/invite/7kpmFp2uuU)) · Instagram ([`@ieee.cs.pesu`](https://www.instagram.com/ieee.cs.pesu)) · LinkedIn ([`IEEE CS PESU`](https://www.linkedin.com/company/ieeecspesu/home))
 
 - **Official Google Forms URL**: Configured and live at [`https://forms.gle/L1exnXjZmBbikDEY6`](https://forms.gle/L1exnXjZmBbikDEY6). Wired across navigation, hero, and section CTAs via `registration.googleFormsUrl` in `src/data/event.ts`.
 - **Specific Room & Track Mentors**: Venue is verified as PES University RR Campus Innovation Labs; room assignments and specific mentor schedules will be populated in `src/data/event.ts` and `src/data/roadmap.ts` upon kickoff.
