@@ -27,13 +27,13 @@ The platform generates 6 standalone static HTML pages at build time:
 | **`/themes/`** | **Themes** | Deep-dive into the 4 problem spaces (Autonomous Intelligence, Distributed Systems, HCI / Spatial Tech, Radical Software Craft), evaluation rubrics, and the Physical Computing / Hardware Lab showcase. |
 | **`/roadmap/`** | **Roadmap** | 5-phase event timeline from applications to live stage demos, build cadence details, and mentoring checkpoint guides. |
 | **`/faqs/`** | **FAQs** | Native disclosure accordion answering verified participant questions on eligibility, team sizes, free admission, hardware provisions, and direct organizer contact channels. |
-| **`/register/`** | **Register** | Live Admissions Channel status board, Application Checklist, On-Site Provisions panel, and an offline Team Proposal Draft Tool with browser `localStorage` persistence. |
+| **`/register/`** | **Register** | Live Admissions Channel status board, Application Checklist, On-Site Provisions panel, and direct link to the official Google Form application portal. |
 
 ### Key Platform Features
 - **Layered Hero System**: Seamless interaction between oversized editorial typography (`CONFLUENCE /26`), rotating orbital SVG artwork, and the 177-frame Eureka character canvas animation.
 - **Scroll-Tied Roadmap Progress**: Horizontal acid-lime progress indicator tied to scroll depth via `IntersectionObserver` on desktop/tablet, and progressive vertical connector illumination on mobile.
 - **Interactive Theme Cards**: Staggered reveal animations with shape previews and hover transformations.
-- **Local Proposal Draft Tool**: Allows teams to draft and save credentials and project abstracts locally before the official Google Form link is announced.
+- **Official Registration Gateway**: Direct integration with the IEEE CS PESU Google Form with transparent status indicators and application checklist.
 - **Native Semantic FAQ Accordions**: Built with HTML5 `<details>` and `<summary>` for instant, accessible keyboard interactions without JavaScript dependencies.
 
 ---
@@ -123,7 +123,7 @@ All event information is decoupled from presentation templates and centralized u
 - **Registration Destination**:
   - In `src/data/event.ts`, configure `registration.googleFormsUrl`.
   - Alternatively, pass the environment variable `PUBLIC_GOOGLE_FORMS_URL` at build/deploy time.
-  - When `googleFormsUrl` is empty (`''`), the UI automatically indicates that the link is pending release and directs users to `/register/` to use the local proposal draft tool.
+  - When `googleFormsUrl` is empty (`''`), the UI automatically indicates that the official link is pending release.
 - **Registration Open/Closed Status**: Toggle `registration.isOpen: true | false` in `src/data/event.ts`.
 - **Tracks & Milestones**: Add or edit problem tracks in `src/data/themes.ts` and event checkpoints in `src/data/roadmap.ts`.
 

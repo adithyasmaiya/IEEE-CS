@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Cta from '../components/Cta.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { EVENT_CONFIG, EVENT_METRICS, EVENT_PROVISIONS } from '../data/event';
-import { THEMES_LIST } from '../data/themes';
 
 const { registration, eventDetails } = EVENT_CONFIG;
 const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
@@ -161,7 +160,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               OFFICIAL GOOGLE FORMS LINK PENDING CONFIGURATION
             </span>
             <p class="body" style="margin:0;font-size:.88rem;line-height:1.5">
-              The official Google Forms destination is currently pending release by the organizing committee (<code style="font-family:var(--mono);color:var(--acid);font-size:.85rem">EVENT_CONFIG.registration.googleFormsUrl</code> is currently unset). Official registrations will be accepted solely through that Google Form once published. In the meantime, you can draft and save your team profile and project concept locally in your browser below.
+              The official Google Forms destination is currently pending release by the organizing committee (<code style="font-family:var(--mono);color:var(--acid);font-size:.85rem">EVENT_CONFIG.registration.googleFormsUrl</code> is currently unset). Official registrations will be accepted solely through that Google Form once published.
             </p>
           </div>
         </div>
@@ -187,7 +186,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         </div>
       )}
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));gap:clamp(1.5rem, 3vw, 2.5rem);margin-bottom:3.5rem">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));gap:clamp(1.5rem, 3vw, 2.5rem);margin-bottom:0">
         <!-- Main Form / Status Card -->
         <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem);display:flex;flex-direction:column;justify-content:space-between">
           <div>
@@ -207,7 +206,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
             <p class="body" style="margin:0 0 1.5rem">
               {hasRegistrationUrl
                 ? "Official registrations are being collected via the official IEEE CS PESU Google Form. Click below to submit your team application directly."
-                : "Official registration will be collected via the IEEE CS PESU Google Form. The registration URL is currently pending announcement by the organizers. Teams may prepare and store their proposal draft locally below in advance."}
+                : "Official registration will be collected via the IEEE CS PESU Google Form. The registration URL is currently pending announcement by the organizers."}
             </p>
 
             <div style="border-top:1px solid var(--line);padding-top:1.2rem;margin-bottom:2rem">
@@ -232,35 +231,24 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
 
           <div>
             {hasRegistrationUrl ? (
-              <>
-                <a
-                  href={registration.googleFormsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-primary"
-                  data-hover
-                  style="width:100%;justify-content:space-between"
-                >
-                  Open Official Google Form <span class="arrow">↗</span>
-                </a>
-                <a
-                  href="#apply-form"
-                  class="btn btn-ghost"
-                  data-hover
-                  style="width:100%;margin-top:.75rem;justify-content:space-between;border-style:dashed"
-                >
-                  Draft Proposal Locally First <span class="arrow">↓</span>
-                </a>
-              </>
-            ) : (
               <a
-                href="#apply-form"
+                href={registration.googleFormsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-primary"
                 data-hover
                 style="width:100%;justify-content:space-between"
               >
-                Draft Proposal Locally <span class="arrow">↓</span>
+                Open Official Google Form <span class="arrow">↗</span>
               </a>
+            ) : (
+              <button
+                disabled
+                class="btn btn-ghost"
+                style="width:100%;justify-content:space-between;opacity:0.6;cursor:not-allowed"
+              >
+                Registration Opening Soon <span class="arrow">→</span>
+              </button>
             )}
           </div>
         </div>
@@ -307,318 +295,11 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
           </div>
         </div>
       </div>
-
-      <!-- Interactive Team Application Draft Section -->
-      <div id="apply-form" class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 5vw, 4rem)">
-        <div class="section-head" style="border-top:0;padding-top:0;margin-bottom:2rem">
-          <span class="idx">Draft Tool</span>
-          <span class="label">Team Proposal &amp; Application Preparation · Edition 2026</span>
-        </div>
-
-        <div style="margin-bottom:2.5rem">
-          <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.8rem);margin:0 0 .8rem">
-            Prepare Your Team Application
-          </h3>
-          <p class="body" style="margin:0;max-width:64ch">
-            Draft your team credentials, problem track selection, and technical concept below. Submitting this form saves your draft locally in your browser's localStorage so your team can easily copy and paste into the official Google Form.
-          </p>
-          <p class="coords" style="margin:.8rem 0 0;color:var(--acid);font-size:.8rem">
-            * Note: Storing a draft here does NOT submit your registration to the IEEE CS PESU organizers. Official entry requires submitting via the Google Form.
-          </p>
-        </div>
-
-        <form id="teamRegForm" class="reg-form-grid">
-          <div>
-            <label for="teamName" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Team Name *
-            </label>
-            <input
-              type="text"
-              id="teamName"
-              name="teamName"
-              required
-              placeholder="e.g. Kernel Architects"
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            />
-          </div>
-
-          <div>
-            <label for="teamSize" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Team Size *
-            </label>
-            <select
-              id="teamSize"
-              name="teamSize"
-              required
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            >
-              <option value="2">2 Members</option>
-              <option value="3">3 Members</option>
-              <option value="4" selected>4 Members (Recommended)</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="leadName" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Team Leader Full Name *
-            </label>
-            <input
-              type="text"
-              id="leadName"
-              name="leadName"
-              required
-              placeholder="e.g. Adithya Rao"
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            />
-          </div>
-
-          <div>
-            <label for="leadEmail" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Team Leader College Email *
-            </label>
-            <input
-              type="email"
-              id="leadEmail"
-              name="leadEmail"
-              required
-              placeholder="e.g. leader@pesu.pes.edu"
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            />
-          </div>
-
-          <div>
-            <label for="institution" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Institution / University *
-            </label>
-            <input
-              type="text"
-              id="institution"
-              name="institution"
-              required
-              placeholder="e.g. PES University, Bengaluru"
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            />
-          </div>
-
-          <div>
-            <label for="track" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Primary Problem Track *
-            </label>
-            <select
-              id="track"
-              name="track"
-              required
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.9rem;outline:none"
-            >
-              {THEMES_LIST.map((theme) => (
-                <option value={`${theme.trackTag.split(' · ')[0]} · ${theme.title}`}>
-                  {theme.trackTag.split(' · ')[0]} · {theme.title}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div style="grid-column:1 / -1">
-            <label for="proposal" class="label" style="display:block;margin-bottom:.6rem;color:var(--ink)">
-              Project Concept &amp; Technical Approach (2-4 Sentences) *
-            </label>
-            <textarea
-              id="proposal"
-              name="proposal"
-              rows="3"
-              required
-              placeholder="Describe the problem, the tech stack you plan to build with (hardware, frameworks, protocols), and what prototype you aim to demonstrate at Confluence 2026."
-              style="width:100%;padding:.9rem 1.2rem;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:.88rem;outline:none;resize:vertical"
-            ></textarea>
-          </div>
-
-          <div style="grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;padding-top:1rem;border-top:1px solid var(--line)">
-            <p class="coords" style="margin:0;color:var(--muted)">
-              Saves to browser localStorage for easy copying. Official registration requires the Google Form.
-            </p>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              data-hover
-              id="submitBtn"
-              style="padding:1rem 2.2rem"
-            >
-              Save Application Draft Locally <span class="arrow">→</span>
-            </button>
-          </div>
-        </form>
-
-        <!-- Dynamic Success Receipt Card (Shown upon draft save) -->
-        <div
-          id="successReceipt"
-          style="display:none;background:var(--bg);border:1px solid var(--acid);padding:2.5rem;margin-top:2rem"
-          aria-live="polite"
-        >
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
-            <div>
-              <span class="label" style="color:var(--acid);font-weight:700">✓ DRAFT SAVED LOCALLY (BROWSER STORAGE)</span>
-              <h4 style="font-family:var(--display);font-size:1.8rem;margin:.4rem 0 0;color:var(--ink)">
-                Team Profile Draft Stored
-              </h4>
-            </div>
-            <span class="idx" id="receiptId" style="border:1px solid var(--line-strong);padding:.4rem .8rem;font-size:.85rem">
-              DRAFT-CNF26-XXXX
-            </span>
-          </div>
-
-          <p class="body" style="margin:0 0 1.2rem;color:#E0DCD4">
-            Your team proposal draft has been saved to this browser's local storage. You can copy the generated summary below or edit your draft anytime.
-          </p>
-
-          <div style="border-left:2px solid var(--acid);background:var(--bg-2);padding:1rem 1.4rem;margin-bottom:1.8rem">
-            <span class="label" style="color:var(--acid);display:block;margin-bottom:.3rem">
-              OFFICIAL SUBMISSION REQUIRED:
-            </span>
-            <p class="body" style="margin:0;font-size:.88rem;color:var(--ink);line-height:1.45">
-              This draft has <strong>NOT</strong> been transmitted to the organizers. Official entry for Confluence 2026 must be submitted through the official Google Form.
-              {hasRegistrationUrl ? (
-                <> Please proceed to the Google Form below to finalize your registration.</>
-              ) : (
-                <> Once the official Google Form URL is published by the organizing committee, paste these details to complete registration.</>
-              )}
-            </p>
-          </div>
-
-          <div style="display:flex;gap:1rem;flex-wrap:wrap">
-            {hasRegistrationUrl && (
-              <a
-                href={registration.googleFormsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-primary"
-                data-hover
-              >
-                Open Official Google Form ↗
-              </a>
-            )}
-            <button
-              type="button"
-              id="copyDraftBtn"
-              class="btn btn-primary"
-              data-hover
-            >
-              Copy Draft Summary 📋
-            </button>
-            <button
-              type="button"
-              id="resetFormBtn"
-              class="btn btn-ghost"
-              style="border-style:dashed"
-            >
-              Edit Draft Details
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- Final CTA -->
   <Cta />
-
-  <script>
-    const form = document.getElementById('teamRegForm') as HTMLFormElement | null;
-    const successReceipt = document.getElementById('successReceipt');
-    const receiptIdSpan = document.getElementById('receiptId');
-    const resetBtn = document.getElementById('resetFormBtn');
-    const copyBtn = document.getElementById('copyDraftBtn');
-
-    let currentDraftSummary = '';
-
-    if (form && successReceipt && receiptIdSpan) {
-      // Check if a saved draft already exists in localStorage
-      try {
-        const saved = localStorage.getItem('confluence_registration_draft');
-        if (saved) {
-          const data = JSON.parse(saved);
-          const teamNameInput = document.getElementById('teamName') as HTMLInputElement | null;
-          const teamSizeSelect = document.getElementById('teamSize') as HTMLSelectElement | null;
-          const leadNameInput = document.getElementById('leadName') as HTMLInputElement | null;
-          const leadEmailInput = document.getElementById('leadEmail') as HTMLInputElement | null;
-          const institutionInput = document.getElementById('institution') as HTMLInputElement | null;
-          const trackSelect = document.getElementById('track') as HTMLSelectElement | null;
-          const proposalTextarea = document.getElementById('proposal') as HTMLTextAreaElement | null;
-
-          if (teamNameInput && data.teamName) teamNameInput.value = data.teamName;
-          if (teamSizeSelect && data.teamSize) teamSizeSelect.value = data.teamSize;
-          if (leadNameInput && data.leadName) leadNameInput.value = data.leadName;
-          if (leadEmailInput && data.leadEmail) leadEmailInput.value = data.leadEmail;
-          if (institutionInput && data.institution) institutionInput.value = data.institution;
-          if (trackSelect && data.track) trackSelect.value = data.track;
-          if (proposalTextarea && data.proposal) proposalTextarea.value = data.proposal;
-        }
-      } catch {}
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const randomId = 'DRAFT-CNF26-' + Math.floor(1000 + Math.random() * 9000);
-        
-        receiptIdSpan.textContent = randomId;
-        
-        const entry = {
-          id: randomId,
-          teamName: formData.get('teamName'),
-          teamSize: formData.get('teamSize'),
-          leadName: formData.get('leadName'),
-          leadEmail: formData.get('leadEmail'),
-          institution: formData.get('institution'),
-          track: formData.get('track'),
-          proposal: formData.get('proposal'),
-          savedAt: new Date().toISOString()
-        };
-
-        currentDraftSummary = 
-`--- CONFLUENCE 2026 TEAM APPLICATION DRAFT ---
-Draft ID: ${entry.id}
-Team Name: ${entry.teamName}
-Team Size: ${entry.teamSize} members
-Team Leader: ${entry.leadName} (${entry.leadEmail})
-Institution: ${entry.institution}
-Primary Track: ${entry.track}
-
-Project Concept & Abstract:
-${entry.proposal}
-
-[Saved locally for submission into official Google Form]`;
-
-        try {
-          localStorage.setItem('confluence_registration_draft', JSON.stringify(entry));
-        } catch {}
-
-        form.style.display = 'none';
-        successReceipt.style.display = 'block';
-        successReceipt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      });
-
-      if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-          form.style.display = 'grid';
-          successReceipt.style.display = 'none';
-        });
-      }
-
-      if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-          try {
-            if (currentDraftSummary) {
-              await navigator.clipboard.writeText(currentDraftSummary);
-              const original = copyBtn.textContent;
-              copyBtn.textContent = '✓ Copied to Clipboard!';
-              setTimeout(() => {
-                copyBtn.textContent = original;
-              }, 2500);
-            }
-          } catch {}
-        });
-      }
-    }
-  </script>
   <style>
     /* Split Showcase: Picture on Left, 4 Metrics Stacked One by One Below on Right */
     .showcase-split-box {
@@ -871,20 +552,6 @@ ${entry.proposal}
       color: var(--acid);
     }
 
-    .reg-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.8rem;
-    }
-
-    #teamRegForm input:focus,
-    #teamRegForm select:focus,
-    #teamRegForm textarea:focus {
-      border-color: var(--acid) !important;
-      box-shadow: 0 0 12px rgba(200, 255, 46, 0.22);
-      outline: 1px solid var(--acid) !important;
-    }
-
     @media (max-width: 1100px) {
       .showcase-features-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -920,11 +587,6 @@ ${entry.proposal}
 
       .metric-row:nth-last-child(-n+2) {
         border-bottom: 0 !important;
-      }
-
-      .reg-form-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
       }
     }
 
