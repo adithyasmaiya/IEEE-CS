@@ -607,7 +607,9 @@ body::before {
   object-position: 80% 55%;
   display: block;
   mix-blend-mode: lighten;
-  filter: contrast(1.04) brightness(1.02);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .orbit-ring {
@@ -1747,7 +1749,6 @@ footer {
 
   .hero-character-canvas {
     object-position: 90% 50%;
-    filter: contrast(1.12) brightness(1.16);
   }
 
   .hero-foot {
@@ -1965,7 +1966,6 @@ footer {
 
   .hero-character-canvas {
     object-position: 92% 50%;
-    filter: contrast(1.18) brightness(1.22);
   }
 
   .wordmark-xl {
@@ -2208,7 +2208,6 @@ footer {
 
   .hero-character-canvas {
     object-position: 91% 50%;
-    filter: contrast(1.2) brightness(1.25);
   }
 }
 

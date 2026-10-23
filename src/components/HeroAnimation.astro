@@ -1,6 +1,6 @@
 ---
 // src/components/HeroAnimation.astro
-// Lightweight, progressive canvas-based frame renderer for Confluence 2026 hero animation
+// Ultra-optimized, zero-lag canvas-based frame renderer for Confluence 2026 hero animation
 ---
 
 <div class="hero-character-wrap" id="heroCharWrap" aria-hidden="true">
@@ -17,16 +17,21 @@
     class HeroAnimationPlayer {
       private canvas: HTMLCanvasElement | null = null;
       private ctx: CanvasRenderingContext2D | null = null;
-      private totalFrames = 177;
-      private fps = 24;
-      private frameDuration = 1000 / this.fps; // ~41.67ms
+      private readonly totalFrames = 177;
+      private readonly fps = 24;
+      private readonly frameDuration = 1000 / this.fps; // 41.666... ms
+      private readonly bufferRunway = 20; // Pre-buffer 20 frames (~833ms) before starting playback
+      private readonly pauseDuration = 1200; // 1.2s celebration hold on Eureka triumph frame
+      private readonly concurrency = 8; // Parallel streaming requests
+
       private currentFrame = 0;
       private images: (HTMLImageElement | null)[] = [];
       private loadedCount = 0;
       private isPlaying = false;
+      private isStarted = false;
       private rafId: number | null = null;
       private lastFrameTime = 0;
-      private pauseDuration = 1200; // 1.2s celebration hold on Eureka triumph frame
+      private accumulator = 0;
       private pauseStartTime = 0;
       private isHoldingEureka = false;
       private isVisible = true;
@@ -35,8 +40,13 @@
       constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
         if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
+
+        // Acquire context with performance flags
+        this.ctx = this.canvas.getContext('2d', { alpha: true });
         if (!this.ctx) return;
+
+        // Direct 1:1 blit optimization (avoid bilinear scaling cost on 1080p canvas)
+        this.ctx.imageSmoothingEnabled = false;
 
         this.images = new Array(this.totalFrames).fill(null);
         this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,100 +59,115 @@
         return `/frames/ezgif-frame-${num}.${format}`;
       }
 
-      private init(): void {
+      /**
+       * Asynchronously load and off-thread decode a single frame.
+       * Uses img.decode() to eliminate main-thread jank when ctx.drawImage is called.
+       */
+      private async loadSingleFrame(index: number): Promise<HTMLImageElement | null> {
+        if (this.images[index]) return this.images[index];
+
+        const tryDecode = (format: 'webp' | 'jpg'): Promise<HTMLImageElement> => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = this.getFrameUrl(index, format);
+
+            if ('decode' in img && typeof img.decode === 'function') {
+              img.decode()
+                .then(() => resolve(img))
+                .catch(() => {
+                  img.onload = () => resolve(img);
+                  img.onerror = () => reject(new Error(`Failed to load ${format}`));
+                });
+            } else {
+              img.onload = () => resolve(img);
+              img.onerror = () => reject(new Error(`Failed to load ${format}`));
+            }
+          });
+        };
+
+        try {
+          const img = await tryDecode('webp');
+          this.images[index] = img;
+          this.loadedCount++;
+          return img;
+        } catch {
+          try {
+            const fallback = await tryDecode('jpg');
+            this.images[index] = fallback;
+            this.loadedCount++;
+            return fallback;
+          } catch {
+            return null;
+          }
+        }
+      }
+
+      private async init(): Promise<void> {
         if (!this.ctx || !this.canvas) return;
 
-        // If reduced motion is requested, render static celebratory Eureka frame without looping
+        // If user prefers reduced motion, render static celebratory Eureka frame without animation loop
         if (this.reduceMotion) {
-          const staticImg = new Image();
-          staticImg.src = this.getFrameUrl(159, 'webp');
-          staticImg.onload = () => {
-            if (this.ctx && this.canvas) {
-              this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-              this.ctx.drawImage(staticImg, 0, 0, this.canvas.width, this.canvas.height);
-            }
-          };
-          staticImg.onerror = () => {
-            staticImg.src = this.getFrameUrl(159, 'jpg');
-          };
+          const staticImg = (await this.loadSingleFrame(159)) || (await this.loadSingleFrame(0));
+          if (staticImg && this.ctx && this.canvas) {
+            this.ctx.drawImage(staticImg, 0, 0, this.canvas.width, this.canvas.height);
+          }
           return;
         }
 
-        // Step 1: Preload Frame 1 immediately for instant paint with zero layout shift
-        const firstImg = new Image();
-        firstImg.src = this.getFrameUrl(0, 'webp');
-        firstImg.onload = () => {
-          this.images[0] = firstImg;
-          this.loadedCount++;
-          if (this.ctx && this.canvas) {
-            this.ctx.drawImage(firstImg, 0, 0, this.canvas.width, this.canvas.height);
-          }
+        // STEP 1: Preload and decode Frame 0 immediately for instant paint
+        const firstFrame = await this.loadSingleFrame(0);
+        if (firstFrame && this.ctx && this.canvas) {
+          this.ctx.drawImage(firstFrame, 0, 0, this.canvas.width, this.canvas.height);
+        }
 
-          // Step 2: Stream remaining frames progressively in background batches
-          this.startProgressivePreload();
+        // STEP 2: Start prioritized background streaming
+        this.startStreamingPreload();
 
-          // Step 3: Start playback
-          this.start();
-        };
-
-        firstImg.onerror = () => {
-          firstImg.src = this.getFrameUrl(0, 'jpg');
-          firstImg.onload = () => {
-            this.images[0] = firstImg;
-            this.loadedCount++;
-            if (this.ctx && this.canvas) {
-              this.ctx.drawImage(firstImg, 0, 0, this.canvas.width, this.canvas.height);
-            }
-            this.startProgressivePreload();
-            this.start();
-          };
-        };
-
+        // STEP 3: Setup intersection and visibility listeners
         this.setupObservers();
       }
 
-      private startProgressivePreload(): void {
-        let nextToLoad = 1;
-        const maxConcurrency = 4;
-        let activeRequests = 0;
+      /**
+       * High-throughput progressive frame streamer with buffer runway.
+       * Preloads frames ahead of playhead so playback never stalls or skips.
+       */
+      private startStreamingPreload(): void {
+        let nextIndexToFetch = 1;
+        let activeLoads = 0;
 
-        const loadNextBatch = () => {
-          while (activeRequests < maxConcurrency && nextToLoad < this.totalFrames) {
-            const idx = nextToLoad++;
-            activeRequests++;
-            const img = new Image();
-            img.src = this.getFrameUrl(idx, 'webp');
-            img.onload = () => {
-              this.images[idx] = img;
-              this.loadedCount++;
-              activeRequests--;
-              loadNextBatch();
-            };
-            img.onerror = () => {
-              // Fallback to JPG
-              const fallback = new Image();
-              fallback.src = this.getFrameUrl(idx, 'jpg');
-              fallback.onload = () => {
-                this.images[idx] = fallback;
-                this.loadedCount++;
-                activeRequests--;
-                loadNextBatch();
-              };
-              fallback.onerror = () => {
-                // Graceful error fallback: reuse preceding frame
-                this.images[idx] = this.images[idx - 1] || null;
-                activeRequests--;
-                loadNextBatch();
-              };
-            };
+        const checkBufferAndStart = () => {
+          if (!this.isStarted && this.loadedCount >= this.bufferRunway) {
+            this.isStarted = true;
+            if (this.isVisible && !this.reduceMotion) {
+              this.start();
+            }
           }
         };
 
-        if ('requestIdleCallback' in window) {
-          (window as any).requestIdleCallback(() => loadNextBatch());
-        } else {
-          setTimeout(loadNextBatch, 50);
-        }
+        const pump = () => {
+          while (activeLoads < this.concurrency && nextIndexToFetch < this.totalFrames) {
+            const idx = nextIndexToFetch++;
+            activeLoads++;
+
+            this.loadSingleFrame(idx).then(() => {
+              activeLoads--;
+              checkBufferAndStart();
+              pump();
+            });
+          }
+        };
+
+        // Safety fallback: begin playback after 1000ms if on slower network and initial runway reached
+        setTimeout(() => {
+          if (!this.isStarted && this.loadedCount >= 4) {
+            this.isStarted = true;
+            if (this.isVisible && !this.reduceMotion) {
+              this.start();
+            }
+          }
+        }, 1000);
+
+        pump();
       }
 
       private setupObservers(): void {
@@ -152,7 +177,7 @@
             (entries) => {
               entries.forEach((entry) => {
                 this.isVisible = entry.isIntersecting;
-                if (this.isVisible && !this.isPlaying && !this.reduceMotion) {
+                if (this.isVisible && !this.isPlaying && this.isStarted && !this.reduceMotion) {
                   this.start();
                 } else if (!this.isVisible && this.isPlaying) {
                   this.stop();
@@ -164,26 +189,25 @@
           observer.observe(hero);
         }
 
-        // Tab visibility change handling (save CPU when inactive)
+        // Save CPU/battery when tab is hidden
         document.addEventListener('visibilitychange', () => {
           if (document.hidden) {
             this.stop();
-          } else if (this.isVisible && !this.reduceMotion) {
+          } else if (this.isVisible && this.isStarted && !this.reduceMotion) {
             this.start();
           }
         });
 
-        // Dynamic reduced-motion preference updates
+        // Dynamic reduced motion toggle
         window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
           this.reduceMotion = e.matches;
           if (this.reduceMotion) {
             this.stop();
-            const fallbackImg = this.images[159] || this.images[0];
-            if (fallbackImg && this.ctx && this.canvas) {
-              this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-              this.ctx.drawImage(fallbackImg, 0, 0, this.canvas.width, this.canvas.height);
+            const fallback = this.images[159] || this.images[0];
+            if (fallback && this.ctx && this.canvas) {
+              this.ctx.drawImage(fallback, 0, 0, this.canvas.width, this.canvas.height);
             }
-          } else {
+          } else if (this.isVisible && this.isStarted) {
             this.start();
           }
         });
@@ -193,66 +217,89 @@
         if (this.isPlaying || this.reduceMotion) return;
         this.isPlaying = true;
         this.lastFrameTime = performance.now();
-        this.tick(this.lastFrameTime);
+        this.accumulator = 0;
+        this.rafId = requestAnimationFrame((ts) => this.tick(ts));
       }
 
       private stop(): void {
         this.isPlaying = false;
-        if (this.rafId) {
+        if (this.rafId !== null) {
           cancelAnimationFrame(this.rafId);
           this.rafId = null;
         }
       }
 
+      /**
+       * Ultra-smooth fixed-cadence animation loop with underrun protection.
+       * Eliminates frame drops and jitter by pacing to strict 24fps film time.
+       */
       private tick(now: number): void {
         if (!this.isPlaying) return;
 
-        this.rafId = requestAnimationFrame((timestamp) => this.tick(timestamp));
+        this.rafId = requestAnimationFrame((ts) => this.tick(ts));
 
-        // Eureka victory hold: linger for 1.2s on triumph frame before cycling back to code
+        // Eureka triumph hold at the end of the sequence
         if (this.isHoldingEureka) {
           if (now - this.pauseStartTime >= this.pauseDuration) {
             this.isHoldingEureka = false;
             this.currentFrame = 0;
             this.lastFrameTime = now;
+            this.accumulator = 0;
+            this.draw();
           }
           return;
         }
 
-        const elapsed = now - this.lastFrameTime;
-        if (elapsed >= this.frameDuration) {
-          const advance = Math.min(3, Math.floor(elapsed / this.frameDuration));
-          this.lastFrameTime = now - (elapsed % this.frameDuration);
+        let delta = now - this.lastFrameTime;
 
-          const nextIndex = this.currentFrame + advance;
-          if (nextIndex >= this.totalFrames) {
-            this.currentFrame = this.totalFrames - 1;
+        // Guard against massive delta spikes (e.g. tab suspend / heavy background work)
+        if (delta > 250) {
+          delta = this.frameDuration;
+          this.lastFrameTime = now - this.frameDuration;
+        }
+
+        this.accumulator += delta;
+        this.lastFrameTime = now;
+
+        let shouldRedraw = false;
+
+        // Fixed-timestep accumulator loop for 24fps pacing
+        while (this.accumulator >= this.frameDuration) {
+          this.accumulator -= this.frameDuration;
+
+          // Reached final celebratory frame: initiate hold
+          if (this.currentFrame >= this.totalFrames - 1) {
             this.isHoldingEureka = true;
             this.pauseStartTime = now;
-          } else {
-            this.currentFrame = nextIndex;
+            shouldRedraw = true;
+            break;
           }
 
+          const nextIndex = this.currentFrame + 1;
+
+          // Underrun protection: only advance if the next frame has finished decoding
+          if (this.images[nextIndex]) {
+            this.currentFrame = nextIndex;
+            shouldRedraw = true;
+          } else {
+            // Next frame is still decoding: pause accumulator to hold current frame smoothly
+            this.accumulator = 0;
+            break;
+          }
+        }
+
+        if (shouldRedraw) {
           this.draw();
         }
       }
 
+      /**
+       * Direct hardware blit without redundant clearRect calls.
+       */
       private draw(): void {
         if (!this.ctx || !this.canvas) return;
-
-        // Retrieve current frame or nearest prior cached frame
-        let img = this.images[this.currentFrame];
-        if (!img) {
-          for (let i = this.currentFrame - 1; i >= 0; i--) {
-            if (this.images[i]) {
-              img = this.images[i];
-              break;
-            }
-          }
-        }
-
+        const img = this.images[this.currentFrame];
         if (img) {
-          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
           this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
         }
       }
