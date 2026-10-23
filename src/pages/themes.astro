@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Themes from '../components/Themes.astro';
 import Cta from '../components/Cta.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { EVENT_CONFIG } from '../data/event';
-import { THEMES_NOTE } from '../data/themes';
+import { THEMES_NOTE, JUDGING_CRITERIA } from '../data/themes';
 
 const pageTitle = `Themes & Tracks · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
 const pageDescription = `Explore the problem spaces and tracks for ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}. Four technical fields designed for interdisciplinary systems engineering at ${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}.`;
@@ -11,34 +12,23 @@ const pageDescription = `Explore the problem spaces and tracks for ${EVENT_CONFI
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="themes-page-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">02 — Themes</span>
-        <span class="label">Problem Spaces · Technical Arenas</span>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
-        <div>
-          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
-            Edition {EVENT_CONFIG.edition} · Technical Tracks
-          </span>
-          <h1 class="h2 reveal" id="themes-page-title" style="margin:0;line-height:.88">
-            Problem<br />
-            <span class="outline-text">Spaces</span>
-          </h1>
-        </div>
-        <div style="max-width:44ch">
-          <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
-            Four convergent domains designed to challenge builders across infrastructure, intelligence, physical interfaces, and open innovation.
-          </p>
-          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--muted)">
-            Official Briefs: <span style="color:var(--acid);font-weight:600">{THEMES_NOTE.officialStatus}</span>
-          </div>
-        </div>
+  <PageHeader
+    index="02 — Themes"
+    label="Problem Spaces · Technical Arenas"
+    supertitle={`Edition ${EVENT_CONFIG.edition} · Technical Tracks`}
+    title="Problem"
+    titleOutline="Spaces"
+    titleId="themes-page-title"
+  >
+    <div style="max-width:44ch">
+      <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
+        Four convergent domains designed to challenge builders across infrastructure, intelligence, physical interfaces, and open innovation.
+      </p>
+      <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--muted)">
+        Official Briefs: <span style="color:var(--acid);font-weight:600">{THEMES_NOTE.officialStatus}</span>
       </div>
     </div>
-  </section>
+  </PageHeader>
 
   <!-- Core Themes Interactive List (Shared Reusable Component) -->
   <Themes />
@@ -97,29 +87,18 @@ const pageDescription = `Explore the problem spaces and tracks for ${EVENT_CONFI
       </h2>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));gap:2rem">
-        <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="idx" style="font-size:1.1rem;display:block;margin-bottom:.6rem">01.</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">System Architecture</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            How cleanly components interface, handle errors, maintain state, and scale under boundary constraints.
-          </p>
-        </div>
-
-        <div class="reveal" style="--d:.1s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="idx" style="font-size:1.1rem;display:block;margin-bottom:.6rem">02.</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">Working Execution</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            A live demonstrable build outranks mockups. Projects are evaluated on actual operational execution.
-          </p>
-        </div>
-
-        <div class="reveal" style="--d:.2s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="idx" style="font-size:1.1rem;display:block;margin-bottom:.6rem">03.</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">Disciplinary Synthesis</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Convergence of diverse technologies — hardware actuation, low-level algorithms, and interactive human surfaces.
-          </p>
-        </div>
+        {JUDGING_CRITERIA.map((criterion, idx) => (
+          <div
+            class="reveal"
+            style={idx > 0 ? `--d:.${idx}s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)` : `border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)`}
+          >
+            <span class="idx" style="font-size:1.1rem;display:block;margin-bottom:.6rem">{criterion.index}</span>
+            <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">{criterion.title}</h3>
+            <p class="body" style="font-size:.92rem;margin:0">
+              {criterion.description}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   </section>

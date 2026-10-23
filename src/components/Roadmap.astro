@@ -1,5 +1,6 @@
 ---
 import { ROADMAP_MILESTONES, ROADMAP_STATUS } from '../data/roadmap';
+import RoadmapMilestone from './RoadmapMilestone.astro';
 ---
 
 <section class="section grid-lines-x" id="roadmap" aria-labelledby="roadmap-title">
@@ -18,18 +19,7 @@ import { ROADMAP_MILESTONES, ROADMAP_STATUS } from '../data/roadmap';
         <span class="timeline-progress" aria-hidden="true"></span>
 
         {ROADMAP_MILESTONES.map((m, idx) => (
-          <li
-            class={`milestone ${m.isActive ? 'active' : ''} reveal`}
-            style={`--d:${idx * 0.1}s`}
-          >
-            <div class="node">{m.number}</div>
-            <span class="phase">{m.phase}</span>
-            <h3>{m.title}</h3>
-            <p>{m.description}</p>
-            <span class="date">
-              {m.isPlaceholderDate ? <span class="ph">{m.date}</span> : m.date}
-            </span>
-          </li>
+          <RoadmapMilestone milestone={m} delayIndex={idx} />
         ))}
       </ol>
     </div>

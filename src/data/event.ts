@@ -1,4 +1,4 @@
-import type { EventConfig, FactItem } from '../types';
+import type { EventConfig, FactItem, EventMetric, EventProvision } from '../types';
 
 export const EVENT_CONFIG: EventConfig = {
   name: 'CONFLUENCE',
@@ -9,6 +9,7 @@ export const EVENT_CONFIG: EventConfig = {
   coordinates: '12.9716° N / 77.5946° E',
   tagline: 'Where ideas, disciplines and engineers converge into something that has never existed before.',
   manifesto: {
+    lede: 'Confluence is built on a simple belief: the most interesting problems live at the junctions between disciplines. Software meets hardware, research meets product, and a good idea meets the discipline required to finish it.',
     paragraphs: [
       'The event exists to create that junction on purpose. Participants are placed in an environment designed for convergence: shared problem spaces, mentors from across the engineering community, and an emphasis on prototypes that work rather than slides that promise.',
       'Whether you arrive with a team or looking for one, Confluence is a place to test your systems thinking, try unfamiliar tools, and build with people you would not otherwise have met.'
@@ -107,5 +108,52 @@ export const HERO_FACTS: FactItem[] = [
     label: 'Registration',
     value: EVENT_CONFIG.eventDetails.registrationOpensText,
     isPlaceholder: false
+  }
+];
+
+export const EVENT_METRICS: EventMetric[] = [
+  {
+    label: 'SPRINT DURATION',
+    value: '36 Hours',
+    sub: 'Continuous On-Site'
+  },
+  {
+    label: 'PRIZE POOL',
+    value: '₹1,50,000+',
+    sub: 'Cash & Incubation',
+    isAccent: true
+  },
+  {
+    label: 'TEAM CAPACITY',
+    value: '2–4 Builders',
+    sub: 'Cross-Disciplinary'
+  },
+  {
+    label: 'REGISTRATION FEE',
+    value: '100% Free',
+    sub: 'Meals & Kits Included'
+  }
+];
+
+export const EVENT_PROVISIONS: EventProvision[] = [
+  {
+    number: '[ 01 ]',
+    title: 'Hardware & IoT Testbenches',
+    description: 'Oscilloscopes, STM32 & ESP32-S3 boards, soldering stations, sensors, and dedicated lab power supplies.'
+  },
+  {
+    number: '[ 02 ]',
+    title: 'Round-the-Clock Mentorship',
+    description: 'Continuous technical unblocking with domain mentors across AI, distributed systems, and low-level hardware.'
+  },
+  {
+    number: '[ 03 ]',
+    title: '24/7 Hacker Sustenance',
+    description: 'Continuous hot catered meals, midnight caffeine drops, cold brews, snacks, and designated quiet recharge pods.'
+  },
+  {
+    number: '[ 04 ]',
+    title: 'Auditorium Stage Showcase',
+    description: 'Finalist teams pitch live working prototypes in the main auditorium before venture partners and industry judges.'
   }
 ];

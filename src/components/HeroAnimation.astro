@@ -7,8 +7,8 @@
   <canvas
     id="heroCanvas"
     class="hero-character-canvas"
-    width="3836"
-    height="2160"
+    width="1920"
+    height="1080"
   ></canvas>
 </div>
 
@@ -44,9 +44,9 @@
         this.init();
       }
 
-      private getFrameUrl(index: number): string {
+      private getFrameUrl(index: number, format: 'webp' | 'jpg' = 'webp'): string {
         const num = String(index + 1).padStart(3, '0');
-        return `/frames/ezgif-frame-${num}.jpg`;
+        return `/frames/ezgif-frame-${num}.${format}`;
       }
 
       private init(): void {
@@ -55,19 +55,22 @@
         // If reduced motion is requested, render static celebratory Eureka frame without looping
         if (this.reduceMotion) {
           const staticImg = new Image();
-          staticImg.src = this.getFrameUrl(159); // Frame 160
+          staticImg.src = this.getFrameUrl(159, 'webp');
           staticImg.onload = () => {
             if (this.ctx && this.canvas) {
               this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
               this.ctx.drawImage(staticImg, 0, 0, this.canvas.width, this.canvas.height);
             }
           };
+          staticImg.onerror = () => {
+            staticImg.src = this.getFrameUrl(159, 'jpg');
+          };
           return;
         }
 
         // Step 1: Preload Frame 1 immediately for instant paint with zero layout shift
         const firstImg = new Image();
-        firstImg.src = this.getFrameUrl(0);
+        firstImg.src = this.getFrameUrl(0, 'webp');
         firstImg.onload = () => {
           this.images[0] = firstImg;
           this.loadedCount++;
@@ -83,8 +86,16 @@
         };
 
         firstImg.onerror = () => {
-          // In case of network retry, attempt progressive stream
-          this.startProgressivePreload();
+          firstImg.src = this.getFrameUrl(0, 'jpg');
+          firstImg.onload = () => {
+            this.images[0] = firstImg;
+            this.loadedCount++;
+            if (this.ctx && this.canvas) {
+              this.ctx.drawImage(firstImg, 0, 0, this.canvas.width, this.canvas.height);
+            }
+            this.startProgressivePreload();
+            this.start();
+          };
         };
 
         this.setupObservers();
@@ -100,7 +111,7 @@
             const idx = nextToLoad++;
             activeRequests++;
             const img = new Image();
-            img.src = this.getFrameUrl(idx);
+            img.src = this.getFrameUrl(idx, 'webp');
             img.onload = () => {
               this.images[idx] = img;
               this.loadedCount++;
@@ -108,10 +119,21 @@
               loadNextBatch();
             };
             img.onerror = () => {
-              // Graceful error fallback: reuse preceding frame
-              this.images[idx] = this.images[idx - 1] || null;
-              activeRequests--;
-              loadNextBatch();
+              // Fallback to JPG
+              const fallback = new Image();
+              fallback.src = this.getFrameUrl(idx, 'jpg');
+              fallback.onload = () => {
+                this.images[idx] = fallback;
+                this.loadedCount++;
+                activeRequests--;
+                loadNextBatch();
+              };
+              fallback.onerror = () => {
+                // Graceful error fallback: reuse preceding frame
+                this.images[idx] = this.images[idx - 1] || null;
+                activeRequests--;
+                loadNextBatch();
+              };
             };
           }
         };

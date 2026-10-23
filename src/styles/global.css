@@ -5,7 +5,7 @@
   --color-bg-secondary: #111111;
   --color-ink: #F2EEE6;
   --color-ink-muted: #8E8B84;
-  --color-ink-dim: #4A4944;
+  --color-ink-dim: #706E67;
   --color-acid: #C8FF2E;
   --color-line: rgba(242, 238, 230, 0.12);
   --color-line-strong: rgba(242, 238, 230, 0.28);
@@ -18,7 +18,7 @@
   --bg-2: #111111;
   --ink: #F2EEE6;
   --muted: #8E8B84;
-  --dim: #4A4944;
+  --dim: #706E67;
   --line: rgba(242, 238, 230, 0.12);
   --line-strong: rgba(242, 238, 230, 0.28);
   --acid: #C8FF2E;
@@ -278,6 +278,11 @@ body::before {
   box-shadow: 2px 2px 0 var(--ink), 0 0 10px rgba(200, 255, 46, 0.2);
 }
 
+.btn-primary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
 .btn-ghost {
   border-color: var(--line-strong);
   color: var(--ink);
@@ -442,6 +447,12 @@ body::before {
   box-shadow: 0 0 8px rgba(200, 255, 46, 0.3);
 }
 
+.nav-links a:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .mobile-menu li a.active {
   color: var(--acid);
 }
@@ -566,11 +577,17 @@ body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg,
-      rgba(10, 10, 10, 0.85) 0%,
-      rgba(10, 10, 10, 0.55) 35%,
-      rgba(10, 10, 10, 0.18) 60%,
-      transparent 80%);
+  background:
+    linear-gradient(90deg,
+      rgba(10, 10, 10, 0.92) 0%,
+      rgba(10, 10, 10, 0.72) 38%,
+      rgba(10, 10, 10, 0.30) 65%,
+      transparent 88%),
+    linear-gradient(0deg,
+      rgba(10, 10, 10, 0.96) 0%,
+      rgba(10, 10, 10, 0.75) 24%,
+      rgba(10, 10, 10, 0.25) 45%,
+      transparent 65%);
   pointer-events: none;
   z-index: 1;
 }
@@ -591,6 +608,49 @@ body::before {
   display: block;
   mix-blend-mode: lighten;
   filter: contrast(1.04) brightness(1.02);
+}
+
+/* ---------- Hero Orbital SVG Artwork ---------- */
+.hero-orbital-art {
+  position: absolute;
+  right: -5%;
+  top: 45%;
+  width: min(85vmin, 780px);
+  aspect-ratio: 1;
+  transform: translateY(-45%);
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  opacity: 0.55;
+  transition: opacity 1s var(--ease);
+}
+
+.hero-orbital-inner {
+  width: 100%;
+  height: 100%;
+  transform: translate3d(calc(var(--px, 0) * 16px), calc(var(--py, 0) * 16px), 0);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.orbit-ring {
+  transform-origin: 50% 50%;
+  animation: spin 46s linear infinite;
+}
+
+.orbit-ring.rev {
+  animation-direction: reverse;
+  animation-duration: 70s;
+}
+
+.orbit-ring.slow {
+  animation-duration: 90s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .hero-meta-top,
@@ -619,7 +679,7 @@ body::before {
   font-family: var(--display);
   font-weight: 900;
   text-transform: uppercase;
-  font-size: clamp(3.6rem, 17.2vw, 17.5rem);
+  font-size: clamp(2.8rem, 16.5vw, 17.5rem);
   letter-spacing: -.075em;
   line-height: .8;
   margin: 0;
@@ -747,7 +807,7 @@ body::before {
 .coords {
   font-family: var(--mono);
   font-size: .68rem;
-  color: var(--dim);
+  color: var(--muted);
   letter-spacing: .08em;
 }
 
@@ -899,6 +959,11 @@ body::before {
   border-bottom-color: var(--line-strong);
 }
 
+.theme:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: -2px;
+}
+
 .theme-num {
   font-family: var(--mono);
   font-size: .85rem;
@@ -1021,11 +1086,11 @@ body::before {
   width: var(--timeline-w, 0%);
   background: var(--acid);
   box-shadow: 0 0 12px rgba(200, 255, 46, 0.5);
-  transition: width .3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width .18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .roadmap.in .timeline-progress {
-  width: var(--timeline-w, 100%);
+  width: var(--timeline-w, 0%);
 }
 
 .milestone {
@@ -1139,9 +1204,14 @@ details.faq summary::-webkit-details-marker {
   display: none;
 }
 
-details.faq summary:hover,
+details.faq summary:hover {
+  color: var(--acid);
+}
+
 details.faq summary:focus-visible {
   color: var(--acid);
+  outline: 2px solid var(--acid);
+  outline-offset: 4px;
 }
 
 details.faq summary .q-idx {
@@ -1376,8 +1446,8 @@ footer {
 /* ---------- Reveal ---------- */
 .js .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--d, 0s);
   will-change: opacity, transform;
 }
@@ -1394,7 +1464,7 @@ footer {
 .js .reveal-mask>span {
   display: inline-block;
   transform: translateY(105%);
-  transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--d, 0s);
   will-change: transform;
 }
@@ -1639,44 +1709,44 @@ footer {
     height: 140px;
   }
 
-  .timeline {
-    grid-template-columns: 1fr;
-    row-gap: 0;
-    padding-left: 0;
+  .hero-orbital-art {
+    right: -12%;
+    width: min(78vmin, 640px);
+    opacity: 0.45;
   }
 
-  .timeline::before,
+  /* 861px–1100px Roadmap: Preserves 5-column cadence and horizontal progress line */
+  .timeline {
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 0.8rem;
+  }
+
+  .timeline::before {
+    top: 18px;
+  }
+
   .timeline-progress {
-    display: none;
+    top: 17px;
   }
 
   .timeline li.milestone {
-    display: grid;
-    grid-template-columns: 45px 1fr;
-    column-gap: 1.2rem;
-    padding: 0 0 2.6rem;
-    position: relative;
-  }
-
-  .timeline li.milestone:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    left: 22px;
-    top: 52px;
-    bottom: 0;
-    width: 1px;
-    background: var(--line-strong);
-  }
-
-  .timeline li.milestone.active:not(:last-child)::after {
-    background: var(--acid);
+    padding: 0 0.5rem 0 0;
   }
 
   .timeline li.milestone .node {
-    margin-bottom: 0;
-    grid-row: span 2;
-    position: relative;
-    z-index: 1;
+    width: 36px;
+    height: 36px;
+    font-size: 0.72rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .timeline li.milestone h3 {
+    font-size: 1.15rem;
+  }
+
+  .timeline li.milestone p {
+    font-size: 0.82rem;
+    line-height: 1.42;
   }
 
   .footer-grid {
@@ -1767,10 +1837,22 @@ footer {
     transform: none;
   }
 
+  .hero-orbital-art {
+    right: -25%;
+    top: 40%;
+    width: min(90vmin, 480px);
+    opacity: 0.35;
+  }
+
   .timeline {
     grid-template-columns: 1fr;
     row-gap: 0;
     padding-left: 0;
+  }
+
+  .timeline::before,
+  .timeline-progress {
+    display: none;
   }
 
   .timeline li.milestone {
@@ -1789,10 +1871,13 @@ footer {
     bottom: 0;
     width: 1px;
     background: var(--line-strong);
+    transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
   }
 
+  .timeline li.milestone.node-lit:not(:last-child)::after,
   .timeline li.milestone.active:not(:last-child)::after {
     background: var(--acid);
+    box-shadow: 0 0 8px rgba(200, 255, 46, 0.35);
   }
 
   .timeline li.milestone .node {
@@ -1917,6 +2002,17 @@ footer {
   .hero-character-canvas {
     object-position: 92% 50%;
     filter: contrast(1.18) brightness(1.22);
+  }
+
+  .wordmark-xl {
+    font-size: clamp(2.3rem, 14.5vw, 4.2rem);
+  }
+
+  .hero-orbital-art {
+    right: -32%;
+    top: 36%;
+    width: min(85vmin, 340px);
+    opacity: 0.25;
   }
 
   .hero-foot {
@@ -2157,6 +2253,13 @@ footer {
     object-position: 91% 50%;
     filter: contrast(1.2) brightness(1.25);
   }
+
+  .hero-orbital-art {
+    right: -38%;
+    top: 34%;
+    width: min(80vmin, 260px);
+    opacity: 0.18;
+  }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -2191,6 +2294,12 @@ footer {
     transform: none !important;
     transition: none !important;
     opacity: 0.85 !important;
+  }
+
+  .orbit-ring,
+  .hero-orbital-inner {
+    animation: none !important;
+    transform: none !important;
   }
 
   .roadmap .timeline-progress {

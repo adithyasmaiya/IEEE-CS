@@ -1,0 +1,24 @@
+---
+// src/components/RoadmapMilestone.astro — Reusable roadmap milestone component
+import type { RoadmapMilestone as MilestoneType } from '../types';
+
+interface Props {
+  milestone: MilestoneType;
+  delayIndex?: number;
+}
+
+const { milestone: m, delayIndex = 0 } = Astro.props;
+---
+
+<li
+  class={`milestone ${m.isActive ? 'active' : ''} reveal`}
+  style={`--d:${delayIndex * 0.1}s`}
+>
+  <div class="node">{m.number}</div>
+  <span class="phase">{m.phase}</span>
+  <h3>{m.title}</h3>
+  <p>{m.description}</p>
+  <span class="date">
+    {m.isPlaceholderDate ? <span class="ph">{m.date}</span> : m.date}
+  </span>
+</li>

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import About from '../components/About.astro';
 import Cta from '../components/Cta.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { EVENT_CONFIG } from '../data/event';
 
 const pageTitle = `About · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} · ${EVENT_CONFIG.organizer} PESU`;
@@ -10,29 +11,18 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="about-page-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">01 — About</span>
-        <span class="label">Manifesto · Purpose · Convergence</span>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
-        <div>
-          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
-            {EVENT_CONFIG.organizer} · {EVENT_CONFIG.university}
-          </span>
-          <h1 class="h2 reveal" id="about-page-title" style="margin:0;line-height:.88">
-            Engineering<br />
-            <span class="outline-text">Convergence</span>
-          </h1>
-        </div>
-        <p class="lede reveal" style="--d:.1s;margin:0">
-          A flagship gathering engineered for builders, systems thinkers, and researchers who believe the most compelling ideas happen where disciplines intersect.
-        </p>
-      </div>
-    </div>
-  </section>
+  <PageHeader
+    index="01 — About"
+    label="Manifesto · Purpose · Convergence"
+    supertitle={`${EVENT_CONFIG.organizer} · ${EVENT_CONFIG.university}`}
+    title="Engineering"
+    titleOutline="Convergence"
+    titleId="about-page-title"
+  >
+    <p class="lede reveal" style="--d:.1s;margin:0">
+      A flagship gathering engineered for builders, systems thinkers, and researchers who believe the most compelling ideas happen where disciplines intersect.
+    </p>
+  </PageHeader>
 
   <!-- Core Manifesto Section (Shared Reusable Component) -->
   <About />
@@ -58,7 +48,7 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
           <p class="body" style="margin:0 0 1.2rem">
             The {EVENT_CONFIG.organizer} at {EVENT_CONFIG.university} stands as a student-led community committed to technical rigour, practical engineering, and collaborative systems innovation.
           </p>
-          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--dim)">
+          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--muted)">
             {EVENT_CONFIG.university} · {EVENT_CONFIG.city} · {EVENT_CONFIG.coordinates}
           </div>
         </div>
@@ -71,7 +61,7 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
           <p class="body" style="margin:0 0 1.2rem">
             Confluence rewards working prototypes over speculative decks. Whether compiling embedded kernels, coordinating agent pipelines, or verifying distributed states, execution depth remains the primary criterion.
           </p>
-          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--dim)">
+          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--muted)">
             Venue: <span style="color:var(--ink);font-weight:600">{EVENT_CONFIG.eventDetails.venueText}</span>
           </div>
         </div>

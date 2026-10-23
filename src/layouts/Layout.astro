@@ -276,6 +276,45 @@ const { title, description, image, canonicalURL } = Astro.props;
           });
         }
 
+        // Desktop Pointer Parallax for Hero Orbital Art (fine pointers & non-reduced motion only)
+        const heroOrbitalArt = document.getElementById('heroOrbitalArt');
+        if (hero && heroOrbitalArt && !reduce && fine) {
+          let tx = 0;
+          let ty = 0;
+          let cx = 0;
+          let cy = 0;
+          let rafId: number | null = null;
+
+          const tickParallax = () => {
+            cx += (tx - cx) * 0.08;
+            cy += (ty - cy) * 0.08;
+            heroOrbitalArt.style.setProperty('--px', cx.toFixed(4));
+            heroOrbitalArt.style.setProperty('--py', cy.toFixed(4));
+            if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
+              rafId = requestAnimationFrame(tickParallax);
+            } else {
+              rafId = null;
+            }
+          };
+
+          hero.addEventListener('pointermove', (e: PointerEvent) => {
+            const r = hero.getBoundingClientRect();
+            tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+            ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+            if (!rafId) {
+              rafId = requestAnimationFrame(tickParallax);
+            }
+          }, { passive: true });
+
+          hero.addEventListener('pointerleave', () => {
+            tx = 0;
+            ty = 0;
+            if (!rafId) {
+              rafId = requestAnimationFrame(tickParallax);
+            }
+          }, { passive: true });
+        }
+
         // Custom Cursor (fine pointers only, decorative, pointer-events: none, never hides native cursor)
         if (fine && !reduce) {
           const dot = document.createElement('div');

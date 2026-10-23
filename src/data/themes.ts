@@ -1,4 +1,4 @@
-import type { ThemeItem } from '../types';
+import type { ThemeItem, JudgingCriterion } from '../types';
 
 export const THEMES_LIST: ThemeItem[] = [
   {
@@ -43,3 +43,21 @@ export const THEMES_NOTE = {
   officialStatus: '4 Tracks Live · Comprehensive problem statements & API keys provided at kickoff',
   prizeStatus: '₹1,50,000+ Prize Pool · Cash bounties, seed grants, and IEEE incubation credits'
 };
+
+export const JUDGING_CRITERIA: JudgingCriterion[] = [
+  {
+    index: '01.',
+    title: 'System Architecture',
+    description: 'How cleanly components interface, handle errors, maintain state, and scale under boundary constraints.'
+  },
+  {
+    index: '02.',
+    title: 'Working Execution',
+    description: 'A live demonstrable build outranks mockups. Projects are evaluated on actual operational execution.'
+  },
+  {
+    index: '03.',
+    title: 'Disciplinary Synthesis',
+    description: 'Convergence of diverse technologies — hardware actuation, low-level algorithms, and interactive human surfaces.'
+  }
+];

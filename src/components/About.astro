@@ -20,7 +20,7 @@ const { manifesto } = EVENT_CONFIG;
 
       <div class="manifesto-cols reveal" style="--d:.1s">
         <p class="lede">
-          Confluence is built on a simple belief: the most interesting problems live at the junctions between disciplines. Software meets hardware, research meets product, and a good idea meets the discipline required to finish it.
+          {manifesto.lede}
         </p>
         {manifesto.paragraphs.map((p) => (
           <p class="body">{p}</p>

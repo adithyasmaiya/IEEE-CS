@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { EVENT_CONFIG } from '../data/event';
 
 const pageTitle = `Frequently Asked Questions · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
@@ -10,34 +11,23 @@ const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.n
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="faqs-page-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">04 — FAQs</span>
-        <span class="label">Questions · Answers · Policies</span>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
-        <div>
-          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
-            Edition {EVENT_CONFIG.edition} · Participant Guidance
-          </span>
-          <h1 class="h2 reveal" id="faqs-page-title" style="margin:0;line-height:.88">
-            Frequently<br />
-            <span class="outline-text">Answered</span>
-          </h1>
-        </div>
-        <div style="max-width:44ch">
-          <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
-            Everything you need to know about team eligibility, registration prerequisites, problem track releases, and submission expectations.
-          </p>
-          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
-            Verified Rules &amp; Hackathon Participant Guidance
-          </div>
-        </div>
+  <PageHeader
+    index="04 — FAQs"
+    label="Questions · Answers · Policies"
+    supertitle={`Edition ${EVENT_CONFIG.edition} · Participant Guidance`}
+    title="Frequently"
+    titleOutline="Answered"
+    titleId="faqs-page-title"
+  >
+    <div style="max-width:44ch">
+      <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
+        Everything you need to know about team eligibility, registration prerequisites, problem track releases, and submission expectations.
+      </p>
+      <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
+        Verified Rules &amp; Hackathon Participant Guidance
       </div>
     </div>
-  </section>
+  </PageHeader>
 
   <!-- Core FAQs Accordion (Shared Reusable Component) -->
   <Faq />

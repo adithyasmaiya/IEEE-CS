@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Roadmap from '../components/Roadmap.astro';
 import Cta from '../components/Cta.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { EVENT_CONFIG } from '../data/event';
-import { ROADMAP_STATUS } from '../data/roadmap';
+import { ROADMAP_STATUS, ROADMAP_CHECKPOINTS } from '../data/roadmap';
 
 const pageTitle = `Roadmap & Milestones · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`;
 const pageDescription = `Follow the path from spark to ship for ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}. Milestone roadmap, mentoring checkpoints, and submission flow for the flagship hackathon in ${EVENT_CONFIG.city}.`;
@@ -11,34 +12,23 @@ const pageDescription = `Follow the path from spark to ship for ${EVENT_CONFIG.n
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 5rem)" aria-labelledby="roadmap-page-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">03 — Roadmap</span>
-        <span class="label">Event Flow · Milestones</span>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
-        <div>
-          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
-            Edition {EVENT_CONFIG.edition} · Structured Milestone Track
-          </span>
-          <h1 class="h2 reveal" id="roadmap-page-title" style="margin:0;line-height:.88">
-            Event<br />
-            <span class="outline-text">Roadmap</span>
-          </h1>
-        </div>
-        <div style="max-width:44ch">
-          <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
-            From registration opening to live jury presentations — a clear cadence of check-ins, build hours, and evaluation.
-          </p>
-          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
-            Schedule Status: <span style="color:var(--acid);font-weight:600">{ROADMAP_STATUS.statusText}</span>
-          </div>
-        </div>
+  <PageHeader
+    index="03 — Roadmap"
+    label="Event Flow · Milestones"
+    supertitle={`Edition ${EVENT_CONFIG.edition} · Structured Milestone Track`}
+    title="Event"
+    titleOutline="Roadmap"
+    titleId="roadmap-page-title"
+  >
+    <div style="max-width:44ch">
+      <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
+        From registration opening to live jury presentations — a clear cadence of check-ins, build hours, and evaluation.
+      </p>
+      <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
+        Schedule Status: <span style="color:var(--acid);font-weight:600">{ROADMAP_STATUS.statusText}</span>
       </div>
     </div>
-  </section>
+  </PageHeader>
 
   <!-- Core Roadmap Timeline (Shared Reusable Component) -->
   <Roadmap />
@@ -63,29 +53,18 @@ const pageDescription = `Follow the path from spark to ship for ${EVENT_CONFIG.n
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));gap:2rem">
-        <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="label" style="display:block;margin-bottom:.6rem">Checkpoint 01</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">Architecture Review</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Teams review system diagrams, proposed technology stacks, and hardware/software interfaces with domain mentors.
-          </p>
-        </div>
-
-        <div class="reveal" style="--d:.1s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="label" style="display:block;margin-bottom:.6rem">Checkpoint 02</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">Mid-Build Sanity</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            A fast sanity check on working code, resolving roadblocks, boundary stress points, and telemetry integration.
-          </p>
-        </div>
-
-        <div class="reveal" style="--d:.2s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)">
-          <span class="label" style="display:block;margin-bottom:.6rem">Checkpoint 03</span>
-          <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">Code Freeze & Demo</h3>
-          <p class="body" style="font-size:.92rem;margin:0">
-            Repositories lock and teams prepare live prototype demonstrations for technical judges and peers.
-          </p>
-        </div>
+        {ROADMAP_CHECKPOINTS.map((checkpoint, idx) => (
+          <div
+            class="reveal"
+            style={idx > 0 ? `--d:.${idx}s;border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)` : `border:1px solid var(--line);background:var(--bg-2);padding:clamp(1.5rem, 3vw, 2.5rem)`}
+          >
+            <span class="label" style="display:block;margin-bottom:.6rem">{checkpoint.label}</span>
+            <h3 class="display" style="font-size:1.4rem;margin:0 0 .8rem">{checkpoint.title}</h3>
+            <p class="body" style="font-size:.92rem;margin:0">
+              {checkpoint.description}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   </section>

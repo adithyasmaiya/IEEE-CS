@@ -1,4 +1,4 @@
-import type { RoadmapMilestone } from '../types';
+import type { RoadmapMilestone, RoadmapCheckpoint } from '../types';
 
 export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
   {
@@ -48,3 +48,21 @@ export const ROADMAP_STATUS = {
   note: 'Official 36-hour hackathon schedule verified by IEEE Computer Society PES University organizing committee.',
   statusText: 'SCHEDULE CONFIRMED'
 };
+
+export const ROADMAP_CHECKPOINTS: RoadmapCheckpoint[] = [
+  {
+    label: 'Checkpoint 01',
+    title: 'Architecture Review',
+    description: 'Teams review system diagrams, proposed technology stacks, and hardware/software interfaces with domain mentors.'
+  },
+  {
+    label: 'Checkpoint 02',
+    title: 'Mid-Build Sanity',
+    description: 'A fast sanity check on working code, resolving roadblocks, boundary stress points, and telemetry integration.'
+  },
+  {
+    label: 'Checkpoint 03',
+    title: 'Code Freeze & Demo',
+    description: 'Repositories lock and teams prepare live prototype demonstrations for technical judges and peers.'
+  }
+];

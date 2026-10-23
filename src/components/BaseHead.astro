@@ -52,17 +52,34 @@ const jsonLd = {
       '@id': `${canonicalHref}#event`,
       'name': `${EVENT_CONFIG.name} ${EVENT_CONFIG.edition}`,
       'description': EVENT_CONFIG.tagline,
+      'startDate': '2026-11-14T09:00:00+05:30',
+      'endDate': '2026-11-15T21:00:00+05:30',
+      'isAccessibleForFree': true,
       'organizer': {
         '@id': `${canonicalHref}#organization`
       },
       'location': {
         '@type': 'Place',
         'name': `${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}`,
+        'address': {
+          '@type': 'PostalAddress',
+          'streetAddress': '100 Feet Ring Road, BSK III Stage',
+          'addressLocality': EVENT_CONFIG.city,
+          'postalCode': '560085',
+          'addressCountry': 'IN'
+        },
         'geo': {
           '@type': 'GeoCoordinates',
           'latitude': 12.9716,
           'longitude': 77.5946
         }
+      },
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'INR',
+        'availability': 'https://schema.org/InStock',
+        'url': canonicalHref
       },
       'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
       'eventStatus': 'https://schema.org/EventScheduled'
@@ -108,12 +125,13 @@ const jsonLd = {
 <meta property="og:locale" content="en_US" />
 
 <!-- Twitter / X Cards -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalHref} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImageUrl} />
-<meta property="twitter:image:alt" content={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} Editorial Cover`} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@ieeecs.pesu" />
+<meta name="twitter:url" content={canonicalHref} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} Editorial Cover`} />
 
 <!-- Google Fonts Preconnect & Optimized Font Loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />

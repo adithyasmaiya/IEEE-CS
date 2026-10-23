@@ -65,6 +65,7 @@ export interface EventConfig {
   coordinates: string;
   tagline: string;
   manifesto: {
+    lede?: string;
     paragraphs: string[];
     pillars: ManifestoPillar[];
   };
@@ -99,4 +100,29 @@ export interface EventConfig {
     ogImage: string;
     themeColor: string;
   };
+}
+
+export interface JudgingCriterion {
+  index: string;
+  title: string;
+  description: string;
+}
+
+export interface RoadmapCheckpoint {
+  label: string;
+  title: string;
+  description: string;
+}
+
+export interface EventProvision {
+  number: string;
+  title: string;
+  description: string;
+}
+
+export interface EventMetric {
+  label: string;
+  value: string;
+  sub: string;
+  isAccent?: boolean;
 }

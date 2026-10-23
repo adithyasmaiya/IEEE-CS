@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Cta from '../components/Cta.astro';
-import { EVENT_CONFIG } from '../data/event';
+import PageHeader from '../components/PageHeader.astro';
+import { EVENT_CONFIG, EVENT_METRICS, EVENT_PROVISIONS } from '../data/event';
 import { THEMES_LIST } from '../data/themes';
 
 const { registration, eventDetails } = EVENT_CONFIG;
@@ -13,38 +14,28 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Page Header -->
-  <section class="section grid-lines" style="padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:clamp(3rem, 6vw, 4.5rem)" aria-labelledby="register-page-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="idx">05 — Registration</span>
-        <span class="label">Application Portal · Cohort Admissions</span>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
-        <div>
-          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
-            Edition {EVENT_CONFIG.edition} · Team Admissions Live
-          </span>
-          <h1 class="h2 reveal" id="register-page-title" style="margin:0;line-height:.88">
-            Registration<br />
-            <span class="outline-text">Portal</span>
-          </h1>
-        </div>
-        <div style="max-width:46ch">
-          <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
-            Join 120+ shortlisted teams of builders, systems researchers, and engineers converging at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}.
-          </p>
-          <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
-            {hasRegistrationUrl ? (
-              <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL GOOGLE FORM OPEN</span> · {eventDetails.dateText}</>
-            ) : (
-              <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL FORM LINK PENDING</span> · {eventDetails.dateText}</>
-            )}
-          </div>
-        </div>
+  <PageHeader
+    index="05 — Registration"
+    label="Application Portal · Cohort Admissions"
+    supertitle={`Edition ${EVENT_CONFIG.edition} · Team Admissions Live`}
+    title="Registration"
+    titleOutline="Portal"
+    titleId="register-page-title"
+    paddingBottom="clamp(3rem, 6vw, 4.5rem)"
+  >
+    <div style="max-width:46ch">
+      <p class="lede reveal" style="--d:.1s;margin:0 0 1.2rem">
+        Join 120+ shortlisted teams of builders, systems researchers, and engineers converging at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}.
+      </p>
+      <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
+        {hasRegistrationUrl ? (
+          <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL GOOGLE FORM OPEN</span> · {eventDetails.dateText}</>
+        ) : (
+          <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL FORM LINK PENDING</span> · {eventDetails.dateText}</>
+        )}
       </div>
     </div>
-  </section>
+  </PageHeader>
 
   <!-- Visual Feature & Hackathon Atmosphere Showcase -->
   <section class="section" style="padding-top:0;padding-bottom:clamp(3rem, 5vw, 4.5rem)" aria-label="Hackathon Showcase">
@@ -85,33 +76,13 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
 
         <!-- Right Side: The 4 Columns Arranged One by One Below -->
         <div class="showcase-metrics-side" aria-label="Key Event Metrics">
-          <!-- Item 1: Sprint Duration -->
-          <div class="metric-row">
-            <span class="metric-label">SPRINT DURATION</span>
-            <div class="metric-val">36 Hours</div>
-            <span class="metric-sub">Continuous On-Site</span>
-          </div>
-
-          <!-- Item 2: Prize Pool -->
-          <div class="metric-row">
-            <span class="metric-label">PRIZE POOL</span>
-            <div class="metric-val metric-val-acid">₹1,50,000+</div>
-            <span class="metric-sub">Cash &amp; Incubation</span>
-          </div>
-
-          <!-- Item 3: Team Capacity -->
-          <div class="metric-row">
-            <span class="metric-label">TEAM CAPACITY</span>
-            <div class="metric-val">2–4 Builders</div>
-            <span class="metric-sub">Cross-Disciplinary</span>
-          </div>
-
-          <!-- Item 4: Registration Fee -->
-          <div class="metric-row">
-            <span class="metric-label">REGISTRATION FEE</span>
-            <div class="metric-val">100% Free</div>
-            <span class="metric-sub">Meals &amp; Kits Included</span>
-          </div>
+          {EVENT_METRICS.map((metric) => (
+            <div class="metric-row">
+              <span class="metric-label">{metric.label}</span>
+              <div class={`metric-val ${metric.isAccent ? 'metric-val-acid' : ''}`}>{metric.value}</div>
+              <span class="metric-sub">{metric.sub}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -133,37 +104,15 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         </div>
 
         <div class="showcase-features-grid">
-          <div class="feature-item">
-            <span class="feature-num">[ 01 ]</span>
-            <div class="feature-content">
-              <span class="feature-title">Hardware &amp; IoT Testbenches</span>
-              <p class="feature-desc">Oscilloscopes, STM32 &amp; ESP32-S3 boards, soldering stations, sensors, and dedicated lab power supplies.</p>
+          {EVENT_PROVISIONS.map((item) => (
+            <div class="feature-item">
+              <span class="feature-num">[ {item.number} ]</span>
+              <div class="feature-content">
+                <span class="feature-title">{item.title}</span>
+                <p class="feature-desc">{item.description}</p>
+              </div>
             </div>
-          </div>
-
-          <div class="feature-item">
-            <span class="feature-num">[ 02 ]</span>
-            <div class="feature-content">
-              <span class="feature-title">Round-the-Clock Mentorship</span>
-              <p class="feature-desc">Continuous technical unblocking with domain mentors across AI, distributed systems, and low-level hardware.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <span class="feature-num">[ 03 ]</span>
-            <div class="feature-content">
-              <span class="feature-title">24/7 Hacker Sustenance</span>
-              <p class="feature-desc">Continuous hot catered meals, midnight caffeine drops, cold brews, snacks, and designated quiet recharge pods.</p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <span class="feature-num">[ 04 ]</span>
-            <div class="feature-content">
-              <span class="feature-title">Auditorium Stage Showcase</span>
-              <p class="feature-desc">Finalist teams pitch live working prototypes in the main auditorium before venture partners and industry judges.</p>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div class="showcase-info-foot">
@@ -238,7 +187,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         </div>
       )}
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 380px), 1fr));gap:2.5rem;margin-bottom:3.5rem">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));gap:clamp(1.5rem, 3vw, 2.5rem);margin-bottom:3.5rem">
         <!-- Main Form / Status Card -->
         <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem);display:flex;flex-direction:column;justify-content:space-between">
           <div>
@@ -905,6 +854,14 @@ ${entry.proposal}
       gap: 1.8rem;
     }
 
+    #teamRegForm input:focus,
+    #teamRegForm select:focus,
+    #teamRegForm textarea:focus {
+      border-color: var(--acid) !important;
+      box-shadow: 0 0 12px rgba(200, 255, 46, 0.22);
+      outline: 1px solid var(--acid) !important;
+    }
+
     @media (max-width: 1100px) {
       .showcase-features-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -925,16 +882,20 @@ ${entry.proposal}
 
       .showcase-metrics-side {
         grid-template-rows: auto;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .metric-row {
-        border-right: 0 !important;
+        border-right: 1px solid var(--line) !important;
         border-bottom: 1px solid var(--line) !important;
         padding: 1.3rem 1.6rem;
       }
 
-      .metric-row:last-child {
+      .metric-row:nth-child(2n) {
+        border-right: 0 !important;
+      }
+
+      .metric-row:nth-last-child(-n+2) {
         border-bottom: 0 !important;
       }
 
@@ -944,9 +905,22 @@ ${entry.proposal}
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 560px) {
       .showcase-visual-side {
-        min-height: 260px;
+        min-height: 250px;
+      }
+
+      .showcase-metrics-side {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-row {
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--line) !important;
+      }
+
+      .metric-row:last-child {
+        border-bottom: 0 !important;
       }
 
       .showcase-features-grid {

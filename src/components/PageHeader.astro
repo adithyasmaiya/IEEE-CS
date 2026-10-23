@@ -1,0 +1,51 @@
+---
+// src/components/PageHeader.astro — Reusable page header section for inner pages
+interface Props {
+  index: string;
+  label: string;
+  supertitle?: string;
+  title: string;
+  titleOutline?: string;
+  titleId: string;
+  paddingBottom?: string;
+}
+
+const {
+  index,
+  label,
+  supertitle,
+  title,
+  titleOutline,
+  titleId,
+  paddingBottom = 'clamp(3rem, 6vw, 5rem)'
+} = Astro.props;
+---
+
+<section
+  class="section grid-lines"
+  style={`padding-top:clamp(7.5rem, 14vw, 10.5rem);padding-bottom:${paddingBottom}`}
+  aria-labelledby={titleId}
+>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="idx">{index}</span>
+      <span class="label">{label}</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap">
+      <div>
+        {supertitle && (
+          <span class="label label-ink" style="display:block;margin-bottom:.8rem">
+            {supertitle}
+          </span>
+        )}
+        <h1 class="h2 reveal" id={titleId} style="margin:0;line-height:.88">
+          {title}<br />
+          {titleOutline && <span class="outline-text">{titleOutline}</span>}
+        </h1>
+      </div>
+
+      <slot />
+    </div>
+  </div>
+</section>
