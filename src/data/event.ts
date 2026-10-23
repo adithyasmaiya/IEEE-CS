@@ -32,13 +32,14 @@ export const EVENT_CONFIG: EventConfig = {
     ]
   },
   registration: {
-    // Official registration portal URL or fallback to internal application portal
-    googleFormsUrl: '',
+    // Official Google Forms registration URL. Configurable here or via PUBLIC_GOOGLE_FORMS_URL.
+    // When empty (''), the portal clearly identifies that the official Google Forms link is pending release.
+    googleFormsUrl: (import.meta.env.PUBLIC_GOOGLE_FORMS_URL as string | undefined) || '',
     isOpen: true,
     openDateText: 'October 20, 2026',
-    buttonText: 'Apply as Team',
-    unavailableText: 'Register for Hackathon',
-    unavailableBadgeText: 'Admissions Open',
+    buttonText: 'Register Now',
+    unavailableText: 'Registration Closed',
+    unavailableBadgeText: 'Registration Closed',
     feeText: '100% Free · Shortlisted teams receive hacker kits, meals & cloud credits',
     instructions: [
       'Form your interdisciplinary team with 2–4 members across software, embedded hardware, or research.',

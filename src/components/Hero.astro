@@ -42,7 +42,7 @@ const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFor
           </a>
         ) : (
           <a href="/register/" class="btn btn-primary" data-hover>
-            {registration.unavailableText} <span class="arrow">→</span>
+            {registration.isOpen ? registration.buttonText : registration.unavailableText} <span class="arrow">→</span>
           </a>
         )}
         <a href="/about/" class="btn btn-ghost" data-hover>

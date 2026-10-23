@@ -47,15 +47,19 @@ const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFor
         ) : (
           <a
             href="/register/"
-            class="btn btn-primary"
+            class={`btn ${registration.isOpen ? 'btn-primary' : 'btn-ghost'}`}
             data-hover
-            style="width:min(100%,360px);justify-content:space-between"
+            style={`width:min(100%,360px);justify-content:space-between${!registration.isOpen ? ';border-style:dashed' : ''}`}
           >
-            {registration.unavailableText} <span class="arrow">→</span>
+            {registration.isOpen ? registration.buttonText : registration.unavailableText} <span class="arrow">→</span>
           </a>
         )}
         <span class="label">
-          Admissions live since <span style="color:var(--acid);font-weight:600">{registration.openDateText}</span>
+          {registration.isOpen ? (
+            <>Admissions live since <span style="color:var(--acid);font-weight:600">{registration.openDateText}</span></>
+          ) : (
+            <>Status · <span style="color:var(--muted);font-weight:600">{registration.unavailableText}</span></>
+          )}
         </span>
       </div>
     </div>

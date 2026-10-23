@@ -5,6 +5,7 @@ import { EVENT_CONFIG } from '../data/event';
 import { THEMES_LIST } from '../data/themes';
 
 const { registration, eventDetails } = EVENT_CONFIG;
+const hasRegistrationUrl = Boolean(registration.isOpen && registration.googleFormsUrl);
 
 const pageTitle = `Register · ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} · ${EVENT_CONFIG.organizer}`;
 const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} — the flagship hackathon of ${EVENT_CONFIG.organizer} at ${EVENT_CONFIG.university}, ${EVENT_CONFIG.city}. Apply with your team, explore tracks, and secure your hacker spot.`;
@@ -34,7 +35,11 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
             Join 120+ shortlisted teams of builders, systems researchers, and engineers converging at {EVENT_CONFIG.university}, {EVENT_CONFIG.city}.
           </p>
           <div class="label reveal" style="--d:.15s;border-left:2px solid var(--acid);padding-left:1rem;color:var(--ink)">
-            Status: <span style="color:var(--acid);font-weight:600">APPLICATIONS ACTIVE</span> · {eventDetails.dateText}
+            {hasRegistrationUrl ? (
+              <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL GOOGLE FORM OPEN</span> · {eventDetails.dateText}</>
+            ) : (
+              <>Status: <span style="color:var(--acid);font-weight:600">OFFICIAL FORM LINK PENDING</span> · {eventDetails.dateText}</>
+            )}
           </div>
         </div>
       </div>
@@ -194,17 +199,56 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
           </h2>
         </div>
         <p class="body reveal" style="max-width:44ch;margin:0">
-          Review the requirements below and submit your team application to reserve your seats for Confluence 2026.
+          Review the requirements below and prepare your team application for Confluence 2026.
         </p>
       </div>
+
+      <!-- Official Google Form Link Status / Transparency Callout -->
+      {!hasRegistrationUrl ? (
+        <div class="reveal" style="border:1px dashed var(--line-strong);background:rgba(200,255,46,0.03);padding:1.4rem 1.8rem;margin-bottom:2.5rem;display:flex;align-items:flex-start;gap:1.2rem">
+          <span style="color:var(--acid);font-family:var(--mono);font-size:1.1rem;font-weight:700">[NOTICE]</span>
+          <div>
+            <span class="label" style="color:var(--acid);display:block;margin-bottom:.3rem">
+              OFFICIAL GOOGLE FORMS LINK PENDING CONFIGURATION
+            </span>
+            <p class="body" style="margin:0;font-size:.88rem;line-height:1.5">
+              The official Google Forms destination is currently pending release by the organizing committee (<code style="font-family:var(--mono);color:var(--acid);font-size:.85rem">EVENT_CONFIG.registration.googleFormsUrl</code> is currently unset). Official registrations will be accepted solely through that Google Form once published. In the meantime, you can draft and save your team profile and project concept locally in your browser below.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div class="reveal" style="border:1px solid var(--acid);background:rgba(200,255,46,0.06);padding:1.4rem 1.8rem;margin-bottom:2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.2rem">
+          <div>
+            <span class="label" style="color:var(--acid);display:block;margin-bottom:.3rem">
+              ● OFFICIAL REGISTRATION PORTAL READY
+            </span>
+            <p class="body" style="margin:0;font-size:.9rem;line-height:1.4">
+              The official Google Form for Confluence 2026 team registration is live and receiving submissions.
+            </p>
+          </div>
+          <a
+            href={registration.googleFormsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            data-hover
+          >
+            Go to Official Google Form ↗
+          </a>
+        </div>
+      )}
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 380px), 1fr));gap:2.5rem;margin-bottom:3.5rem">
         <!-- Main Form / Status Card -->
         <div class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 4vw, 3rem);display:flex;flex-direction:column;justify-content:space-between">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-              <span class="label">Admissions Status</span>
-              <span class="idx" style="font-size:.7rem;border:1px solid var(--acid);color:var(--acid);padding:.2rem .6rem">APPLICATIONS LIVE</span>
+              <span class="label">Admissions Channel</span>
+              {hasRegistrationUrl ? (
+                <span class="idx" style="font-size:.7rem;border:1px solid var(--acid);color:var(--acid);padding:.2rem .6rem">GOOGLE FORMS LIVE</span>
+              ) : (
+                <span class="idx" style="font-size:.7rem;border:1px solid var(--line-strong);color:var(--muted);padding:.2rem .6rem">FORM LINK PENDING</span>
+              )}
             </div>
 
             <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.5rem);line-height:1;margin:0 0 1.2rem">
@@ -212,7 +256,9 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
             </h3>
 
             <p class="body" style="margin:0 0 1.5rem">
-              Applications are officially open. Submit your team lead credentials, team members, and track preference directly below or via our verified portal.
+              {hasRegistrationUrl
+                ? "Official registrations are being collected via the official IEEE CS PESU Google Form. Click below to submit your team application directly."
+                : "Official registration will be collected via the IEEE CS PESU Google Form. The registration URL is currently pending announcement by the organizers. Teams may prepare and store their proposal draft locally below in advance."}
             </p>
 
             <div style="border-top:1px solid var(--line);padding-top:1.2rem;margin-bottom:2rem">
@@ -226,7 +272,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               </div>
               <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--line)">
                 <span class="label">Registration Fee</span>
-                <span style="font-weight:600;color:var(--acid)">100% Free (Sponsored)</span>
+                <span style="font-weight:600;color:var(--acid)">{(registration.feeText?.split('·')[0].trim() || '100% Free')} (Sponsored)</span>
               </div>
               <div style="display:flex;justify-content:space-between;padding:.5rem 0">
                 <span class="label">Team Size Limit</span>
@@ -236,14 +282,27 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
           </div>
 
           <div>
-            <a
-              href="#apply-form"
-              class="btn btn-primary"
-              data-hover
-              style="width:100%;justify-content:space-between"
-            >
-              Fill Application Form <span class="arrow">↓</span>
-            </a>
+            {hasRegistrationUrl ? (
+              <a
+                href={registration.googleFormsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+                data-hover
+                style="width:100%;justify-content:space-between"
+              >
+                Open Official Google Form <span class="arrow">↗</span>
+              </a>
+            ) : (
+              <a
+                href="#apply-form"
+                class="btn btn-primary"
+                data-hover
+                style="width:100%;justify-content:space-between"
+              >
+                Draft Proposal Locally <span class="arrow">↓</span>
+              </a>
+            )}
           </div>
         </div>
 
@@ -277,19 +336,22 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         </div>
       </div>
 
-      <!-- Live Interactive Team Application Form -->
+      <!-- Interactive Team Application Draft Section -->
       <div id="apply-form" class="reveal" style="border:1px solid var(--line);background:var(--bg-2);padding:clamp(2rem, 5vw, 4rem)">
         <div class="section-head" style="border-top:0;padding-top:0;margin-bottom:2rem">
-          <span class="idx">Portal</span>
-          <span class="label">Team Registration Form · Edition 2026</span>
+          <span class="idx">Draft Tool</span>
+          <span class="label">Team Proposal &amp; Application Preparation · Edition 2026</span>
         </div>
 
         <div style="margin-bottom:2.5rem">
           <h3 class="display" style="font-size:clamp(1.8rem, 3.5vw, 2.8rem);margin:0 0 .8rem">
-            Submit Your Team Profile
+            Prepare Your Team Application
           </h3>
-          <p class="body" style="margin:0;max-width:60ch">
-            Fill out your team credentials below to register for Confluence 2026. Submissions will be reviewed on a rolling basis by the IEEE CS PESU admissions committee.
+          <p class="body" style="margin:0;max-width:64ch">
+            Draft your team credentials, problem track selection, and technical concept below. Submitting this form saves your draft locally in your browser's localStorage so your team can easily copy and paste into the official Google Form.
+          </p>
+          <p class="coords" style="margin:.8rem 0 0;color:var(--acid);font-size:.8rem">
+            * Note: Storing a draft here does NOT submit your registration to the IEEE CS PESU organizers. Official entry requires submitting via the Google Form.
           </p>
         </div>
 
@@ -400,7 +462,7 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
 
           <div style="grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;padding-top:1rem;border-top:1px solid var(--line)">
             <p class="coords" style="margin:0;color:var(--muted)">
-              By registering, you agree to the IEEE CS PESU Code of Conduct and on-site event policies.
+              Saves to browser localStorage for easy copying. Official registration requires the Google Form.
             </p>
             <button
               type="submit"
@@ -409,12 +471,12 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
               id="submitBtn"
               style="padding:1rem 2.2rem"
             >
-              Submit Application <span class="arrow">→</span>
+              Save Application Draft Locally <span class="arrow">→</span>
             </button>
           </div>
         </form>
 
-        <!-- Dynamic Success Receipt Card (Shown upon submission) -->
+        <!-- Dynamic Success Receipt Card (Shown upon draft save) -->
         <div
           id="successReceipt"
           style="display:none;background:var(--bg);border:1px solid var(--acid);padding:2.5rem;margin-top:2rem"
@@ -422,37 +484,61 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
         >
           <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
             <div>
-              <span class="label" style="color:var(--acid);font-weight:700">✓ APPLICATION CONFIRMED</span>
+              <span class="label" style="color:var(--acid);font-weight:700">✓ DRAFT SAVED LOCALLY (BROWSER STORAGE)</span>
               <h4 style="font-family:var(--display);font-size:1.8rem;margin:.4rem 0 0;color:var(--ink)">
-                Welcome to Confluence 2026
+                Team Profile Draft Stored
               </h4>
             </div>
             <span class="idx" id="receiptId" style="border:1px solid var(--line-strong);padding:.4rem .8rem;font-size:.85rem">
-              CNF26-XXXX
+              DRAFT-CNF26-XXXX
             </span>
           </div>
 
-          <p class="body" style="margin:0 0 1.5rem;color:#E0DCD4">
-            Your team registration has been recorded. Our admissions team will review your project abstract and reach out via your team leader email with the hacker kit and on-site check-in credentials.
+          <p class="body" style="margin:0 0 1.2rem;color:#E0DCD4">
+            Your team proposal draft has been saved to this browser's local storage. You can copy the generated summary below or edit your draft anytime.
           </p>
 
+          <div style="border-left:2px solid var(--acid);background:var(--bg-2);padding:1rem 1.4rem;margin-bottom:1.8rem">
+            <span class="label" style="color:var(--acid);display:block;margin-bottom:.3rem">
+              OFFICIAL SUBMISSION REQUIRED:
+            </span>
+            <p class="body" style="margin:0;font-size:.88rem;color:var(--ink);line-height:1.45">
+              This draft has <strong>NOT</strong> been transmitted to the organizers. Official entry for Confluence 2026 must be submitted through the official Google Form.
+              {hasRegistrationUrl ? (
+                <> Please proceed to the Google Form below to finalize your registration.</>
+              ) : (
+                <> Once the official Google Form URL is published by the organizing committee, paste these details to complete registration.</>
+              )}
+            </p>
+          </div>
+
           <div style="display:flex;gap:1rem;flex-wrap:wrap">
-            <a
-              href="https://github.com/pesu-ieeecs"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-ghost"
+            {hasRegistrationUrl && (
+              <a
+                href={registration.googleFormsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+                data-hover
+              >
+                Open Official Google Form ↗
+              </a>
+            )}
+            <button
+              type="button"
+              id="copyDraftBtn"
+              class="btn btn-primary"
               data-hover
             >
-              IEEE CS PESU GitHub ↗
-            </a>
+              Copy Draft Summary 📋
+            </button>
             <button
               type="button"
               id="resetFormBtn"
               class="btn btn-ghost"
               style="border-style:dashed"
             >
-              Register Another Team
+              Edit Draft Details
             </button>
           </div>
         </div>
@@ -468,27 +554,70 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
     const successReceipt = document.getElementById('successReceipt');
     const receiptIdSpan = document.getElementById('receiptId');
     const resetBtn = document.getElementById('resetFormBtn');
+    const copyBtn = document.getElementById('copyDraftBtn');
+
+    let currentDraftSummary = '';
 
     if (form && successReceipt && receiptIdSpan) {
+      // Check if a saved draft already exists in localStorage
+      try {
+        const saved = localStorage.getItem('confluence_registration_draft');
+        if (saved) {
+          const data = JSON.parse(saved);
+          const teamNameInput = document.getElementById('teamName') as HTMLInputElement | null;
+          const teamSizeSelect = document.getElementById('teamSize') as HTMLSelectElement | null;
+          const leadNameInput = document.getElementById('leadName') as HTMLInputElement | null;
+          const leadEmailInput = document.getElementById('leadEmail') as HTMLInputElement | null;
+          const institutionInput = document.getElementById('institution') as HTMLInputElement | null;
+          const trackSelect = document.getElementById('track') as HTMLSelectElement | null;
+          const proposalTextarea = document.getElementById('proposal') as HTMLTextAreaElement | null;
+
+          if (teamNameInput && data.teamName) teamNameInput.value = data.teamName;
+          if (teamSizeSelect && data.teamSize) teamSizeSelect.value = data.teamSize;
+          if (leadNameInput && data.leadName) leadNameInput.value = data.leadName;
+          if (leadEmailInput && data.leadEmail) leadEmailInput.value = data.leadEmail;
+          if (institutionInput && data.institution) institutionInput.value = data.institution;
+          if (trackSelect && data.track) trackSelect.value = data.track;
+          if (proposalTextarea && data.proposal) proposalTextarea.value = data.proposal;
+        }
+      } catch {}
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(form);
-        const randomId = 'CNF26-' + Math.floor(1000 + Math.random() * 9000);
+        const randomId = 'DRAFT-CNF26-' + Math.floor(1000 + Math.random() * 9000);
         
         receiptIdSpan.textContent = randomId;
         
-        // Save to localStorage as proof of registration
         const entry = {
           id: randomId,
           teamName: formData.get('teamName'),
+          teamSize: formData.get('teamSize'),
           leadName: formData.get('leadName'),
           leadEmail: formData.get('leadEmail'),
+          institution: formData.get('institution'),
           track: formData.get('track'),
-          timestamp: new Date().toISOString()
+          proposal: formData.get('proposal'),
+          savedAt: new Date().toISOString()
         };
+
+        currentDraftSummary = 
+`--- CONFLUENCE 2026 TEAM APPLICATION DRAFT ---
+Draft ID: ${entry.id}
+Team Name: ${entry.teamName}
+Team Size: ${entry.teamSize} members
+Team Leader: ${entry.leadName} (${entry.leadEmail})
+Institution: ${entry.institution}
+Primary Track: ${entry.track}
+
+Project Concept & Abstract:
+${entry.proposal}
+
+[Saved locally for submission into official Google Form]`;
+
         try {
-          localStorage.setItem('confluence_registration', JSON.stringify(entry));
-        } catch (_) {}
+          localStorage.setItem('confluence_registration_draft', JSON.stringify(entry));
+        } catch {}
 
         form.style.display = 'none';
         successReceipt.style.display = 'block';
@@ -497,9 +626,23 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
 
       if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-          form.reset();
           form.style.display = 'grid';
           successReceipt.style.display = 'none';
+        });
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            if (currentDraftSummary) {
+              await navigator.clipboard.writeText(currentDraftSummary);
+              const original = copyBtn.textContent;
+              copyBtn.textContent = '✓ Copied to Clipboard!';
+              setTimeout(() => {
+                copyBtn.textContent = original;
+              }, 2500);
+            }
+          } catch {}
         });
       }
     }
@@ -762,13 +905,13 @@ const pageDescription = `Register for ${EVENT_CONFIG.name} ${EVENT_CONFIG.editio
       gap: 1.8rem;
     }
 
-    @media (max-width: 1080px) {
+    @media (max-width: 1100px) {
       .showcase-features-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .showcase-split-box {
         grid-template-columns: 1fr;
         min-height: auto;

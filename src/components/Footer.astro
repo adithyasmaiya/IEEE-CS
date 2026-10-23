@@ -3,10 +3,8 @@ import { EVENT_CONFIG } from '../data/event';
 import { NAV_ITEMS } from '../data/navigation';
 
 const currentYear = new Date().getFullYear();
-// Normalize phone number for RFC 3966 mobile click-to-call compatibility
-const normalizedPhoneHref = EVENT_CONFIG.contact.phone
-  ? `tel:${EVENT_CONFIG.contact.phone.replace(/[\s\(\)-]/g, '').replace('+910', '+91')}`
-  : 'tel:+918026721983';
+// Normalized phone href for RFC 3966 mobile click-to-call compatibility
+const normalizedPhoneHref = 'tel:+918026721983';
 ---
 
 <footer>

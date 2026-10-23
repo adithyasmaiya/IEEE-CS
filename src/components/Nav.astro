@@ -43,32 +43,22 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
     <div style="display:flex;align-items:center;gap:.75rem">
       {registration.isOpen ? (
-        hasRegistrationUrl ? (
-          <a
-            href={registration.googleFormsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary nav-cta"
-            data-hover
-          >
-            {registration.buttonText} <span class="arrow">→</span>
-          </a>
-        ) : (
-          <a
-            href="/register/"
-            class="btn btn-primary nav-cta"
-            data-hover
-          >
-            {registration.buttonText} <span class="arrow">→</span>
-          </a>
-        )
+        <a
+          href={hasRegistrationUrl ? registration.googleFormsUrl : '/register/'}
+          target={hasRegistrationUrl ? '_blank' : undefined}
+          rel={hasRegistrationUrl ? 'noopener noreferrer' : undefined}
+          class="btn btn-primary nav-cta"
+          data-hover
+        >
+          {registration.buttonText} <span class="arrow">→</span>
+        </a>
       ) : (
         <a
           href="/register/"
           class="btn btn-ghost nav-cta"
           data-hover
           style="opacity:.85;border-style:dashed"
-          title="Registration opening date pending announcement"
+          title="Registration is currently closed"
         >
           {registration.unavailableBadgeText} <span class="arrow">→</span>
         </a>
@@ -110,27 +100,16 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   </ul>
   <div>
     {registration.isOpen ? (
-      hasRegistrationUrl ? (
-        <a
-          href={registration.googleFormsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-primary"
-          data-close
-          style="width:100%;justify-content:space-between"
-        >
-          {registration.buttonText} <span class="arrow">→</span>
-        </a>
-      ) : (
-        <a
-          href="/register/"
-          class="btn btn-primary"
-          data-close
-          style="width:100%;justify-content:space-between"
-        >
-          {registration.buttonText} <span class="arrow">→</span>
-        </a>
-      )
+      <a
+        href={hasRegistrationUrl ? registration.googleFormsUrl : '/register/'}
+        target={hasRegistrationUrl ? '_blank' : undefined}
+        rel={hasRegistrationUrl ? 'noopener noreferrer' : undefined}
+        class="btn btn-primary"
+        data-close
+        style="width:100%;justify-content:space-between"
+      >
+        {registration.buttonText} <span class="arrow">→</span>
+      </a>
     ) : (
       <a
         href="/register/"

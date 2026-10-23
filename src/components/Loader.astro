@@ -34,7 +34,7 @@ import { EVENT_CONFIG } from '../data/event';
 
   <div class="preloader-footer">
     <span>{EVENT_CONFIG.city.toUpperCase()} // {EVENT_CONFIG.coordinates}</span>
-    <span>36H SPRINT · ADMISSIONS OPEN</span>
+    <span>{EVENT_CONFIG.eventDetails.formatText.split('·')[0].trim().toUpperCase()} · {EVENT_CONFIG.registration.isOpen ? 'ADMISSIONS ACTIVE' : 'ADMISSIONS CLOSED'}</span>
   </div>
 </aside>
 
@@ -144,8 +144,10 @@ import { EVENT_CONFIG } from '../data/event';
         const destUrl = new URL(href, window.location.href);
         if (destUrl.origin !== window.location.origin) return;
 
-        // If clicking link to the current exact page + hash, don't show full page loader
-        if (destUrl.pathname === window.location.pathname && destUrl.hash) return;
+        // If clicking link to the current exact page, don't show full page loader
+        const currentCleanPath = window.location.pathname.replace(/\/$/, '') || '/';
+        const destCleanPath = destUrl.pathname.replace(/\/$/, '') || '/';
+        if (destCleanPath === currentCleanPath) return;
 
         // Customize label based on destination
         let label = 'Loading Confluence...';
@@ -166,7 +168,7 @@ import { EVENT_CONFIG } from '../data/event';
         if (routeVeil) {
           routeVeil.classList.add('active');
         }
-      } catch (_) {}
+      } catch {}
     };
 
     document.addEventListener('click', handleRouteTransition, { passive: true });
