@@ -69,13 +69,13 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
 
       <!-- Auditorium & Stage Demos Showcase -->
       <div class="reveal" style="margin-top:clamp(2.5rem, 5vw, 4rem);border:1px solid var(--line);background:var(--bg-2);overflow:hidden">
-        <div style="position:relative;aspect-ratio:16/9;max-height:480px;overflow:hidden">
-          <picture>
+        <div style="position:relative;width:100%;height:clamp(340px, 40vw, 500px);overflow:hidden">
+          <picture style="width:100%;height:100%;display:block">
             <source srcset="/images/stage-demos.webp" type="image/webp" />
             <img
               src="/images/stage-demos.jpg"
               alt="Confluence Hackathon Grand Finale live prototype demonstrations before jury and audience at PES University auditorium"
-              style="width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:contrast(1.05) brightness(0.94)"
+              style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;filter:contrast(1.05) brightness(0.94)"
               loading="lazy"
               decoding="async"
               width="1376"
