@@ -62,7 +62,7 @@ export interface EventConfig {
   organizer: string;
   university: string;
   city: string;
-  coordinates: string;
+  coordinates?: string;
   tagline: string;
   manifesto: {
     lede?: string;

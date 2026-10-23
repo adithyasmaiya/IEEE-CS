@@ -6,7 +6,6 @@ export const EVENT_CONFIG: EventConfig = {
   organizer: 'IEEE Computer Society',
   university: 'PES University',
   city: 'Bengaluru',
-  coordinates: '12.9716° N / 77.5946° E',
   tagline: 'Where ideas, disciplines and engineers converge into something that has never existed before.',
   manifesto: {
     lede: 'Confluence is built on a simple belief: the most interesting problems live at the junctions between disciplines. Software meets hardware, research meets product, and a good idea meets the discipline required to finish it.',
