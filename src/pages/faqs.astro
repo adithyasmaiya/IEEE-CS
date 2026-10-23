@@ -58,8 +58,13 @@ const pageDescription = `Find answers to common questions about ${EVENT_CONFIG.n
           <p class="body" style="margin:0 0 1.5rem">
             Official rules, eligibility tiers, and challenge guidelines are confirmed through the {EVENT_CONFIG.organizer} PESU committee. For institutional inquiries, reach out through our contact desk.
           </p>
-          <div class="label" style="color:var(--acid)">
-            Desk Email · <a href={`mailto:${EVENT_CONFIG.contact.email}`} style="color:var(--acid);text-decoration:none">{EVENT_CONFIG.contact.email}</a>
+          <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+            <div class="label" style="color:var(--acid)">
+              Desk Email · <a href={`mailto:${EVENT_CONFIG.contact.email}`} style="color:var(--acid);text-decoration:none">{EVENT_CONFIG.contact.email}</a>
+            </div>
+            <div class="label" style="color:var(--acid)">
+              Instagram · <a href="https://www.instagram.com/ieee.cs.pesu" target="_blank" rel="noopener noreferrer" style="color:var(--acid);text-decoration:none">@ieee.cs.pesu ↗</a>
+            </div>
           </div>
         </div>
 

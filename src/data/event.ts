@@ -59,8 +59,8 @@ export const EVENT_CONFIG: EventConfig = {
   socialLinks: [
     {
       platform: 'Instagram',
-      url: 'https://instagram.com/ieeecs.pesu',
-      placeholderText: '@ieeecs.pesu'
+      url: 'https://www.instagram.com/ieee.cs.pesu',
+      placeholderText: '@ieee.cs.pesu'
     },
     {
       platform: 'LinkedIn',

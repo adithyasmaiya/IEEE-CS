@@ -48,8 +48,9 @@ const pageDescription = `Learn about ${EVENT_CONFIG.name} ${EVENT_CONFIG.edition
           <p class="body" style="margin:0 0 1.2rem">
             The {EVENT_CONFIG.organizer} at {EVENT_CONFIG.university} stands as a student-led community committed to technical rigour, practical engineering, and collaborative systems innovation.
           </p>
-          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--muted)">
-            {EVENT_CONFIG.university} · {EVENT_CONFIG.city} · {EVENT_CONFIG.coordinates}
+          <div class="label" style="border-top:1px solid var(--line);padding-top:1rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem">
+            <span>{EVENT_CONFIG.university} · {EVENT_CONFIG.city}</span>
+            <a href="https://www.instagram.com/ieee.cs.pesu" target="_blank" rel="noopener noreferrer" style="color:var(--acid);text-decoration:none">@ieee.cs.pesu ↗</a>
           </div>
         </div>
 
