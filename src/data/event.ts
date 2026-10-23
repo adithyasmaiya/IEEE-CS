@@ -76,6 +76,11 @@ export const EVENT_CONFIG: EventConfig = {
       platform: 'GitHub',
       url: 'https://github.com/IEEE-CS-PESU',
       placeholderText: 'github.com/IEEE-CS-PESU'
+    },
+    {
+      platform: 'WhatsApp',
+      url: 'https://chat.whatsapp.com/FktQhy24FNyDdAq2ZfNmm2',
+      placeholderText: 'chat.whatsapp.com/FktQhy24FNyDdAq2ZfNmm2'
     }
   ],
   contact: {

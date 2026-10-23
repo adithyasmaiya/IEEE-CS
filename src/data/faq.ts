@@ -12,7 +12,7 @@ export const FAQ_LIST: FaqItem[] = [
     id: 'faq-02',
     index: 'Q.02',
     question: 'What is the required team size?',
-    answerText: 'Teams must consist of 2 to 4 members. You can register with an existing team or find teammates through the official IEEE CS PESU hacker Discord community (discord.com/invite/7kpmFp2uuU) prior to the cohort announcement.'
+    answerText: 'Teams must consist of 2 to 4 members. You can register with an existing team or find teammates through the official IEEE CS PESU hacker Discord (discord.com/invite/7kpmFp2uuU) and WhatsApp community (chat.whatsapp.com/FktQhy24FNyDdAq2ZfNmm2) prior to the cohort announcement.'
   },
   {
     id: 'faq-03',
