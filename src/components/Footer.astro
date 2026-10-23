@@ -91,7 +91,38 @@ const normalizedPhoneHref = 'tel:+918026721983';
       © <span id="year">{currentYear}</span> {EVENT_CONFIG.organizer} · {EVENT_CONFIG.university}. All rights reserved.
     </span>
     <span class="label">
-      IEEE CS PESU · {EVENT_CONFIG.city} · <a href="#top" style="color:var(--acid)">Back to top ↑</a>
+      IEEE CS PESU · {EVENT_CONFIG.city} · <a href="#top" id="backToTop" class="back-to-top" data-hover>Back to top ↑</a>
     </span>
   </div>
 </footer>
+
+<script>
+  (() => {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: reduce ? 'auto' : 'smooth'
+        });
+      });
+    }
+  })();
+</script>
+
+<style>
+  .back-to-top {
+    color: var(--acid);
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s var(--ease), text-shadow 0.2s var(--ease);
+  }
+  .back-to-top:hover {
+    opacity: 0.85;
+    text-shadow: 0 0 8px rgba(200, 255, 46, 0.4);
+    text-decoration: underline;
+  }
+</style>

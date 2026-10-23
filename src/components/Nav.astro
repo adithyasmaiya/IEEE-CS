@@ -6,7 +6,7 @@ const { registration } = EVENT_CONFIG;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="nav" id="top">
+<header class="nav">
   <div class="nav-inner">
     <a href="/" class="nav-brand" aria-label={`${EVENT_CONFIG.name} ${EVENT_CONFIG.edition} home`}>
       <img
