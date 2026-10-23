@@ -1,220 +1,261 @@
 # CONFLUENCE 2026 · IEEE Computer Society PESU
 
-> **Flagship Hackathon Website** — Engineered with Astro SSG, TypeScript, and a responsive dark editorial visual design system.
-
-[![Astro](https://img.shields.io/badge/Astro-5.x%20SSG-FF5D01?logo=astro&logoColor=white)](https://astro.build/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Status](https://img.shields.io/badge/Build-Passing-C8FF2E?logoColor=black)](https://github.com/)
-[![License](https://img.shields.io/badge/License-MIT-gray)](LICENSE)
+> **Flagship Hackathon Web Platform** — Engineered with Astro SSG, TypeScript, and a responsive dark editorial visual design system. Built for the IEEE CS PESU WebDev Recruitment Challenge.
 
 ---
 
-## 📌 Executive Summary
+## 1. Project Overview
 
-**Confluence 2026** is the flagship interdisciplinary hackathon organized by the **IEEE Computer Society at PES University**, Bengaluru. This repository contains the complete production-grade web platform built for the IEEE CS PESU WebDev Recruitment Challenge.
+**Confluence 2026** is the flagship interdisciplinary hackathon organized by the **IEEE Computer Society Student Branch Chapter at PES University**, Bengaluru.
 
-The platform blends a high-impact DesignArena-inspired dark editorial aesthetic (`#0A0A0A` canvas, warm cream `#F2EEE6` typography, and vibrant acid-lime `#C8FF2E` accents) with the performance and SEO guarantees of modern **Astro Static Site Generation (SSG)**.
+This repository contains the complete production-grade website built for the recruitment challenge. The project demonstrates:
+- A signature DesignArena-inspired dark editorial aesthetic (`#0A0A0A` background, warm cream `#F2EEE6` typography, and acid-lime `#C8FF2E` accents).
+- High-performance, zero-bloat static architecture powered by **Astro 5 SSG**.
+- Clean separation of concerns with strictly typed, centralized data modules.
+- Accessibility, SEO, and responsive design refined across mobile, tablet, and desktop viewports.
 
 ---
 
-## 🏛 Architecture & Project Structure
+## 2. Features & The Six Required Routes
 
-The project adheres to strict separation of concerns, modular component design, and centralized typed configuration.
+The platform generates 6 standalone static HTML pages at build time:
+
+| Route | Page | Purpose & Key Features |
+| :--- | :--- | :--- |
+| **`/`** | **Home** | Landing experience with layered Hero (Eureka character animation canvas + rotating orbital SVG artwork + dual-axis protective gradient), Engineering Manifesto summary, 4 core Problem Tracks, Roadmap, FAQs, and Register CTA. |
+| **`/about/`** | **About** | The Engineering Convergence Manifesto, IEEE CS PESU Host Chapter overview, institutional context, and participant ethos (*Craft Over Slides*). |
+| **`/themes/`** | **Themes** | Deep-dive into the 4 problem spaces (Autonomous Intelligence, Distributed Systems, HCI / Spatial Tech, Radical Software Craft), evaluation rubrics, and the Physical Computing / Hardware Lab showcase. |
+| **`/roadmap/`** | **Roadmap** | 5-phase event timeline from applications to live stage demos, build cadence details, and mentoring checkpoint guides. |
+| **`/faqs/`** | **FAQs** | Native disclosure accordion answering verified participant questions on eligibility, team sizes, free admission, hardware provisions, and direct organizer contact channels. |
+| **`/register/`** | **Register** | Live Admissions Channel status board, Application Checklist, On-Site Provisions panel, and an offline Team Proposal Draft Tool with browser `localStorage` persistence. |
+
+### Key Platform Features
+- **Layered Hero System**: Seamless interaction between oversized editorial typography (`CONFLUENCE /26`), rotating orbital SVG artwork, and the 177-frame Eureka character canvas animation.
+- **Scroll-Tied Roadmap Progress**: Horizontal acid-lime progress indicator tied to scroll depth via `IntersectionObserver` on desktop/tablet, and progressive vertical connector illumination on mobile.
+- **Interactive Theme Cards**: Staggered reveal animations with shape previews and hover transformations.
+- **Local Proposal Draft Tool**: Allows teams to draft and save credentials and project abstracts locally before the official Google Form link is announced.
+- **Native Semantic FAQ Accordions**: Built with HTML5 `<details>` and `<summary>` for instant, accessible keyboard interactions without JavaScript dependencies.
+
+---
+
+## 3. Tech Stack
+
+- **Framework**: [Astro 5](https://astro.build/) in Static Site Generation (`output: 'static'`) mode.
+- **Language**: [TypeScript](https://www.typescriptlang.org/) with strict type checking.
+- **Styling**: Vanilla CSS utilizing design tokens via CSS custom properties (`--bg`, `--ink`, `--acid`, `--line`, etc.) and shared responsive breakpoints. Tailwind CSS v4 is integrated via `@tailwindcss/vite` in the build pipeline.
+- **Integrations & Official Tooling**:
+  - `@astrojs/sitemap`: Automated production XML sitemap generation.
+  - `@astrojs/check`: Build-time template syntax and TypeScript diagnostic validation.
+- **Runtime Libraries**: **Zero heavy runtime JS libraries** (no React/Vue/Svelte, no GSAP, Framer Motion, or Three.js). Native browser APIs (`IntersectionObserver`, `requestAnimationFrame`, `requestIdleCallback`, HTML5 `<canvas>`, `localStorage`) are used exclusively for lightweight progressive enhancements.
+
+---
+
+## 4. Why Astro SSG?
+
+Astro Static Site Generation was selected for specific architectural and operational advantages:
+
+1. **Pure Static HTML Delivery**: All 6 routes are compiled to physical `.html` files at build time (`dist/index.html`, `dist/about/index.html`, etc.). There is no Node.js server to maintain, no cold starts, and zero database queries at request time.
+2. **Zero Hydration Overhead**: Astro ships 0 KB of client framework runtime by default. Unlike Next.js or React SPAs where the browser must download, parse, and execute framework bundles before rendering content, Astro delivers instant Time-To-First-Byte (TTFB).
+3. **Edge CDN Distribution**: Fully static files can be cached and served globally across Vercel's Edge Network with sub-50ms latency.
+4. **Guaranteed SEO & Resilience**: Search engine bots and social crawlers receive complete, semantic HTML on the initial GET request. If client JavaScript is disabled or fails to load, all content, navigation, and styling remain 100% readable and accessible.
+
+---
+
+## 5. Project Architecture & Reusable Components
 
 ```text
 confluence-2026/
-├── public/                     # Static public assets (unprocessed)
-│   ├── favicon.svg             # Vector site favicon
-│   ├── favicon.ico             # Fallback 32x32 favicon
-│   ├── robots.txt              # Crawler directives with sitemap reference
-│   ├── og-image.png            # High-resolution 1200x630 Open Graph card
-│   ├── frames/                 # Optimized WebP + JPG animation frames (177 frames)
+├── public/                     # Static public assets served as-is
+│   ├── favicon.svg             # Vector site icon
+│   ├── robots.txt              # Search crawler directives referencing sitemap
+│   ├── og-image.png            # 1200x675 Open Graph / Twitter social card
+│   ├── frames/                 # 177 optimized WebP hero animation frames (with JPG fallbacks)
 │   └── images/                 # Optimized showcase photography (WebP + JPG)
 ├── src/
 │   ├── components/             # Reusable Astro components
-│   │   ├── BaseHead.astro      # Centralized SEO, Open Graph, Twitter & JSON-LD metadata
-│   │   ├── Nav.astro           # Sticky navigation header & mobile drawer
-│   │   ├── Footer.astro        # Structured footer with contact, links & social channels
-│   │   ├── Hero.astro          # Hero section with typography, orbital art & Eureka canvas
-│   │   ├── HeroAnimation.astro # Lightweight canvas frame player with WebP stream
-│   │   ├── PageHeader.astro    # Shared banner component across all subpages
-│   │   ├── About.astro         # Manifesto & engineering pillars section
-│   │   ├── Themes.astro        # Core problem tracks showcase section
-│   │   ├── ThemeCard.astro     # Individual interactive theme row with SVG preview
-│   │   ├── Roadmap.astro       # Event milestone roadmap timeline section
-│   │   ├── RoadmapMilestone.astro # Individual milestone node and connector
-│   │   ├── Faq.astro           # FAQs accordion section
-│   │   ├── FaqItem.astro       # Semantic <details>/<summary> FAQ accordion item
+│   │   ├── BaseHead.astro      # Centralized metadata, canonical tags, Open Graph, and JSON-LD
+│   │   ├── Nav.astro           # Sticky navigation bar & mobile drawer with ARIA states
+│   │   ├── Footer.astro        # Structured footer with contact info, social links & back-to-top
+│   │   ├── Hero.astro          # Layered hero section (typography, orbital art, Eureka canvas)
+│   │   ├── HeroAnimation.astro # Progressive canvas frame player with WebP streaming
+│   │   ├── PageHeader.astro    # Shared header banner across all 5 subpages
+│   │   ├── About.astro         # Engineering manifesto and 3 core pillars
+│   │   ├── Themes.astro        # 4 problem spaces interactive list
+│   │   ├── ThemeCard.astro     # Individual theme row with SVG shapes and hover effects
+│   │   ├── Roadmap.astro       # Event milestone roadmap section
+│   │   ├── RoadmapMilestone.astro # Milestone node and responsive connector
+│   │   ├── Faq.astro           # FAQs section container
+│   │   ├── FaqItem.astro       # Accessible <details>/<summary> accordion disclosure
 │   │   └── Cta.astro           # Final CTA banner with orbital vector artwork
-│   ├── data/                   # Centralized, strictly typed event data store
-│   │   ├── event.ts            # Core event configuration, dates, venue & metadata
-│   │   ├── navigation.ts       # Route URLs, navigation hierarchy & labels
-│   │   ├── themes.ts           # 4 core problem tracks, track descriptions & SVG shapes
-│   │   ├── roadmap.ts          # Milestones, build hours, dates & mentoring checkpoints
-│   │   └── faqs.ts             # Verified FAQ entries and categorized queries
+│   ├── data/                   # Centralized, strictly typed data store
+│   │   ├── event.ts            # Core event configuration, dates, venue, manifesto & metadata
+│   │   ├── navigation.ts       # Route hierarchy, labels, and indices
+│   │   ├── themes.ts           # 4 problem tracks, descriptions, and SVG identifiers
+│   │   ├── roadmap.ts          # Milestones, build hours, dates, and mentoring checkpoints
+│   │   └── faqs.ts             # FAQ questions, answers, and categorization
 │   ├── layouts/
-│   │   └── Layout.astro        # Master page shell, skip-to-content, observers & cursor
-│   ├── pages/                  # Static routes (Pure SSG HTML generation)
-│   │   ├── index.astro         # Route / (Home landing page)
-│   │   ├── about.astro         # Route /about/ (Manifesto, host chapter & ethos)
-│   │   ├── themes.astro        # Route /themes/ (Detailed track guidance & hardware lab)
-│   │   ├── roadmap.astro       # Route /roadmap/ (Milestone schedule & checkpoint guide)
-│   │   ├── faqs.astro          # Route /faqs/ (Rules, eligibility & organizer support)
-│   │   └── register.astro      # Route /register/ (Status, provisions & proposal draft tool)
+│   │   └── Layout.astro        # Base HTML shell, skip link, desktop cursor & parallax script
+│   ├── pages/                  # Static routes (1:1 with site URLs)
+│   │   ├── index.astro         # /
+│   │   ├── about.astro         # /about/
+│   │   ├── themes.astro        # /themes/
+│   │   ├── roadmap.astro       # /roadmap/
+│   │   ├── faqs.astro          # /faqs/
+│   │   └── register.astro      # /register/
 │   ├── styles/
-│   │   └── global.css          # Core CSS variables, typography, animations & media queries
+│   │   └── global.css          # Design system tokens, typography, animations & breakpoints
 │   └── types/
-│       └── index.ts            # Shared TypeScript interfaces & configuration types
+│       └── index.ts            # TypeScript interfaces enforcing data contracts
 ├── astro.config.mjs            # Astro SSG configuration & @astrojs/sitemap integration
-├── vercel.json                 # Turnkey zero-config deployment manifest for Vercel
-├── netlify.toml                # Turnkey zero-config deployment manifest for Netlify
-├── package.json                # Scripts & production dependencies
-└── tsconfig.json               # Strict TypeScript compiler options
+├── vercel.json                 # Turnkey deployment manifest for Vercel
+├── netlify.toml                # Turnkey deployment manifest for Netlify
+├── package.json                # Scripts & dependencies
+└── tsconfig.json               # TypeScript configuration
 ```
 
 ---
 
-## 🌐 The 6 Verified Static Routes
+## 6. Content & Registration Configuration
 
-Every page is rendered as standalone, valid static HTML at build time:
+All event information is decoupled from presentation templates and centralized under `src/data/`:
 
-| Route | Page Name | Primary Content |
-| :--- | :--- | :--- |
-| `/` | **Home** | Hero with Eureka canvas + orbital artwork, Manifesto preview, 4 Problem Tracks, Roadmap, FAQs, and Register CTA. |
-| `/about/` | **About** | The Engineering Convergence Manifesto, IEEE CS PESU Host Chapter profile, and Participant Philosophy. |
-| `/themes/` | **Themes** | Deep-dive into the 4 Problem Spaces, Evaluation Matrix, and Physical Computing / Hardware Lab showcase. |
-| `/roadmap/` | **Roadmap** | Path from Spark to Ship, 5 Core Milestones, build cadence, and Milestone Checkpoint guides. |
-| `/faqs/` | **FAQs** | Native disclosure accordion answering 8 verified eligibility, format, judging, and registration inquiries. |
-| `/register/` | **Register** | Live Admissions Channel status, Application Checklist, On-Site Provisions & Experience Panel, and Local Proposal Draft Tool. |
-
----
-
-## ⚡ Workflow & Engineering Decisions
-
-### 1. Why Astro SSG?
-- **Zero Runtime Hydration**: Unlike React or Next.js SPA/SSR approaches, Astro compiles pure static HTML and CSS without shipping megabytes of unused framework runtime to the client.
-- **Instant TTFB & SEO**: Static pages achieve optimal Core Web Vitals, immediate Time-To-First-Byte, and 100% crawlability for search engine spiders.
-- **Fail-Safe Robustness**: If a user has JavaScript disabled or network latency drops script bundles, the entire website remains 100% visible, readable, and functional.
-
-### 2. Layered Hero Visual Architecture
-The Hero section utilizes a 3-layer compositional depth model:
-1. **Backdrop Layer (`z-index: 0`)**: The fullscreen canvas running the progressive Eureka character animation.
-2. **Atmospheric Orbital Art Layer (`z-index: 1`)**: Delicate vector SVG orbital ellipses that rotate continuously and respond with subtle desktop pointer parallax (`pointermove` with passive listener and `requestAnimationFrame` lerp).
-3. **Compound Protective Gradient**: A dual-axis CSS overlay on `.hero-character-wrap::after` (horizontal 0%–88% + vertical 0%–65%) that ensures the Eureka character never obscures the high-contrast wordmark, metadata badges, or CTA buttons on any viewport.
-4. **Foreground Content Layer (`z-index: 2`)**: Warm cream typography (`#F2EEE6`), acid-lime accent year badge (`/26`), and interactive buttons.
-
-### 3. Asset & GPU Optimization
-- **WebP Frame Streaming**: All 177 Eureka animation frames were converted from raw JPEGs to modern WebP files, cutting the total frame payload by **66.2%** (from 12.7 MB down to 4.3 MB).
-- **GPU Memory Relief**: Reduced the internal canvas drawing backbuffer from 3840×2160 to 1920×1080, reducing GPU VRAM allocation by **75%** while maintaining crisp visual fidelity via CSS `object-fit: cover`.
-- **Progressive Preloading**: Frame 1 loads synchronously for instant LCP with zero layout shift; remaining frames stream in batches of 4 via `requestIdleCallback`. Fallback to original JPEGs occurs transparently on error.
-
-### 4. Roadmap & Scroll-Tied Progress
-- **861px–1100px Tablet Cadence**: Unlike designs that prematurely collapse to a single column, Confluence 2026 preserves a compact 5-column horizontal grid on tablet displays, keeping the horizontal acid-lime progress bar active.
-- **Scroll Interpolation**: The progress line dynamically binds to `--timeline-w` computed via `IntersectionObserver` and scroll position, rather than snapping abruptly to 100%.
-- **Mobile Connector Illumination**: On viewports `<= 860px`, the timeline smoothly transitions into a vertical chain where reaching each milestone illuminates both the node and the vertical connector bar down to that node.
-
-### 5. Local Proposal Draft Tool
-- While the official Google Form destination is configurable via `src/data/event.ts` (or `PUBLIC_GOOGLE_FORMS_URL`), teams can prepare their team name, roster, track selection, and concept abstract locally.
-- Submissions are stored in browser `localStorage`, with an explicit notification that drafts are local and do not constitute final event registration until submitted via the official Google Form.
+- **Event Details & Metadata**: Edit `src/data/event.ts` (`EVENT_CONFIG`) to update event dates, venue location, organizer names, contact details, and SEO metadata.
+- **Registration Destination**:
+  - In `src/data/event.ts`, configure `registration.googleFormsUrl`.
+  - Alternatively, pass the environment variable `PUBLIC_GOOGLE_FORMS_URL` at build/deploy time.
+  - When `googleFormsUrl` is empty (`''`), the UI automatically indicates that the link is pending release and directs users to `/register/` to use the local proposal draft tool.
+- **Registration Open/Closed Status**: Toggle `registration.isOpen: true | false` in `src/data/event.ts`.
+- **Tracks & Milestones**: Add or edit problem tracks in `src/data/themes.ts` and event checkpoints in `src/data/roadmap.ts`.
 
 ---
 
-## ♿ Accessibility & Performance Standards
+## 7. Local Installation & Development
 
-- **Semantic HTML5**: Semantic landmarks throughout (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<details>`, `<footer>`).
-- **Keyboard Navigation**: Dedicated, high-contrast `:focus-visible` outlines (`2px solid var(--acid)`) for navigation links, theme cards, FAQ items, and form controls.
-- **Skip Link**: Accessible `.skip-to-content` link for screen readers and keyboard-only users.
-- **Reduced Motion**: Full support for `@media (prefers-reduced-motion: reduce)`. Canvas animation halts on a celebratory static frame, orbital rotations and parallax stop, and all elements render in their final visible state.
-- **WCAG AA Contrast**: Body copy (`#CFCBC2`), muted accents (`#A3A099`), and acid lime (`#C8FF2E`) all exceed 4.5:1 contrast ratios on `#0A0A0A`.
-
----
-
-## 🛠 Local Development & Commands
-
-Run all commands from the repository root:
+Ensure Node.js `>= 22.12.0` is installed.
 
 ```bash
-# 1. Install dependencies
+# 1. Clone the repository
+git clone https://github.com/adithyasmaiya/IEEE-CS.git
+cd IEEE-CS
+
+# 2. Install dependencies
 npm install
 
-# 2. Run local development server (with hot module replacement)
+# 3. Start local development server
 npm run dev
 # -> Local server available at http://localhost:4321/
-
-# 3. Perform Astro and TypeScript type-checking
-npm run check
-# -> Expected output: 0 errors, 0 warnings, 0 hints
-
-# 4. Build optimized production static bundle
-npm run build
-# -> Output generated in ./dist/
-
-# 5. Preview production build locally
-npm run preview
-# -> Previews the built ./dist/ static site at http://localhost:4321/
 ```
 
 ---
 
-## 🚀 Deployment Guide (Vercel & Netlify)
+## 8. Production Build & Validation Commands
 
-The project is pre-configured for turnkey static hosting with zero external adapters required.
+```bash
+# Run Astro and TypeScript diagnostic check
+npm run check
+# Expected result: 0 errors, 0 warnings, 0 hints
 
-### Deploying to Vercel (Recommended)
+# Build production static bundle to ./dist/
+npm run build
+# Expected result: 6 static entrypoints compiled in ~1 second
 
-1. Push your repository to GitHub:
+# Preview the production static build locally
+npm run preview
+# Serves ./dist/ at http://localhost:4321/ for final verification
+```
+
+---
+
+## 9. Deployment Instructions (Vercel)
+
+The repository includes a turnkey [vercel.json](file:///D:/IEE%20WEBSITE/confluence-2026/vercel.json) configuration:
+
+```json
+{
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true
+}
+```
+
+### Deploy via Vercel Dashboard (Recommended)
+1. Push your code to GitHub:
    ```bash
    git push origin main
    ```
-2. Open the [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New > Project**.
-3. Import your `confluence-2026` repository.
-4. Vercel automatically detects the `vercel.json` and settings:
-   - **Framework Preset**: `Astro`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-5. *(Optional)* Add the environment variable if official Google Form is live:
-   - `PUBLIC_GOOGLE_FORMS_URL`: `https://forms.google.com/...`
-6. Click **Deploy**. Your site will be live with an instant SSL URL (e.g., `https://confluence-2026.vercel.app`).
+2. In the [Vercel Dashboard](https://vercel.com/new), click **Import** next to your `adithyasmaiya/IEEE-CS` repository.
+3. Vercel automatically detects the Astro framework and `vercel.json` settings.
+4. *(Optional)* Add the environment variable `PUBLIC_GOOGLE_FORMS_URL` if the official registration form is ready.
+5. Click **Deploy**. Vercel will build and assign an instant production URL (e.g., `https://confluence-2026.vercel.app`).
 
-### Deploying to Netlify
+### Deploy via Vercel CLI
+```bash
+# Login to Vercel account
+npx vercel login
 
-1. Push your repository to GitHub.
-2. In the [Netlify Dashboard](https://app.netlify.com/), click **Add new site > Import an existing project**.
-3. Select your repository. Netlify automatically detects `netlify.toml`:
-   - **Build command**: `npm run build`
-   - **Publish directory**: `dist`
-4. Click **Deploy Site**.
+# Deploy to production
+npx vercel --prod
+```
+
+*(Note: [netlify.toml](file:///D:/IEE%20WEBSITE/confluence-2026/netlify.toml) is also provided in the root for zero-config Netlify deployments).*
 
 ---
 
-## 📋 Challenge Compliance Verification Matrix
+## 10. SEO, Accessibility, Image & Animation Optimization
 
-| Category | Requirement | Status | Evidence |
-| :--- | :--- | :--- | :--- |
-| **Functionality (30%)** | 6 working routes (`/`, `/about/`, `/themes/`, `/roadmap/`, `/faqs/`, `/register/`) | **PASS** | Verified via static output in `dist/` and HTTP 200 checks on live server. |
-| | Navigation, mobile drawer, internal anchors & buttons | **PASS** | `Nav.astro`, `Footer.astro`, and `PageHeader.astro` mapped with valid hrefs; zero 404s. |
-| | FAQ Accordions | **PASS** | Native semantic `<details>` and `<summary>` components in `FaqItem.astro`. |
-| | Registration routing & disclaimer clarity | **PASS** | Configurable via `src/data/event.ts`; offline draft tool explicitly states local-only state. |
-| **Design & Aesthetics (25%)** | Cohesive editorial visual identity | **PASS** | Standardized palette (`#0A0A0A`, `#F2EEE6`, `#C8FF2E`), typography and layout tokens. |
-| | Responsive layout across all viewports | **PASS** | Mobile (375px), Tablet (768px), Tablet landscape (1024px), Desktop (1440px). |
-| | 861px–1100px Roadmap preservation | **PASS** | Horizontal 5-column roadmap grid active at 861px–1100px; collapses strictly below 860px. |
-| | Zero overflow & clipped text | **PASS** | Fluid typography clamp values tested and verified down to 320px screens. |
-| **Code Quality (20%)** | Astro SSG architecture | **PASS** | Pure SSG static HTML output generated in `dist/` in 1.10s. |
-| | Reusable components & layouts | **PASS** | `Layout`, `BaseHead`, `PageHeader`, `ThemeCard`, `RoadmapMilestone`, `FaqItem`. |
-| | Centralized typed data modules | **PASS** | `src/data/event.ts`, `themes.ts`, `roadmap.ts`, `faqs.ts`, `navigation.ts`. |
-| | TypeScript diagnostic health | **PASS** | `npm run check`: 0 errors, 0 warnings, 0 hints. |
-| **Performance & SEO (25%)** | Unique metadata & Open Graph | **PASS** | `BaseHead.astro` generates unique titles, canonical URLs, OG tags, and JSON-LD Hackathon schema. |
-| | Valid sitemap & robots.txt | **PASS** | `robots.txt` references `sitemap-index.xml`; `@astrojs/sitemap` generates verified index. |
-| | Image optimization & frame streaming | **PASS** | 177 WebP frames (66% size reduction), 1080p canvas backbuffer, lazy loading below fold. |
-| | Reduced-motion compliance | **PASS** | `@media (prefers-reduced-motion: reduce)` in CSS, canvas player, and Layout scripts. |
-| **Submission** | Production build success | **PASS** | Clean build completed with 0 errors across 6 static entrypoints. |
-| | Vercel & Netlify configuration | **PASS** | Added `vercel.json` and `netlify.toml` with immutable asset caching. |
-| | Official event Google Form URL | **NEEDS OFFICIAL CONFIRMATION** | `googleFormsUrl` is currently empty pending announcement; fallback UI is active and functional. |
+- **SEO & Social Sharing**:
+  - Every route includes a unique `<title>`, `<meta name="description">`, canonical link, and Open Graph / Twitter Card tags ([BaseHead.astro](file:///D:/IEE%20WEBSITE/confluence-2026/src/components/BaseHead.astro)).
+  - Schema.org `Hackathon` JSON-LD structured data is embedded on `/` with verified organizer, venue, date, and free-admission details.
+  - Automated XML sitemap (`/sitemap-index.xml`) generated via `@astrojs/sitemap`, referenced in `public/robots.txt`.
+- **Accessibility (a11y)**:
+  - Semantic HTML5 landmark structure (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<details>`, `<footer>`).
+  - Strict WCAG AA contrast compliance across body copy (`#CFCBC2`), muted accents (`#A3A099`), and acid lime (`#C8FF2E`) on `#0A0A0A`.
+  - Visible, high-contrast `:focus-visible` outlines (`2px solid var(--acid)`) for keyboard navigation.
+  - Accessible `.skip-to-content` link bypassing header navigation for screen reader users.
+- **Image Optimization**:
+  - All 177 hero character animation frames converted from raw JPGs to WebP, reducing total frame payload from 12.7 MB to 4.3 MB (**66.2% size reduction**). Original JPGs preserved for transparent fallback.
+  - Below-the-fold showcase images utilize `<picture>` elements with WebP sources, `loading="lazy"`, `decoding="async"`, and explicit `width`/`height` attributes to eliminate layout shifts (CLS).
+- **Animation Performance & Reduced Motion**:
+  - **Canvas Memory**: Capped internal canvas drawing buffer at 1920×1080 (down from 4K), reducing GPU VRAM allocation by **75%**.
+  - **Frame Streaming**: Frame 1 paints immediately for instant Largest Contentful Paint (LCP); remaining frames stream progressively in batches of 4 via `requestIdleCallback`.
+  - **Passive Parallax**: Desktop pointer parallax on the hero orbital artwork uses passive event listeners with smooth `requestAnimationFrame` lerp interpolation, stopping execution when idle (0% CPU impact).
+  - **Reduced Motion**: Full support for `@media (prefers-reduced-motion: reduce)` in CSS and JavaScript: halts canvas looping on a static celebration frame, disables orbital rotation and cursor movement, and renders all scroll reveals instantly.
 
 ---
 
-## 👥 Contributors & Acknowledgements
+## 11. Challenges Encountered & Solutions Implemented
 
-- **Developer**: Adithya ([@adithyasmaiya](https://github.com/adithyasmaiya))
-- **Organizer**: IEEE Computer Society, PES University Student Branch Chapter
-- **Institution**: PES University, Bengaluru, Karnataka, India
+1. **High GPU Memory from Fullscreen Canvas Animation**  
+   *Challenge*: Initial testing with a 4K canvas drawing buffer caused elevated GPU memory pressure and frame drops on integrated GPUs.  
+   *Solution*: Scaled the internal canvas drawing dimensions to 1920×1080 while utilizing CSS `object-fit: cover`. This reduced GPU VRAM consumption by 75% with zero perceptible visual loss on Retina/HiDPI screens.
+
+2. **Heavy Payload from 177 Animation Frames**  
+   *Challenge*: Serving 177 individual JPEG frames incurred a 12.7 MB payload, delaying animation readiness.  
+   *Solution*: Converted all frames to quality-optimized WebP assets, reducing payload by 66.2% (to 4.3 MB). Implemented progressive loading: Frame 1 renders synchronously for zero layout shift, followed by idle-callback streaming with automated fallback to JPG on network error.
+
+3. **Animation Overlapping Foreground Text and Buttons**  
+   *Challenge*: On narrow or short viewports, the animated Eureka character could visually collide with the headline and CTA buttons.  
+   *Solution*: Engineered a compound dual-axis protective gradient on `.hero-character-wrap::after` (horizontal 0%–88% and bottom-up vertical 0%–65%), guaranteeing crisp contrast and unobstructed buttons across all screen ratios.
+
+4. **Premature Collapse of Roadmap on Tablet Screens**  
+   *Challenge*: At viewports between 861px and 1100px, the 5-step milestone timeline collapsed into a vertical single column, hiding the progress line and leaving awkward whitespace.  
+   *Solution*: Restructured media queries in `global.css` to maintain the 5-column horizontal layout down to 861px with compact 36px node badges and horizontal progress bar. Single-column vertical stacking is strictly confined to viewports `<= 860px`.
+
+5. **Fluid Typography Causing Mobile Wordmark Overflow**  
+   *Challenge*: On narrow mobile screens (<380px), large fluid clamps caused the oversized "CONFLUENCE /26" wordmark to exceed the viewport width.  
+   *Solution*: Calibrated fluid clamps with lower bounds (`clamp(2.3rem, 14.5vw, 4.2rem)` at <=560px and `clamp(1.95rem, 13.5vw, 2.5rem)` at <=380px), eliminating horizontal scrollbars and text clipping.
+
+---
+
+## 12. Deployment Status & Verified URLs
+
+- **Live Verified Deployment**: [`https://speedy-mistral-c5ulbtq.tmp.now`](https://speedy-mistral-c5ulbtq.tmp.now)  
+  *(Tested and confirmed returning HTTP 200 on all 6 static routes, sitemap-index.xml, robots.txt, and WebP frame assets).*
+- **Vercel Claim Link**: [`https://vercel.com/claim-deployment?code=dcf5fca2-0e3a-4f9c-a2f2-8139431d75bd`](https://vercel.com/claim-deployment?code=dcf5fca2-0e3a-4f9c-a2f2-8139431d75bd)  
+  *(Use this link to claim the deployment into a personal Vercel team/account and assign the permanent domain `confluence-2026.vercel.app`).*
+- **GitHub Repository**: [`https://github.com/adithyasmaiya/IEEE-CS.git`](https://github.com/adithyasmaiya/IEEE-CS.git) (`main` branch)
+
+### Details Pending Official Organizer Confirmation
+- **Official Google Forms URL**: The registration link (`registration.googleFormsUrl` in `src/data/event.ts`) is currently empty pending announcement by IEEE CS PESU organizers. When announced, supplying the URL or setting `PUBLIC_GOOGLE_FORMS_URL` will immediately activate external redirects across all register CTAs.
+- **Specific Room & Track Mentors**: Venue is verified as PES University RR Campus Innovation Labs; room assignments and specific mentor schedules will be populated in `src/data/event.ts` and `src/data/roadmap.ts` upon kickoff.
